@@ -1,0 +1,23 @@
+{
+  "name": "scout",
+  "version": "1.0.0",
+  "description": "Wispero Scout",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amit-chahar/scout.git"
+  },
+  "author": "Amit Chahar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amit-chahar/scout/issues"
+  },
+  "homepage": "https://github.com/amit-chahar/scout#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "noble": "^1.8.0"
+  }
+}
