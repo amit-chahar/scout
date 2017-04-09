@@ -102,7 +102,17 @@ function exploreCharacteristics(service){
                 console.log("DFU characteristic found");
 
                 characteristic.once("notify", function (state) {
-                    console.log(state);
+                    if(state){
+                        var data = new Buffer(1);
+                        data[1] = 0x01;
+                        characteristic.write(data, true, function(error){
+                            if(error){
+                                console.log("Error: writing characteristic");
+                                return;
+                            }
+                            console.log("characteristic written successfully");
+                        })
+                    }
                 })
 
                 characteristic.notify(true, function (error) {
