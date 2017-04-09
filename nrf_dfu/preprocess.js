@@ -100,6 +100,18 @@ function exploreCharacteristics(service){
         characteristics.forEach(function (characteristic) {
             if(characteristic.uuid === dfu_char_uuid){
                 console.log("DFU characteristic found");
+
+                characteristic.once("notify", function (state) {
+                    console.log(state);
+                })
+
+                characteristic.notify(true, function (error) {
+                    if(error){
+                        console.log("Error: enable notificatioin");
+                        return;
+                    }
+                });
+
                 characteristics[0].discoverDescriptors(function (error, descriptors) {
                     descriptors.forEach(function (descriptor) {
                         if (descriptor.uuid === '2902') {
