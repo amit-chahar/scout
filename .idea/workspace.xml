@@ -24,8 +24,8 @@
       <file leaf-file-name="preprocess.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/preprocess.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="598">
-              <caret line="112" column="79" lean-forward="false" selection-start-line="112" selection-start-column="79" selection-end-line="112" selection-end-column="79" />
+            <state relative-caret-position="488">
+              <caret line="107" column="52" lean-forward="false" selection-start-line="107" selection-start-column="52" selection-end-line="107" selection-end-column="52" />
               <folding />
             </state>
           </provider>
@@ -241,7 +241,7 @@
       <option name="presentableId" value="Default" />
       <updated>1491565767475</updated>
       <workItem from="1491565769528" duration="6624000" />
-      <workItem from="1491743150986" duration="3843000" />
+      <workItem from="1491743150986" duration="4454000" />
     </task>
     <task id="LOCAL-00001" summary="disconnect method added">
       <created>1491727391668</created>
@@ -285,11 +285,18 @@
       <option name="project" value="LOCAL" />
       <updated>1491750115456</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="disconnect method added">
+      <created>1491750722673</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1491750722673</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10467000" />
+    <option name="totallyTimeSpent" value="11078000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1931" height="1038" extended-state="0" />
@@ -357,8 +364,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/preprocess.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
-          <caret line="112" column="79" lean-forward="false" selection-start-line="112" selection-start-column="79" selection-end-line="112" selection-end-column="79" />
+        <state relative-caret-position="488">
+          <caret line="107" column="52" lean-forward="false" selection-start-line="107" selection-start-column="52" selection-end-line="107" selection-end-column="52" />
           <folding />
         </state>
       </provider>

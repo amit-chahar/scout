@@ -105,6 +105,7 @@ function exploreCharacteristics(service){
                     if(state){
                         var data = new Buffer(1);
                         data[1] = 0x01;
+                        console.log("data: ", data);
                         characteristic.write(data, true, function(error){
                             if(error){
                                 console.log("Error: writing characteristic");
