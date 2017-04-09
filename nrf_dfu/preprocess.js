@@ -2,7 +2,8 @@ var noble = require('noble');
 var Promise = require('bluebird');
 var nobleP = Promise.promisifyAll(noble);
 
-var peripheralIdOrAddress = process.argv[2].toLowerCase();
+var peripheralIdOrAddress;
+// = process.argv[2].toLowerCase();
 const peripheral_name = 'Device_1_fv1.1';
 
 const dfu_service_uuid = "8e400001-f315-4f60-9fb8-838830daea50";
