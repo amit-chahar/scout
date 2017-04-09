@@ -101,62 +101,71 @@ function exploreCharacteristics(service) {
             if (characteristic.uuid === dfu_char_uuid) {
                 console.log("DFU characteristic found");
 
+                characteristic.on("data", function (data, isNotification) {
+                    console.log("is notification? ", isNotification);
+                    console.log("data on characteristic: ", data);
+                })
+
                 characteristic.once("notify", function (state) {
+                    console.log("Notify event");
                     if (state) {
-                        var data = new Buffer(1);
-                        data.writeUInt8(0x01, 0);
+                        var data = new Buffer(3);
+                        data.writeUInt8(0x20, 0);
+                        data.writeUInt8(0x01, 1);
+                        data.writeUInt8(0x01, 2);
                         console.log("data: ", data);
-                        characteristic.write(data, true, function (error) {
+                        characteristic.write(data, false, function (error) {
                             if (error) {
                                 console.log("Error: writing characteristic");
                                 return;
                             }
-                            console.log("characteristic written successfully");
+                            console.log("characteristic written successfully to restart");
                         })
                     }
                 })
 
-                // characteristic.notify(true, function (error) {
-                //     if(error){
-                //         console.log("Error: enable notificatioin");
-                //         return;
-                //     }
-                // });
-
-                characteristics[0].discoverDescriptors(function (error, descriptors) {
-                    descriptors.forEach(function (descriptor) {
-                        if (descriptor.uuid === '2902') {
-                            console.log("CCCD found");
-                            var data = new Buffer(2);
-                            data.writeUInt8(0x01, 0);
-                            data.writeUInt8(0x00, 1);
-                            descriptor.writeValue(data, function (error) {
-                                if (error) {
-                                    console.log("Error: writing descritor");
-                                    return;
-                                }
-                                console.log("descriptor written successfully");
-
-                                readDescriptorValue(descriptor);
-
-                                setTimeout(function () {
-                                    var data = new Buffer(3);
-                                    data.writeUInt8(0x20, 0);
-                                    data.writeUInt8(0x01, 1);
-                                    data.writeUInt8(0x01, 2);
-                                    console.log("data: ", data);
-                                    characteristic.write(data, false, function (error) {
-                                        if (error) {
-                                            console.log("Error: writing characteristic");
-                                            return;
-                                        }
-                                        console.log("characteristic written successfully");
-                                    })
-                                }, 1000);
-                            })
-                        }
-                    })
+                characteristic.notify(true, function (error) {
+                    if (error) {
+                        console.log("Error: enable notificatioin");
+                        return;
+                    }
+                    console.log("Enabling notifications");
                 });
+
+                // characteristics[0].discoverDescriptors(function (error, descriptors) {
+                //     descriptors.forEach(function (descriptor) {
+                //         if (descriptor.uuid === '2902') {
+                //             console.log("CCCD found");
+                //             var data = new Buffer(2);
+                //             data.writeUInt8(0x01, 0);
+                //             data.writeUInt8(0x00, 1);
+                //             descriptor.writeValue(data, function (error) {
+                //                 if (error) {
+                //                     console.log("Error: writing descritor");
+                //                     return;
+                //                 }
+                //                 console.log("descriptor written successfully");
+                //
+                //                 readDescriptorValue(descriptor);
+                //
+                //                 setTimeout(function () {
+                //                     var data = new Buffer(3);
+                //                     data.writeUInt8(0x20, 0);
+                //                     data.writeUInt8(0x01, 1);
+                //                     data.writeUInt8(0x01, 2);
+                //                     console.log("data: ", data);
+                //                     characteristic.write(data, false, function (error) {
+                //                         if (error) {
+                //                             console.log("Error: writing characteristic");
+                //                             return;
+                //                         }
+                //                         console.log("characteristic written successfully");
+                //                     })
+                //                 }, 1000);
+                //             })
+                //         }
+                //     })
+                // });
             }
         })
     });
