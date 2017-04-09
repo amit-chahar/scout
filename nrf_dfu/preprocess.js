@@ -116,17 +116,26 @@ function exploreCharacteristics(service){
                     }
                 })
 
-                characteristic.notify(true, function (error) {
-                    if(error){
-                        console.log("Error: enable notificatioin");
-                        return;
-                    }
-                });
+                // characteristic.notify(true, function (error) {
+                //     if(error){
+                //         console.log("Error: enable notificatioin");
+                //         return;
+                //     }
+                // });
 
                 characteristics[0].discoverDescriptors(function (error, descriptors) {
                     descriptors.forEach(function (descriptor) {
                         if (descriptor.uuid === '2902') {
                             console.log("CCCD found");
+                            var data = new Buffer(1);
+                            data.writeUInt8(0x01, 0);
+                            descriptor.writeValue(data, function(error){
+                                if(error) {
+                                    console.log("Error: writing descritor");
+                                    return;
+                                }
+                                console.log("descriptor written successfully");
+                            })
                         }
                     })
                 });
