@@ -67,23 +67,23 @@ function explore(peripheral) {
     });
 
     peripheral.connect(function (error) {
-        if(error){
+        if (error) {
             console.log("Error: connecting peripheral");
             return;
         }
-	console.log("start exploring services");
+        console.log("start exploring services");
         exploreServices(peripheral);
     })
 }
 
-function exploreServices(peripheral){
+function exploreServices(peripheral) {
     peripheral.discoverServices([], function (error, services) {
-        if(error){
+        if (error) {
             console.log("Error: discovering DFU service");
             return;
         }
         services.forEach(function (service) {
-            if(service.uuid === dfu_service_uuid){
+            if (service.uuid === dfu_service_uuid) {
                 console.log("start exploring characteristics");
                 exploreCharacteristics(service);
             }
@@ -91,23 +91,23 @@ function exploreServices(peripheral){
     })
 }
 
-function exploreCharacteristics(service){
+function exploreCharacteristics(service) {
     service.discoverCharacteristics([], function (error, characteristics) {
-        if(error){
+        if (error) {
             console.log("Error: exploring characteristics");
             return;
         }
         characteristics.forEach(function (characteristic) {
-            if(characteristic.uuid === dfu_char_uuid){
+            if (characteristic.uuid === dfu_char_uuid) {
                 console.log("DFU characteristic found");
 
                 characteristic.once("notify", function (state) {
-                    if(state){
+                    if (state) {
                         var data = new Buffer(1);
                         data.writeUInt8(0x01, 0);
                         console.log("data: ", data);
-                        characteristic.write(data, true, function(error){
-                            if(error){
+                        characteristic.write(data, true, function (error) {
+                            if (error) {
                                 console.log("Error: writing characteristic");
                                 return;
                             }
@@ -129,21 +129,24 @@ function exploreCharacteristics(service){
                             console.log("CCCD found");
                             var data = new Buffer(2);
                             data.writeUInt8(0x01, 0);
-			    data.writeUInt8(0x00, 1);
-                            descriptor.writeValue(data, function(error){
-                                if(error) {
+                            data.writeUInt8(0x00, 1);
+                            descriptor.writeValue(data, function (error) {
+                                if (error) {
                                     console.log("Error: writing descritor");
                                     return;
                                 }
                                 console.log("descriptor written successfully");
+
+                                readDescriptorValue(descriptor);
+
                                 setTimeout(function () {
                                     var data = new Buffer(3);
                                     data.writeUInt8(0x20, 0);
-				    data.writeUInt8(0x01, 1);
-				    data.writeUInt8(0x01, 2);
+                                    data.writeUInt8(0x01, 1);
+                                    data.writeUInt8(0x01, 2);
                                     console.log("data: ", data);
-                                    characteristic.write(data, false, function(error){
-                                        if(error){
+                                    characteristic.write(data, false, function (error) {
+                                        if (error) {
                                             console.log("Error: writing characteristic");
                                             return;
                                         }
@@ -159,3 +162,13 @@ function exploreCharacteristics(service){
     });
 }
 
+function readDescriptorValue(descriptor) {
+    setTimeout(function () {
+        descriptor.readValue(function (error, data) {
+            if (error) {
+                console.log("Error: reading " + descriptor.uuid + " descriptor value");
+            }
+            console.log("descriptor value: ", data);
+        })
+    }, 1000);
+}
