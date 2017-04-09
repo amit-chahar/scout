@@ -71,6 +71,7 @@ function explore(peripheral) {
             console.log("Error: connecting peripheral");
             return;
         }
+	console.log("start exploring services");
         exploreServices(peripheral);
     })
 }
@@ -82,6 +83,7 @@ function exploreServices(peripheral){
             return;
         }
         if(services !== undefined && services.length === 1) {
+	    console.log("start exploring characteristics");
             exploreCharacteristics(peripheral);
         }
     })
