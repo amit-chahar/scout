@@ -12,7 +12,7 @@ const dfu_cccd_uuid = "000002902-0000-1000-8000-00805f9b34fb";
 
 noble.on('stateChange', function (state) {
     if (state === 'poweredOn') {
-        start_scanning();
+        noble.startScanning();
     } else {
         noble.stopScanning();
     }
@@ -30,6 +30,7 @@ var start_scanning = function () {
 };
 
 noble.on('discover', function (peripheral) {
+    console.log("Peripheral found");
     if (peripheral.advertisement.localName === peripheral_name || peripheral.id === peripheralIdOrAddress || peripheral.address === peripheralIdOrAddress) {
         noble.stopScanning();
 
@@ -71,12 +72,6 @@ noble.on('discover', function (peripheral) {
 function explore(peripheral) {
     console.log('services and characteristics:');
 
-    noble.stopScanning(function (error) {
-        if(error){
-            console.log("Error: stop scanning");
-        }
-    })
-
     peripheral.on('disconnect', function () {
         console.log("Peripheral disconnected");
         //process.exit(0);
@@ -92,7 +87,7 @@ function explore(peripheral) {
 }
 
 function exploreCharacteristics(peripheral){
-    peripheral.characteristics([dfu_char_uuid], function (error, characteristics) {
+    peripheral.discoverSomeServicesAndCharacteristics([dfu_service_uuid], [dfu_char_uuid], function (error, services, characteristics) {
         if(error){
             console.log("Error: exploring characteristics");
             return;
