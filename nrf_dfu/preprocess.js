@@ -1,6 +1,5 @@
 var noble = require('noble');
 var Promise = require('bluebird');
-var nobleP = Promise.promisifyAll(noble);
 
 var peripheralIdOrAddress;
 // = process.argv[2].toLowerCase();
@@ -72,34 +71,42 @@ noble.on('discover', function (peripheral) {
 function explore(peripheral) {
     console.log('services and characteristics:');
 
+    noble.stopScanning(function (error) {
+        if(error){
+            console.log("Error: stop scanning");
+        }
+    })
+
     peripheral.on('disconnect', function () {
         console.log("Peripheral disconnected");
         //process.exit(0);
     });
 
-    peripheral.connect()
-        .then(function () {
-            console.log("Connected to peripheral");
-            return peripheral.characteristics([dfu_char_uuid]);
-        })
-        .catch(function (error) {
+    peripheral.connect(function (error) {
+        if(error){
             console.log("Error: connecting peripheral");
-        })
-        .then(function (characteristics) {
-            if (characteristics.length == 1) {
-                console.log("DFU characteristic found");
-                characteristics[0].discoverDescriptors();
-            }
-        })
-        .then(function (descriptors) {
-            descriptors.forEach(function (descriptor) {
-                if (descriptor.uuid === '2901') {
-                    console.log("CCCD found");
-                }
-            })
-        })
-        .catch(function (e) {
-            console.log("Error: Disconnecting peripheral");
-        })
-
+            return;
+        }
+        exploreCharacteristics(peripheral);
+    })
 }
+
+function exploreCharacteristics(peripheral){
+    peripheral.characteristics([dfu_char_uuid], function (error, characteristics) {
+        if(error){
+            console.log("Error: exploring characteristics");
+            return;
+        }
+        if (characteristics.length == 1) {
+            console.log("DFU characteristic found");
+            characteristics[0].discoverDescriptors(function (descriptors) {
+                descriptors.forEach(function (descriptor) {
+                    if (descriptor.uuid === '2901') {
+                        console.log("CCCD found");
+                    }
+                })
+            });
+        }
+    });
+}
+
