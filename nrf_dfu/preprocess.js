@@ -18,17 +18,6 @@ noble.on('stateChange', function (state) {
     }
 });
 
-var start_scanning = function () {
-    const allow_duplicates = false;
-    noble.startScanning([dfu_service_uuid], allow_duplicates, function (error) {
-        if(error){
-            console.log("Error: starting scan");
-            return;
-        }
-        console.log("Started scanning");
-    })
-};
-
 noble.on('discover', function (peripheral) {
     console.log("Peripheral found");
     if (peripheral.advertisement.localName === peripheral_name || peripheral.id === peripheralIdOrAddress || peripheral.address === peripheralIdOrAddress) {
@@ -82,12 +71,24 @@ function explore(peripheral) {
             console.log("Error: connecting peripheral");
             return;
         }
-        exploreCharacteristics(peripheral);
+        exploreServices(peripheral);
+    })
+}
+
+function exploreServices(peripheral){
+    peripheral.discoverServices([dfu_service_uuid], function (error, services) {
+        if(error){
+            console.log("Error: discovering DFU service");
+            return;
+        }
+        if(services !== undefined && services.length === 1) {
+            exploreCharacteristics(peripheral);
+        }
     })
 }
 
 function exploreCharacteristics(peripheral){
-    peripheral.discoverSomeServicesAndCharacteristics([dfu_service_uuid], [dfu_char_uuid], function (error, services, characteristics) {
+    peripheral.discoverCharacteristics([dfu_char_uuid], function (error, characteristics) {
         if(error){
             console.log("Error: exploring characteristics");
             return;
