@@ -127,8 +127,9 @@ function exploreCharacteristics(service){
                     descriptors.forEach(function (descriptor) {
                         if (descriptor.uuid === '2902') {
                             console.log("CCCD found");
-                            var data = new Buffer(1);
+                            var data = new Buffer(2);
                             data.writeUInt8(0x01, 0);
+			    data.writeUInt8(0x00, 1);
                             descriptor.writeValue(data, function(error){
                                 if(error) {
                                     console.log("Error: writing descritor");
@@ -136,10 +137,12 @@ function exploreCharacteristics(service){
                                 }
                                 console.log("descriptor written successfully");
                                 setTimeout(function () {
-                                    var data = new Buffer(1);
-                                    data.writeUInt8(0x01, 0);
+                                    var data = new Buffer(3);
+                                    data.writeUInt8(0x20, 0);
+				    data.writeUInt8(0x01, 1);
+				    data.writeUInt8(0x01, 2);
                                     console.log("data: ", data);
-                                    characteristic.write(data, true, function(error){
+                                    characteristic.write(data, false, function(error){
                                         if(error){
                                             console.log("Error: writing characteristic");
                                             return;
