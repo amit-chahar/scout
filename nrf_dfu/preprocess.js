@@ -104,7 +104,7 @@ function exploreCharacteristics(service){
                 characteristic.once("notify", function (state) {
                     if(state){
                         var data = new Buffer(1);
-                        data[1] = 0x01;
+                        data.writeUInt8(0x01, 0);
                         console.log("data: ", data);
                         characteristic.write(data, true, function(error){
                             if(error){
