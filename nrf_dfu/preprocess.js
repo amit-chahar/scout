@@ -5,9 +5,9 @@ var peripheralIdOrAddress;
 // = process.argv[2].toLowerCase();
 const peripheral_name = 'Device_1_fv1.1';
 
-const dfu_service_uuid = "8e400001-f315-4f60-9fb8-838830daea50";
-const dfu_char_uuid = "8e400001-f315-4f60-9fb8-838830daea50";
-const dfu_cccd_uuid = "000002902-0000-1000-8000-00805f9b34fb";
+const dfu_service_uuid = "8e400001f3154f609fb8838830daea50";
+const dfu_char_uuid = "8e400001f3154f609fb8838830daea50";
+const dfu_cccd_uuid = "00000290200001000800000805f9b34fb";
 
 
 noble.on('stateChange', function (state) {
@@ -77,7 +77,7 @@ function explore(peripheral) {
 }
 
 function exploreServices(peripheral){
-    peripheral.discoverServices(function (error, services) {
+    peripheral.discoverServices([], function (error, services) {
         if(error){
             console.log("Error: discovering DFU service");
             return;
@@ -85,14 +85,14 @@ function exploreServices(peripheral){
         services.forEach(function (service) {
             if(service.uuid === dfu_service_uuid){
                 console.log("start exploring characteristics");
-                exploreCharacteristics(peripheral);
+                exploreCharacteristics(service);
             }
         })
     })
 }
 
-function exploreCharacteristics(peripheral){
-    peripheral.discoverCharacteristics(function (error, characteristics) {
+function exploreCharacteristics(service){
+    service.discoverCharacteristics([], function (error, characteristics) {
         if(error){
             console.log("Error: exploring characteristics");
             return;
@@ -100,9 +100,9 @@ function exploreCharacteristics(peripheral){
         characteristics.forEach(function (characteristic) {
             if(characteristic.uuid === dfu_char_uuid){
                 console.log("DFU characteristic found");
-                characteristics[0].discoverDescriptors(function (descriptors) {
+                characteristics[0].discoverDescriptors(function (error, descriptors) {
                     descriptors.forEach(function (descriptor) {
-                        if (descriptor.uuid === '2901') {
+                        if (descriptor.uuid === '2902') {
                             console.log("CCCD found");
                         }
                     })
