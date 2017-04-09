@@ -77,34 +77,38 @@ function explore(peripheral) {
 }
 
 function exploreServices(peripheral){
-    peripheral.discoverServices([dfu_service_uuid], function (error, services) {
+    peripheral.discoverServices(function (error, services) {
         if(error){
             console.log("Error: discovering DFU service");
             return;
         }
-        if(services !== undefined && services.length === 1) {
-	    console.log("start exploring characteristics");
-            exploreCharacteristics(peripheral);
-        }
+        services.forEach(function (service) {
+            if(service.uuid === dfu_service_uuid){
+                console.log("start exploring characteristics");
+                exploreCharacteristics(peripheral);
+            }
+        })
     })
 }
 
 function exploreCharacteristics(peripheral){
-    peripheral.discoverCharacteristics([dfu_char_uuid], function (error, characteristics) {
+    peripheral.discoverCharacteristics(function (error, characteristics) {
         if(error){
             console.log("Error: exploring characteristics");
             return;
         }
-        if (characteristics.length == 1) {
-            console.log("DFU characteristic found");
-            characteristics[0].discoverDescriptors(function (descriptors) {
-                descriptors.forEach(function (descriptor) {
-                    if (descriptor.uuid === '2901') {
-                        console.log("CCCD found");
-                    }
-                })
-            });
-        }
+        characteristics.forEach(function (characteristic) {
+            if(characteristic.uuid === dfu_char_uuid){
+                console.log("DFU characteristic found");
+                characteristics[0].discoverDescriptors(function (descriptors) {
+                    descriptors.forEach(function (descriptor) {
+                        if (descriptor.uuid === '2901') {
+                            console.log("CCCD found");
+                        }
+                    })
+                });
+            }
+        })
     });
 }
 
