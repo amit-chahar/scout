@@ -135,6 +135,18 @@ function exploreCharacteristics(service){
                                     return;
                                 }
                                 console.log("descriptor written successfully");
+                                setTimeout(function () {
+                                    var data = new Buffer(1);
+                                    data.writeUInt8(0x01, 0);
+                                    console.log("data: ", data);
+                                    characteristic.write(data, true, function(error){
+                                        if(error){
+                                            console.log("Error: writing characteristic");
+                                            return;
+                                        }
+                                        console.log("characteristic written successfully");
+                                    })
+                                }, 1000);
                             })
                         }
                     })
