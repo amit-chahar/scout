@@ -20,13 +20,13 @@ noble.on('stateChange', function (state) {
 
 var start_scanning = function () {
     const allow_duplicates = false;
-    nobleP.startScanning([dfu_service_uuid], allow_duplicates)
-        .then(function () {
-            console.log("Scanning Started");
-        })
-        .catch(function (error) {
-            console.log("Error: starting scanning");
-        })
+    noble.startScanning([dfu_service_uuid], allow_duplicates, function (error) {
+        if(error){
+            console.log("Error: starting scan");
+            return;
+        }
+        console.log("Started scanning");
+    })
 };
 
 noble.on('discover', function (peripheral) {
