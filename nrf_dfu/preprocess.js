@@ -1,4 +1,5 @@
-var noble = require('noble');
+var globals = require('../Globals');
+var noble = globals.noble;
 var Promise = require('bluebird');
 
 var peripheralIdOrAddress;
