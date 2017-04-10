@@ -123,23 +123,6 @@ function exploreDescriptors(characteristic) {
                 console.log("CCCD found");
                 mDescriptor = descriptor;
                 writeCCCD(descriptor);
-
-                // readDescriptorValue(descriptor);
-
-                // setTimeout(function () {
-                //     var data = new Buffer(3);
-                //     data.writeUInt8(0x20, 0);
-                //     data.writeUInt8(0x01, 1);
-                //     data.writeUInt8(0x01, 2);
-                //     console.log("data: ", data);
-                //     characteristic.write(data, false, function (error) {
-                //         if (error) {
-                //             console.log("Error: writing characteristic");
-                //             return;
-                //         }
-                //         console.log("characteristic written successfully");
-                //     })
-                // }, 1000);
             }
         })
     });
