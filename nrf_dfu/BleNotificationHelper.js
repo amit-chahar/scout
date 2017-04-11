@@ -13,7 +13,7 @@ function enableNotifications(characteristic, enable, TAG) {
             .then(enableNotify)
             .then(function () {
                 logger.info("notifications enabled successfully on " + TAG);
-            })
+            });
     }
 }
 
@@ -24,15 +24,17 @@ function discoverCCCD(characteristic, TAG) {
             if (error) {
                 reject("discovering descriptors: " + TAG);
             }
-            Promise.map(descriptors, function (descriptor) {
+            resolve(descriptors);
+        }).then(function (descriptors) {
+            return Promise.map(descriptors, function (descriptor) {
                 if (descriptor.uuid === '2902') {
                     cData["characteristic"] = characteristic;
                     cData["descriptor"] = descriptor;
                     cData["TAG"] = TAG;
                 }
-            }).then(function () {
-                resolve(cData);
-            })
+            });
+        }).then(function () {
+            resolve(cData);
         });
     })
 }
@@ -55,11 +57,11 @@ function writeCCCD(cData) {
             }
             logger.info("CCCD written successfully");
             resolve();
-        }).then(function () {
-            return helper.delay(2000);
-        }).then(function () {
-            return cData;
         })
+    }).then(function () {
+        return helper.delay(2000);
+    }).then(function () {
+        return cData;
     });
 }
 
@@ -72,9 +74,10 @@ function enableNotify(data) {
             if (error) {
                 reject("enabling notifications locally");
             }
-        }).then(function () {
-            return helpers.delay(1000);
+            resolve();
         })
+    }).then(function () {
+        return helpers.delay(1000);
     });
 }
 
