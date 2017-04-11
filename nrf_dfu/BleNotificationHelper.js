@@ -54,7 +54,7 @@ function writeCCCD(cData) {
             resolve();
         })
     }).then(function () {
-        return helper.delay(2000);
+        return helpers.delay(2000);
     }).then(function () {
         return cData;
     });
