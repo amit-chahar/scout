@@ -12,6 +12,7 @@ var helpers = require('./Helpers');
 var path = require('path');
 var AdmZip = require('adm-zip');
 var Promise = require('bluebird');
+var util = require('util');
 
 const FIRMWARES_BASEPATH = path.join(__dirname, "nrf_dfu", "firmwares");
 const FIRMWARES_ZIPPED_BASEPATH = path.join(FIRMWARES_BASEPATH, "zipped");
@@ -76,6 +77,7 @@ function connectToPeripheral(pData) {
 }
 
 function findDfuService(pData) {
+    logger.info("pData in findDfuService: ", util.inspect(pData));
     var peripheral = pData[constants.PERIPHERAL];
     logger.info("finding secure DFU service");
     peripheral.discoverServices([], function (error, services) {
