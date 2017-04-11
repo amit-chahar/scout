@@ -11,6 +11,7 @@ module.exports = {
     "PERIPHERAL": "peripheral",
     "SECURE_DFU_SERVICE": "secureDfuService",
     "SECURE_DFU_SERVICE_UUID": "0000fe590000-1000800000805f9b34fb",
+    "SECURE_DFU_SERVICE_SHORT_UUID": "fe59",
     "SECURE_DFU_CONTROL_POINT_CHARACTERISTIC": "secureDfuControlPointCharacteristic",
     "SECURE_DFU_CONTROL_POINT_CHARACTERISTIC_UUID": "8ec90001f3154f609fb8838830daea50",
     "SECURE_DFU_PACKET_CHARACTERISTIC": "secureDfuPacketCharacteristic",

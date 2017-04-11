@@ -77,7 +77,6 @@ function connectToPeripheral(pData) {
 }
 
 function findDfuService(pData) {
-    logger.info("pData in findDfuService: ", util.inspect(pData));
     var peripheral = pData[constants.PERIPHERAL];
     logger.info("finding secure DFU service");
     peripheral.discoverServices([], function (error, services) {
@@ -86,11 +85,12 @@ function findDfuService(pData) {
         }
 
         Promise.map(services, function (service) {
-            if (service.uuid === constants.SECURE_DFU_SERVICE_UUID) {
+            logger.debug("found service with UUID: ", service.uuid);
+            if (service.uuid === constants.SECURE_DFU_SERVICE_SHORT_UUID) {
                 logger.info("secure DFU service found");
                 pData[constants.SECURE_DFU_SERVICE] = service;
-                Promise.resolve(pData);
             }
+            Promise.resolve();
         }).then(function () {
             Promise.resolve(pData);
         })
@@ -107,22 +107,20 @@ function findControlPointAndPacketCharacteristic(pData) {
             Promise.reject("discovering DFU characteristics");
         }
 
-        var dfuCharCount = 0;
-        characteristics.forEach(function (characteristic) {
+        Promise.map(characteristics, function (characteristic) {
+            //logger.debug("found characteristic in secure DFU service with UUID: ", characteristic.uuid);
             if (characteristic.uuid === constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC_UUID) {
                 pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC] = characteristic;
-                dfuCharCount += 1;
                 logger.info("found DFU control point characteristic");
             } else if (characteristic.uuid == constants.SECURE_DFU_PACKET_CHARACTERISTIC_UUID) {
                 pData[constants.SECURE_DFU_PACKET_CHARACTERISTIC] = characteristic;
-                dfuCharCount += 1;
                 logger.info("found DFU packet characteristic");
             }
-            if (dfuCharCount === 2) {
-                Promise.resolve(pData);
-            }
-        })
-    })
+            Promise.resolve();
+        }).then(function(){
+            Promise.resolve(pData);
+        });
+    });
 }
 
 function enableNotificationOnControlPointCharacteristic(pData) {
