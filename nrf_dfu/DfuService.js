@@ -43,12 +43,14 @@ function startDfuProcess(peripheral, firmwareZipName) {
     pData[constants.PERIPHERAL] = peripheral;
     connectToPeripheral(pData)
         .then(findDfuService)
+        .catch(dfuServiceNotFound)
         .then(findControlPointAndPacketCharacteristic)
         .then(enableNotificationOnControlPointCharacteristic)
         .then(prepareDfuFiles)
         .then(selectCommand)
         .catch(function (error) {
-            throw(error);
+            logger.error("firmware update halted");
+            throw error;
         })
 }
 
@@ -115,6 +117,11 @@ function findControlPointAndPacketCharacteristic(pData) {
             }
         })
     })
+}
+
+function dfuServiceNotFound(error){
+    logger.error("Dfu service not found");
+    throw error;
 }
 
 function enableNotificationOnControlPointCharacteristic(pData) {
