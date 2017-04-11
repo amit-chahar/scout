@@ -79,22 +79,24 @@ function connectToPeripheral(pData) {
 function findDfuService(pData) {
     var peripheral = pData[constants.PERIPHERAL];
     logger.info("finding secure DFU service");
-    peripheral.discoverServices([], function (error, services) {
-        if (error) {
-            Promise.reject("discovering services");
-        }
-
-        Promise.map(services, function (service) {
-            logger.debug("found service with UUID: ", service.uuid);
-            if (service.uuid === constants.SECURE_DFU_SERVICE_SHORT_UUID) {
-                logger.info("secure DFU service found");
-                pData[constants.SECURE_DFU_SERVICE] = service;
+    return new Promise(function(resolve, reject){
+        peripheral.discoverServices([], function (error, services) {
+            if (error) {
+                reject("discovering services");
             }
-            Promise.resolve();
-        }).then(function () {
-            Promise.resolve(pData);
+
+            return Promise.map(services, function (service) {
+                logger.debug("found service with UUID: ", service.uuid);
+                if (service.uuid === constants.SECURE_DFU_SERVICE_SHORT_UUID) {
+                    logger.info("secure DFU service found");
+                    pData[constants.SECURE_DFU_SERVICE] = service;
+                }
+                return;
+            }).then(function () {
+                resolve(pData);
+            })
         })
-    })
+    });
 }
 
 function findControlPointAndPacketCharacteristic(pData) {
@@ -102,25 +104,27 @@ function findControlPointAndPacketCharacteristic(pData) {
         Promise.reject("DFU service not available");
     }
     var service = pData[constants.SECURE_DFU_SERVICE];
-    service.discoverCharacteristics([], function (error, characteristics) {
-        if (error) {
-            Promise.reject("discovering DFU characteristics");
-        }
-
-        Promise.map(characteristics, function (characteristic) {
-            //logger.debug("found characteristic in secure DFU service with UUID: ", characteristic.uuid);
-            if (characteristic.uuid === constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC_UUID) {
-                pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC] = characteristic;
-                logger.info("found DFU control point characteristic");
-            } else if (characteristic.uuid == constants.SECURE_DFU_PACKET_CHARACTERISTIC_UUID) {
-                pData[constants.SECURE_DFU_PACKET_CHARACTERISTIC] = characteristic;
-                logger.info("found DFU packet characteristic");
+    return new Promise(function(resolve, reject){
+        service.discoverCharacteristics([], function (error, characteristics) {
+            if (error) {
+                reject("discovering DFU characteristics");
             }
-            Promise.resolve();
-        }).then(function(){
-            Promise.resolve(pData);
+
+            return Promise.map(characteristics, function (characteristic) {
+                //logger.debug("found characteristic in secure DFU service with UUID: ", characteristic.uuid);
+                if (characteristic.uuid === constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC_UUID) {
+                    pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC] = characteristic;
+                    logger.info("found DFU control point characteristic");
+                } else if (characteristic.uuid == constants.SECURE_DFU_PACKET_CHARACTERISTIC_UUID) {
+                    pData[constants.SECURE_DFU_PACKET_CHARACTERISTIC] = characteristic;
+                    logger.info("found DFU packet characteristic");
+                }
+                return;
+            }).then(function(){
+                resolve(pData);
+            });
         });
-    });
+    })
 }
 
 function enableNotificationOnControlPointCharacteristic(pData) {
