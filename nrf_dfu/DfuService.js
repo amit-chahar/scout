@@ -92,7 +92,7 @@ function findDfuService(pData) {
 }
 
 function findControlPointAndPacketCharacteristic(pData) {
-    if (pData === undefined) {
+    if (pData === undefined || pData[constants.SECURE_DFU_SERVICE] === undefined) {
         Promise.reject("DFU service not available");
     }
     var service = pData[constants.SECURE_DFU_SERVICE];
