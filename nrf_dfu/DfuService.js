@@ -43,8 +43,8 @@ function startDfuProcess(peripheral, firmwareZipName) {
     pData[constants.PERIPHERAL] = peripheral;
     connectToPeripheral(pData)
         .then(findDfuService)
-        .catch(dfuServiceNotFound)
         .then(findControlPointAndPacketCharacteristic)
+        .catch(dfuServiceNotFound)
         .then(enableNotificationOnControlPointCharacteristic)
         .then(prepareDfuFiles)
         .then(selectCommand)
