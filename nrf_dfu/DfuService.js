@@ -1,7 +1,7 @@
 /**
  * Created by Amit-Chahar on 10-04-2017.
  */
-var Globals = require("../Globals");
+var globals = require("../Globals");
 var noble = globals.noble;
 var config = require("../Config");
 var logger = require("../Logger");
@@ -50,7 +50,7 @@ function startDfuProcess(peripheral, firmwareZipName) {
 }
 
 function connectToPeripheral(pData) {
-    var peripheral = pdata[constants.PERIPHERAL];
+    var peripheral = pData[constants.PERIPHERAL];
     return new Promise(function (resolve, reject) {
         peripheral.on("disconnect", function (error) {
             if (error) {

@@ -3,6 +3,6 @@
  */
 var winston = require('winston');
 winston.level = 'debug';
-winston.handleExceptions();
+//winston.handleExceptions();
 
 module.exports = winston;

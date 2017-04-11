@@ -4,7 +4,7 @@
 var logger = require('../Logger');
 var helpers = require('./Helpers');
 var constants = require('./DfuConstants');
-var fs = require('./fs');
+var fs = require('fs');
 
 function controlPointNotificationHandler(pData, response, isNotification) {
     var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
