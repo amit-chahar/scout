@@ -11,6 +11,7 @@ var notificationHandler = require('./BleNotificationHandler');
 var helpers = require('./Helpers');
 var path = require('path');
 var AdmZip = require('adm-zip');
+var Promise = require('bluebird');
 
 const FIRMWARES_BASEPATH = path.join(__dirname, "nrf_dfu", "firmwares");
 const FIRMWARES_ZIPPED_BASEPATH = path.join(FIRMWARES_BASEPATH, "zipped");
