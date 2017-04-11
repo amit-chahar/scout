@@ -19,7 +19,7 @@ const FIRMWARES_EXTRACTED_BASEPATH = path.join(FIRMWARES_BASEPATH, "extracted");
 logger.debug("zipped firmwares basepath: ", FIRMWARES_ZIPPED_BASEPATH);
 logger.debug("extracted firmware basepath: ", FIRMWARES_EXTRACTED_BASEPATH);
 
-function intializeAndStart(firmwareZipName){
+function intializeAndStart(firmwareZipName) {
     noble.on('stateChange', function (state) {
         if (state === 'poweredOn') {
             noble.startScanning();
@@ -44,7 +44,6 @@ function startDfuProcess(peripheral, firmwareZipName) {
     connectToPeripheral(pData)
         .then(findDfuService)
         .then(findControlPointAndPacketCharacteristic)
-        .catch(dfuServiceNotFound)
         .then(enableNotificationOnControlPointCharacteristic)
         .then(prepareDfuFiles)
         .then(selectCommand)
@@ -77,16 +76,20 @@ function connectToPeripheral(pData) {
 
 function findDfuService(pData) {
     var peripheral = pData[constants.PERIPHERAL];
+    logger.info("finding secure DFU service");
     peripheral.discoverServices([], function (error, services) {
         if (error) {
             Promise.reject("discovering services");
         }
-        services.forEach(function (service) {
+
+        Promise.map(services, function (service) {
             if (service.uuid === constants.SECURE_DFU_SERVICE_UUID) {
                 logger.info("secure DFU service found");
                 pData[constants.SECURE_DFU_SERVICE] = service;
                 Promise.resolve(pData);
             }
+        }).then(function () {
+            Promise.resolve(pData);
         })
     })
 }
@@ -117,11 +120,6 @@ function findControlPointAndPacketCharacteristic(pData) {
             }
         })
     })
-}
-
-function dfuServiceNotFound(error){
-    logger.error("Dfu service not found");
-    throw error;
 }
 
 function enableNotificationOnControlPointCharacteristic(pData) {
