@@ -130,7 +130,7 @@ function findControlPointAndPacketCharacteristic(pData) {
 function enableNotificationOnControlPointCharacteristic(pData) {
     var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
     var TAG = "control point characteristic";
-    notificationHelper.enableNotifications(controlPointCharacteristic, true, TAG)
+    return notificationHelper.enableNotifications(controlPointCharacteristic, true, TAG)
         .then(function () {
             controlPointCharacteristic.on('data', function (data, isNotification) {
                 if (isNotification) {
@@ -144,6 +144,7 @@ function enableNotificationOnControlPointCharacteristic(pData) {
 function prepareDfuFiles(pData) {
     var firmwareZipName = pData[constants.FIRMWARE_ZIP_NAME];
     var zipFilePath = path.join(FIRMWARES_ZIPPED_BASEPATH, firmwareZipName);
+    logger.debug("firmware zip file path: ", zipFilePath);
     const zip = new AdmZip(zipFilePath);
     const zipEntries = zip.getEntries();
 
