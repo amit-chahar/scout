@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/amit-chahar/scout#readme",
   "dependencies": {
+    "adm-zip": "^0.4.7",
     "bluebird": "^3.5.0",
     "noble": "^1.8.0",
     "winston": "^2.3.1"

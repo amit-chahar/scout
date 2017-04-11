@@ -1,7 +1,7 @@
 /**
  * Created by Amit-Chahar on 10-04-2017.
  */
-var logger = require('../Log');
+var logger = require('../Logger');
 var Promise = require('bluebird');
 var helpers = require('./Helpers');
 

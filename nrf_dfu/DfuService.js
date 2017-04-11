@@ -4,43 +4,53 @@
 var Globals = require("../Globals");
 var noble = globals.noble;
 var config = require("../Config");
-var logger = require("../Log");
-var enableNotificatioms
+var logger = require("../Logger");
+var notificationHelper = require('./BleNotificationHelper');
+var constants = require('./DfuConstants');
+var notificationHandler = require('./BleNotificationHandler');
+var helpers = require('./Helpers');
+var path = require('path');
+var AdmZip = require('adm-zip');
 
-// https://infocenter.nordicsemi.com/topic/com.nordic.infocenter.sdk5.v12.0.0/lib_dfu_transport_ble.html?cp=4_0_0_3_4_3_2
-const BASE_SERVICE_UUID = '0000xxxx-0000-1000-8000-00805f9b34fb';
-const SECURE_DFU_SERVICE_UUID = BASE_SERVICE_UUID.replace('xxxx', 'fe59');
+const FIRMWARES_BASEPATH = path.join(__dirname, "nrf_dfu", "firmwares");
+const FIRMWARES_ZIPPED_BASEPATH = path.join(FIRMWARES_BASEPATH, "zipped");
+const FIRMWARES_EXTRACTED_BASEPATH = path.join(FIRMWARES_BASEPATH, "extracted");
 
-const BASE_CHARACTERISTIC_UUID = '8ec9xxxx-f315-4f60-9fb8-838830daea50';
-const DFU_CONTROL_POINT_CHARACTERISTIC_UUID = BASE_CHARACTERISTIC_UUID.replace('xxxx', '0001');
-const DFU_PACKET_CHARACTERISTIC_UUID = BASE_CHARACTERISTIC_UUID.replace('xxxx', '0002');
-const BLE_PACKET_SIZE = 20;
+logger.debug("zipped firmwares basepath: ", FIRMWARES_ZIPPED_BASEPATH);
+logger.debug("extracted firmware basepath: ", FIRMWARES_EXTRACTED_BASEPATH);
 
-var mPeripheral, mService, mControlPointCharacteristic, mPacketCharacteristic;
+function intializeAndStart(firmwareZipName){
+    noble.on('stateChange', function (state) {
+        if (state === 'poweredOn') {
+            noble.startScanning();
+        } else {
+            noble.stopScanning();
+        }
+    });
 
-noble.on('stateChange', function (state) {
-    if (state === 'poweredOn') {
-        noble.startScanning();
-    } else {
-        noble.stopScanning();
-    }
-});
-
-
-noble.on('discover', function (peripheral) {
-    if (peripheral.advertisement.localName === config.BOOTLOADER_MODE_DEVICE_NAME) {
-        logger.info("Peripheral found advertising in bootloader mode: ", peripheral.address);
-        noble.stopScanning();
-        connectToPeripheral(peripheral);
-    }
-});
-
-function startDfuProcess(peripheral) {
-    connectToPeripheral({"peripheral": peripheral})
-        .
+    noble.on('discover', function (peripheral) {
+        if (peripheral.advertisement.localName === config.BOOTLOADER_MODE_DEVICE_NAME) {
+            logger.info("Peripheral found advertising in bootloader mode: ", peripheral.address);
+            noble.stopScanning();
+            startDfuProcess(peripheral, firmwareZipName);
+        }
+    });
 }
 
-function connectToPeripheral(data) {
+function startDfuProcess(peripheral, firmwareZipName) {
+    var pData = {};
+    pData[constants.FIRMWARE_ZIP_NAME] = firmwareZipName;
+    pData[constants.PERIPHERAL] = peripheral;
+    connectToPeripheral(pData)
+        .then(findDfuService)
+        .then(findControlPointAndPacketCharacteristic)
+        .then(enableNotificationOnControlPointCharacteristic)
+        .then(prepareDfuFiles)
+        .then(selectCommand)
+}
+
+function connectToPeripheral(pData) {
+    var peripheral = pdata[constants.PERIPHERAL];
     return new Promise(function (resolve, reject) {
         peripheral.on("disconnect", function (error) {
             if (error) {
@@ -54,54 +64,105 @@ function connectToPeripheral(data) {
             if (error) {
                 reject("Can't connect peripheral: ", peripheral.address);
             }
-            mPeripheral = peripheral;
-            findDfuService(peripheral);
+            logger.info("Connected to peripheral: " + peripheral.address);
+            resolve(pData);
         })
     })
 }
 
-function findDfuService(peripheral) {
+function findDfuService(pData) {
+    var peripheral = pData[constants.PERIPHERAL];
     peripheral.discoverServices([], function (error, services) {
         if (error) {
-            logger.error("discovering services");
-            return;
+            Promise.reject("discovering services");
         }
         services.forEach(function (service) {
-            if (service.uuid === SECURE_DFU_SERVICE_UUID) {
+            if (service.uuid === constants.SECURE_DFU_SERVICE_UUID) {
                 logger.info("secure DFU service found");
-                mService = service;
-                findControlPointAndPacketCharacteristic(service);
+                pData[constants.SECURE_DFU_SERVICE] = service;
+                Promise.resolve(pData);
             }
         })
     })
 }
 
-function findControlPointAndPacketCharacteristic(service) {
+function findControlPointAndPacketCharacteristic(pData) {
+    if (pData === undefined) {
+        Promise.reject("DFU service not available");
+    }
+    var service = pData[constants.SECURE_DFU_SERVICE];
     service.discoverCharacteristics([], function (error, characteristics) {
         if (error) {
-            logger.error("discovering DFU characteristics");
-            return;
+            Promise.reject("discovering DFU characteristics");
         }
 
         var dfuCharCount = 0;
-
         characteristics.forEach(function (characteristic) {
-            if (characteristic.uuid === DFU_CONTROL_POINT_CHARACTERISTIC_UUID) {
-                mControlPointCharacteristic = characteristic;
+            if (characteristic.uuid === constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC_UUID) {
+                pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC] = characteristic;
                 dfuCharCount += 1;
                 logger.info("found DFU control point characteristic");
-            } else if (characteristic.uuid == DFU_PACKET_CHARACTERISTIC_UUID) {
-                mPacketCharacteristic = characteristic;
+            } else if (characteristic.uuid == constants.SECURE_DFU_PACKET_CHARACTERISTIC_UUID) {
+                pData[constants.SECURE_DFU_PACKET_CHARACTERISTIC] = characteristic;
                 dfuCharCount += 1;
                 logger.info("found DFU packet characteristic");
             }
             if (dfuCharCount === 2) {
-                startDfu();
+                Promise.resolve(pData);
             }
         })
     })
 }
 
-function startDfu() {
-
+function enableNotificationOnControlPointCharacteristic(pData) {
+    var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
+    var TAG = "control point characteristic";
+    notificationHelper.enableNotifications(controlPointCharacteristic, true, TAG)
+        .then(function () {
+            controlPointCharacteristic.on('data', function (data, isNotification) {
+                if (isNotification) {
+                    notificationHandler.controlPointNotificationHandler(pData, response, isNotification);
+                }
+            });
+            Promise.resolve(pData);
+        })
 }
+
+function prepareDfuFiles(pData) {
+    var firmwareZipName = pData[constants.FIRMWARE_ZIP_NAME];
+    var zipFilePath = path.join(FIRMWARES_ZIPPED_BASEPATH, firmwareZipName);
+    const zip = new AdmZip(zipFilePath);
+    const zipEntries = zip.getEntries();
+
+    //TODO: set extract path correctly
+    zip.extractAllTo(FIRMWARES_EXTRACTED_BASEPATH, true);
+
+    zipEntries.forEach(function (zipEntry) {
+        if (path.extname(zipEntry.entryName()) === ".dat") {
+            pData[constants.FIRMWARE_DAT_FILE] = zipEntry.entryName();
+            logger.debug("firmware dat file path: ", zipEntry.entryName());
+        } else if (path.extname(zipEntry.entryName()) === ".bin") {
+            pData[constants.FIRMWARE_BIN_FILE] = zipEntry.entryName();
+            logger.debug("firmware bin file path: ", zipEntry.entryName());
+        } else if (path.extname(zipEntry.entryName()) === ".json") {
+            pData[constants.FIRMWARE_MANIFEST_FILE] = zipEntry.entryName();
+            logger.debug("firmware manifest file path: ", zipEntry.entryName());
+        }
+    });
+
+    Promise.resolve(pData);
+}
+
+function selectCommand(pData) {
+    var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
+    var command = new Buffer([constants.CONTROL_OPCODES.SELECT, constants.CONTROL_PARAMETERS.COMMAND_OBJECT]);
+    controlPointCharacteristic.write(command, false, function (error) {
+        if (error) {
+            Promise.reject("writing select command to control characteristic");
+        }
+        log.info("select command sent: " + command.toString(16));
+        Promise.resolve(pData);
+    });
+}
+
+module.exports.initializeAndStart = intializeAndStart;
