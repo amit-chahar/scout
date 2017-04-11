@@ -137,7 +137,7 @@ function enableNotificationOnControlPointCharacteristic(pData) {
                     notificationHandler.controlPointNotificationHandler(pData, response, isNotification);
                 }
             });
-            Promise.resolve(pData);
+            return pData;
         })
 }
 

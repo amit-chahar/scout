@@ -7,65 +7,74 @@ var helpers = require('./Helpers');
 
 function enableNotifications(characteristic, enable, TAG) {
 
-    if(enable) {
+    if (enable) {
         return discoverCCCD(characteristic, TAG)
             .then(writeCCCD)
             .then(enableNotify)
+            .then(function () {
+                logger.info("notifications enabled successfully on " + TAG);
+            })
     }
 }
 
 function discoverCCCD(characteristic, TAG) {
+    var cData = {};
     return new Promise(function (resolve, reject) {
         characteristic.discoverDescriptors(function (error, descriptors) {
             if (error) {
                 reject("discovering descriptors: " + TAG);
             }
-            descriptors.forEach(function (descriptor) {
+            Promise.map(descriptors, function (descriptor) {
                 if (descriptor.uuid === '2902') {
-                    var data = {
-                        "characteristic": characteristic,
-                        "descriptor": descriptor,
-                        "TAG": TAG
-                    }
-                    resolve(data);
+                    cData["characteristic"] = characteristic;
+                    cData["descriptor"] = descriptor;
+                    cData["TAG"] = TAG;
                 }
+            }).then(function () {
+                resolve(cData);
             })
         });
     })
 }
 
-function writeCCCD(data) {
-    var descriptor = data.descriptor;
-    var TAG = data.TAG;
-
-    if (data === undefined) {
+function writeCCCD(cData) {
+    if (cData === undefined) {
         Promise.reject("CCCD not found: " + TAG);
     }
 
-    var data = new Buffer(2);
-    data.writeUInt8(0x01, 0);
-    data.writeUInt8(0x00, 1);
-    descriptor.writeValue(data, function (error) {
-        if (error) {
-            Promise.reject("writing CCCD: " + TAG);
-        }
-        logger.info("CCCD written successfully");
-        return helpers.delay(2000).then(function () {
-            Promise.resolve(data);
-        });
-    })
+    var descriptor = cData["descriptor"];
+    var TAG = cData["TAG"];
+
+    return new Promise(function (resolve, reject) {
+        var buf = new Buffer(2);
+        buf.writeUInt8(0x01, 0);
+        buf.writeUInt8(0x00, 1);
+        descriptor.writeValue(buf, function (error) {
+            if (error) {
+                reject("writing CCCD: " + TAG);
+            }
+            logger.info("CCCD written successfully");
+            resolve();
+        }).then(function () {
+            return helper.delay(2000);
+        }).then(function () {
+            return cData;
+        })
+    });
 }
 
 function enableNotify(data) {
-    var characteristic = data.characteristic;
-    var TAG = data.TAG;
+    var characteristic = data["characteristic"];
+    var TAG = data["TAG"];
 
-    characteristic.notify(true, function (error) {
-        if (error) {
-            Promise.reject("enabling notifications locally");
-        }
-        logger.info("notifications enabled: " + TAG);
-        return helpers.delay(1000);
+    return new Promise(function (resolve, reject) {
+        characteristic.notify(true, function (error) {
+            if (error) {
+                reject("enabling notifications locally");
+            }
+        }).then(function () {
+            return helpers.delay(1000);
+        })
     });
 }
 
