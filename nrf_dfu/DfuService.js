@@ -47,6 +47,9 @@ function startDfuProcess(peripheral, firmwareZipName) {
         .then(enableNotificationOnControlPointCharacteristic)
         .then(prepareDfuFiles)
         .then(selectCommand)
+        .catch(function (error) {
+            throw(error);
+        })
 }
 
 function connectToPeripheral(pData) {
