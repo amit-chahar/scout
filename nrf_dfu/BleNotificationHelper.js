@@ -4,6 +4,7 @@
 var logger = require('../Logger');
 var Promise = require('bluebird');
 var helpers = require('./Helpers');
+var bleUtils = require('./BleUtils');
 
 function enableNotifications(characteristic, enable, TAG) {
 
@@ -19,13 +20,8 @@ function enableNotifications(characteristic, enable, TAG) {
 
 function discoverCCCD(characteristic, TAG) {
     var cData = {};
-    return new Promise(function (resolve, reject) {
-        characteristic.discoverDescriptors(function (error, descriptors) {
-            if (error) {
-                reject("discovering descriptors: " + TAG);
-            }
-            resolve(descriptors);
-        }).then(function (descriptors) {
+    return bleUtils.discoverDescriptors(characteristic)
+        .then(function (descriptors) {
             return Promise.map(descriptors, function (descriptor) {
                 if (descriptor.uuid === '2902') {
                     cData["characteristic"] = characteristic;
@@ -34,9 +30,8 @@ function discoverCCCD(characteristic, TAG) {
                 }
             });
         }).then(function () {
-            resolve(cData);
+            return cData;
         });
-    })
 }
 
 function writeCCCD(cData) {
