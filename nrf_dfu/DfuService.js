@@ -13,7 +13,6 @@ var path = require('path');
 var AdmZip = require('adm-zip');
 var Promise = require('bluebird');
 var util = require('util');
-var rimraf = require('rimraf');
 
 const FIRMWARES_BASEPATH = path.join(__dirname, "firmwares");
 const FIRMWARES_ZIPPED_BASEPATH = path.join(FIRMWARES_BASEPATH, "zipped");

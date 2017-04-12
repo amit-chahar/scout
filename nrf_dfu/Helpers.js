@@ -6,6 +6,7 @@ var logger = require('../Logger');
 var constants = require('./DfuConstants');
 var fs = require('fs');
 var AdmZip = require('adm-zip');
+var rimraf = require('rimraf');
 
 function delay(t) {
     return new Promise(function (resolve) {
