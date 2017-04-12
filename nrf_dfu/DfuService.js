@@ -166,14 +166,14 @@ function prepareDfuFiles(pData) {
     return Promise.map(zipEntries, (function (zipEntry) {
             var entryName = zipEntry.entryName;
             if (path.extname(entryName) === ".dat") {
-                pData[constants.FIRMWARE_DAT_FILE] = entryName;
-                logger.debug("firmware dat file path: ", entryName);
+                pData[constants.FIRMWARE_DAT_FILE] = path.join(FIRMWARES_TMP_BASEPATH, entryName);
+                logger.debug("firmware dat file: ", entryName);
             } else if (path.extname(zipEntry.entryName) === ".bin") {
-                pData[constants.FIRMWARE_BIN_FILE] = entryName;
-                logger.debug("firmware bin file path: ", entryName);
+                pData[constants.FIRMWARE_BIN_FILE] = path.join(FIRMWARES_TMP_BASEPATH, entryName);
+                logger.debug("firmware bin file: ", entryName);
             } else if (path.extname(zipEntry.entryName) === ".json") {
-                pData[constants.FIRMWARE_MANIFEST_FILE] = entryName;
-                logger.debug("firmware manifest file path: ", entryName);
+                pData[constants.FIRMWARE_MANIFEST_FILE] = path.join(FIRMWARES_TMP_BASEPATH, entryName);
+                logger.debug("firmware manifest file: ", entryName);
             }
         })
     ).then(function () {
