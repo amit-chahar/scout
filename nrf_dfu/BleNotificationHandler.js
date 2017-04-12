@@ -63,7 +63,8 @@ function controlPointNotificationHandler(pData, response, isNotification) {
             case constants.CONTROL_OPCODES.EXECUTE:
                 logger.debug('EXECUTE');
                 setupForChangingListener(pData);
-                controlPointCharacteristic.removeListener('data', controlPointNotificationHandler);
+                controlPointCharacteristic.on('data', firmwareDataTransferHandler);
+                // controlPointCharacteristic.removeListener('data', controlPointNotificationHandler);
                 break;
             case constants.CONTROL_OPCODES.SELECT:
                 logger.debug('SELECT');
