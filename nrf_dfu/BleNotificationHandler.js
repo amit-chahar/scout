@@ -110,7 +110,7 @@ function firmwareDataTransferHandler(pData, response, isNotification) {
     const controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
     const packetCharacteristic = pData[constants.SECURE_DFU_PACKET_CHARACTERISTIC];
 
-    logger.debug(TAG + ": parsed respnse: " + parsedResponse);
+    logger.debug(TAG + ": parsed respnse: ", parsedResponse);
 
     switch (requestOpCode) {
         case constants.CONTROL_OPCODES.CREATE:
