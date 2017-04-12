@@ -75,10 +75,11 @@ function controlPointNotificationHandler(pData, response, isNotification) {
                     });
                 break;
             case constants.CONTROL_OPCODES.SELECT:
-                console.log('SELECT');
+                logger.debug('SELECT');
                 // TODO: Some logic to determine if a new object should be created or not.
                 //check the size of the dat file
                 const initFilePath = pData[constants.FIRMWARE_DAT_FILE];
+                logger.debug("init file path: ", initFilePath);
                 const stats = fs.statSync(initFilePath);
                 const fileSize = stats.size;
                 logger.debug("init packet size in bytes: ", fileSize);
