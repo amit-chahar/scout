@@ -111,7 +111,7 @@ function sendData(characteristic, buffer) {
 }
 
 function writeDataToCharacteristic(characteristic, data, withoutResponse) {
-    new Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
         characteristic.write(data, withoutResponse, function (error) {
             if (error) {
                 logger.error("writing to characteristic");
