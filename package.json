@@ -19,6 +19,7 @@
   "dependencies": {
     "adm-zip": "^0.4.7",
     "bluebird": "^3.5.0",
+    "crc": "^3.4.4",
     "noble": "^1.8.0",
     "rimraf": "^2.6.1",
     "winston": "^2.3.1"

@@ -187,7 +187,7 @@ function selectCommand(pData) {
     logger.debug("writing select command to control characteristic");
     return helpers.writeDataToCharacteristic(controlPointCharacteristic, command, false)
         .then(function () {
-            logger.info("select command sent: " + command.toString('hex'));
+            logger.info("select command sent: ", command);
             return pData;
         })
 }

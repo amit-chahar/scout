@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1368c387-3bcf-4c5a-a756-c38ad3c5b926" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js" afterPath="$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/DfuService.js" afterPath="$PROJECT_DIR$/nrf_dfu/DfuService.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -71,8 +72,8 @@
       <file leaf-file-name="DfuService.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuService.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="175" column="52" lean-forward="false" selection-start-line="175" selection-start-column="52" selection-end-line="175" selection-end-column="52" />
+            <state relative-caret-position="191">
+              <caret line="188" column="27" lean-forward="true" selection-start-line="188" selection-start-column="27" selection-end-line="188" selection-end-column="27" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
               </folding>
@@ -95,8 +96,8 @@
       <file leaf-file-name="BleNotificationHandler.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="83" column="44" lean-forward="true" selection-start-line="83" selection-start-column="44" selection-end-line="83" selection-end-column="44" />
+            <state relative-caret-position="159">
+              <caret line="99" column="101" lean-forward="false" selection-start-line="99" selection-start-column="93" selection-end-line="99" selection-end-column="101" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
               </folding>
@@ -144,8 +145,8 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>securedfuservice</find>
-      <find>tostring</find>
       <find>toString</find>
+      <find>tostring</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -463,7 +464,7 @@
       <updated>1491565767475</updated>
       <workItem from="1491565769528" duration="6624000" />
       <workItem from="1491743150986" duration="47252000" />
-      <workItem from="1491913539896" duration="16418000" />
+      <workItem from="1491913539896" duration="16679000" />
     </task>
     <task id="LOCAL-00001" summary="disconnect method added">
       <created>1491727391668</created>
@@ -780,11 +781,18 @@
       <option name="project" value="LOCAL" />
       <updated>1491985813048</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="dfu service added">
+      <created>1491985979853</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1491985979853</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="70294000" />
+    <option name="totallyTimeSpent" value="70555000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1927" height="1038" extended-state="0" />
@@ -1057,8 +1065,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="83" column="44" lean-forward="true" selection-start-line="83" selection-start-column="44" selection-end-line="83" selection-end-column="44" />
+        <state relative-caret-position="159">
+          <caret line="99" column="101" lean-forward="false" selection-start-line="99" selection-start-column="93" selection-end-line="99" selection-end-column="101" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
           </folding>
@@ -1067,8 +1075,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuService.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="175" column="52" lean-forward="false" selection-start-line="175" selection-start-column="52" selection-end-line="175" selection-end-column="52" />
+        <state relative-caret-position="191">
+          <caret line="188" column="27" lean-forward="true" selection-start-line="188" selection-start-column="27" selection-end-line="188" selection-end-column="27" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
           </folding>
