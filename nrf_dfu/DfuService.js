@@ -133,7 +133,7 @@ function enableNotificationOnControlPointCharacteristic(pData) {
     var TAG = "control point characteristic";
     return notificationHelper.enableNotifications(controlPointCharacteristic, true, TAG)
         .then(function () {
-            controlPointCharacteristic.on('data', function (data, isNotification) {
+            controlPointCharacteristic.on('data', function (response, isNotification) {
                 if (isNotification) {
                     notificationHandler.controlPointNotificationHandler(pData, response, isNotification);
                 }

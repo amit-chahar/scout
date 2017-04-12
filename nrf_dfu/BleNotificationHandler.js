@@ -90,7 +90,7 @@ function controlPointNotificationHandler(pData, response, isNotification) {
                     if (error) {
                         throw new Error("sending create object command for init packet");
                     }
-                    logger.debug("create object command sent: ", command.toString(16));
+                    logger.debug("create object command sent: ", command.toString('hex'));
                 })
                 ;
                 break;
@@ -134,7 +134,7 @@ function firmwareDataTransferHandler(pData, response, isNotification) {
                 .then(function () {
                     var buf = Buffer.alloc(1);
                     buf.writeUInt8(constants.CONTROL_OPCODES.CALCULATE_CHECKSUM, 0);
-                    logger.debug("sending calculate checksum command: ", buf.toString(16));
+                    logger.debug("sending calculate checksum command: ", buf.toString('hex'));
                     return helpers.writeDataToCharacteristic(controlPointCharacteristic, buf, false);
                 })
                 .catch(function (error) {
@@ -146,7 +146,7 @@ function firmwareDataTransferHandler(pData, response, isNotification) {
             // TODO: Check if offset and crc is correct before executing.
             var buf = Buffer.alloc(1);
             buf.writeUInt8(constants.CONTROL_OPCODES.EXECUTE);
-            logger.debug("sending execute command: ", buf.toString(16));
+            logger.debug("sending execute command: ", buf.toString('hex'));
             helpers.writeDataToCharacteristic(controlPointCharacteristic, buf, false)
                 .catch(function (error) {
                     throw error;
@@ -164,7 +164,7 @@ function firmwareDataTransferHandler(pData, response, isNotification) {
             buf.writeUInt8(constants.CONTROL_OPCODES.CREATE, 0);
             buf.writeUInt8(constants.CONTROL_PARAMETERS.COMMAND_OBJECT, 1);
             buf.writeUInt32LE(stats.size, 2);
-            logger.debug("sending command to select firmware file: ", buf.toString(16));
+            logger.debug("sending command to select firmware file: ", buf.toString('hex'));
             helpers.writeDataToCharacteristic(controlPointCharacteristic, buf, false)
                 .catch(function (error) {
                     throw error;
