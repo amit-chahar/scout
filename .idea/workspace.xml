@@ -70,11 +70,10 @@
       <file leaf-file-name="BleNotificationHandler.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="137" column="18" lean-forward="false" selection-start-line="137" selection-start-column="18" selection-end-line="137" selection-end-column="18" />
+            <state relative-caret-position="177">
+              <caret line="203" column="59" lean-forward="false" selection-start-line="203" selection-start-column="59" selection-end-line="203" selection-end-column="59" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
-                <element signature="n#!!block;n#sendCreateCommand#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -120,6 +119,7 @@
       <find>securedfuservice</find>
       <find>tostring</find>
       <find>toString</find>
+      <find>firmware transfter</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -438,14 +438,7 @@
       <updated>1491565767475</updated>
       <workItem from="1491565769528" duration="6624000" />
       <workItem from="1491743150986" duration="47252000" />
-      <workItem from="1491913539896" duration="38177000" />
-    </task>
-    <task id="LOCAL-00011" summary="disconnect method added">
-      <created>1491753870350</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1491753870350</updated>
+      <workItem from="1491913539896" duration="38566000" />
     </task>
     <task id="LOCAL-00012" summary="disconnect method added">
       <created>1491760537323</created>
@@ -783,11 +776,18 @@
       <option name="project" value="LOCAL" />
       <updated>1492030120871</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="dfu service added">
+      <created>1492030304990</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1492030304990</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="92053000" />
+    <option name="totallyTimeSpent" value="92442000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1927" height="1038" extended-state="0" />
@@ -902,7 +902,6 @@
           <caret line="177" column="81" lean-forward="true" selection-start-line="177" selection-start-column="81" selection-end-line="177" selection-end-column="81" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
-            <element signature="n#!!block;n#sendCreateCommand#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1081,11 +1080,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="137" column="18" lean-forward="false" selection-start-line="137" selection-start-column="18" selection-end-line="137" selection-end-column="18" />
+        <state relative-caret-position="177">
+          <caret line="203" column="59" lean-forward="false" selection-start-line="203" selection-start-column="59" selection-end-line="203" selection-end-column="59" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
-            <element signature="n#!!block;n#sendCreateCommand#0" expanded="false" />
           </folding>
         </state>
       </provider>

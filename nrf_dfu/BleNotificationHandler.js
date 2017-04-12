@@ -142,7 +142,6 @@ function firmwareDataTransferHandler(pData, response, isNotification) {
         case constants.CONTROL_OPCODES.EXECUTE:
             logger.verbose(TAG + 'EXECUTE response received');
             continueSending(pData);
-            logger.info("firmware transfer completed");
             break;
         case constants.CONTROL_OPCODES.SELECT:
             logger.verbose(TAG + 'SELECT response received');
@@ -201,8 +200,8 @@ function sendFirmwareObject(pData) {
             // pData[constants.FIRMWARE_BIN_FILE_EXPECTED_CRC] = expectedCrc;
             const createObjectMaxSize = perDfuCache.get(constants.FIRMWARE_BIN_FILE_CREATE_OBJECT_MAX_SIZE);
             const offset = perDfuCache.get(constants.FIRMWARE_BIN_FILE_OFFSET);
-            var dataToSend = result.slice(offset, createObjectMaxSize);
             const newOffset = offset + createObjectMaxSize;
+            var dataToSend = result.slice(offset, newOffset);
             perDfuCache.set(constants.FIRMWARE_BIN_FILE_OFFSET, newOffset);
             if (newOffset >= result.length) {
                 //bin file sent successfully
