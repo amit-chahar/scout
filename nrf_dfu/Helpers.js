@@ -15,9 +15,9 @@ function delay(t) {
 }
 
 function parseResponse(response) {
-    const responseCode = response.getUint8(0);
-    const requestOpCode = response.getUint8(1);
-    const resultCode = response.getUint8(2);
+    const responseCode = response.readUInt8(0);
+    const requestOpCode = response.readUInt8(1);
+    const resultCode = response.readUInt8(2);
     var responseSpecificData;
 
     logger.debug("Response received: ", response);
