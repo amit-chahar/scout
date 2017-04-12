@@ -79,7 +79,7 @@ function connectToPeripheral(pData) {
 function findDfuService(pData) {
     var peripheral = pData[constants.PERIPHERAL];
     logger.info("finding secure DFU service");
-    return new Promise(function(resolve, reject){
+    return new Promise(function (resolve, reject) {
         peripheral.discoverServices([], function (error, services) {
             if (error) {
                 reject("discovering services");
@@ -104,7 +104,7 @@ function findControlPointAndPacketCharacteristic(pData) {
         Promise.reject("DFU service not available");
     }
     var service = pData[constants.SECURE_DFU_SERVICE];
-    return new Promise(function(resolve, reject){
+    return new Promise(function (resolve, reject) {
         service.discoverCharacteristics([], function (error, characteristics) {
             if (error) {
                 reject("discovering DFU characteristics");
@@ -120,7 +120,7 @@ function findControlPointAndPacketCharacteristic(pData) {
                     logger.info("found DFU packet characteristic");
                 }
                 return;
-            }).then(function(){
+            }).then(function () {
                 resolve(pData);
             });
         });
@@ -151,20 +151,21 @@ function prepareDfuFiles(pData) {
     //TODO: set extract path correctly
     zip.extractAllTo(FIRMWARES_EXTRACTED_BASEPATH, true);
 
-    zipEntries.forEach(function (zipEntry) {
-        if (path.extname(zipEntry.entryName()) === ".dat") {
-            pData[constants.FIRMWARE_DAT_FILE] = zipEntry.entryName();
-            logger.debug("firmware dat file path: ", zipEntry.entryName());
-        } else if (path.extname(zipEntry.entryName()) === ".bin") {
-            pData[constants.FIRMWARE_BIN_FILE] = zipEntry.entryName();
-            logger.debug("firmware bin file path: ", zipEntry.entryName());
-        } else if (path.extname(zipEntry.entryName()) === ".json") {
-            pData[constants.FIRMWARE_MANIFEST_FILE] = zipEntry.entryName();
-            logger.debug("firmware manifest file path: ", zipEntry.entryName());
-        }
-    });
-
-    Promise.resolve(pData);
+    return Promise.all(zipEntries, (function (zipEntry) {
+            if (path.extname(zipEntry.entryName()) === ".dat") {
+                pData[constants.FIRMWARE_DAT_FILE] = zipEntry.entryName();
+                logger.debug("firmware dat file path: ", zipEntry.entryName());
+            } else if (path.extname(zipEntry.entryName()) === ".bin") {
+                pData[constants.FIRMWARE_BIN_FILE] = zipEntry.entryName();
+                logger.debug("firmware bin file path: ", zipEntry.entryName());
+            } else if (path.extname(zipEntry.entryName()) === ".json") {
+                pData[constants.FIRMWARE_MANIFEST_FILE] = zipEntry.entryName();
+                logger.debug("firmware manifest file path: ", zipEntry.entryName());
+            }
+        })
+    ).then(function () {
+        return pData;
+    })
 }
 
 function selectCommand(pData) {
