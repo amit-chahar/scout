@@ -135,7 +135,7 @@ function firmwareDataTransferHandler(pData, response, isNotification) {
             logger.debug(TAG + "SET PRN response received");
             break;
         case constants.CONTROL_OPCODES.CALCULATE_CHECKSUM:
-            console.verbose(TAG + 'CALCULATE CHECKSUM response received');
+            logger.verbose(TAG + 'CALCULATE CHECKSUM response received');
             // TODO: Check if offset and crc is correct before executing.
             checkFirmwareObjectCrc(pData, parsedResponse);
             break;
