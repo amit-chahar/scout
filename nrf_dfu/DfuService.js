@@ -13,6 +13,7 @@ var path = require('path');
 var AdmZip = require('adm-zip');
 var Promise = require('bluebird');
 var util = require('util');
+var nrfGlobals = require('./NrfGlobals');
 
 const FIRMWARES_BASEPATH = path.join(__dirname, "firmwares");
 const FIRMWARES_ZIPPED_BASEPATH = path.join(FIRMWARES_BASEPATH, "zipped");
@@ -43,6 +44,10 @@ function startDfuProcess(peripheral, firmwareZipName) {
     var pData = {};
     pData[constants.FIRMWARE_ZIP_NAME] = firmwareZipName;
     pData[constants.PERIPHERAL] = peripheral;
+
+    //clean per DFU cache
+    nrfGlobals.perDfuCache.flushAll();
+
     connectToPeripheral(pData)
         .then(findDfuService)
         .then(findControlPointAndPacketCharacteristic)
@@ -190,6 +195,17 @@ function selectCommand(pData) {
             logger.info("select command sent: ", command);
             return pData;
         })
+}
+
+function setPrn(pData){
+    var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
+    var buf = Buffer.alloc(3);
+    buf.writeUInt8(constants.CONTROL_OPCODES.SET_PRN, 0);
+    buf.writeUInt16BE(0x0000, 1); //PRN = 0
+    helpers.writeDataToCharacteristic(controlPointCharacteristic, buf, false)
+        .catch(function (error) {
+            throw error;
+        });
 }
 
 module.exports.initializeAndStart = intializeAndStart;
