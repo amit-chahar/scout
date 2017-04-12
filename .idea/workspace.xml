@@ -95,8 +95,8 @@
       <file leaf-file-name="BleNotificationHandler.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="64" column="48" lean-forward="true" selection-start-line="64" selection-start-column="48" selection-end-line="64" selection-end-column="48" />
+            <state relative-caret-position="346">
+              <caret line="65" column="27" lean-forward="false" selection-start-line="65" selection-start-column="27" selection-end-line="65" selection-end-column="27" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
               </folding>
@@ -465,14 +465,7 @@
       <updated>1491565767475</updated>
       <workItem from="1491565769528" duration="6624000" />
       <workItem from="1491743150986" duration="47252000" />
-      <workItem from="1491913539896" duration="20898000" />
-    </task>
-    <task id="LOCAL-00002" summary="disconnect method added">
-      <created>1491742012570</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1491742012570</updated>
+      <workItem from="1491913539896" duration="22587000" />
     </task>
     <task id="LOCAL-00003" summary="disconnect method added">
       <created>1491743952733</created>
@@ -810,11 +803,18 @@
       <option name="project" value="LOCAL" />
       <updated>1491990441908</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="dfu service added">
+      <created>1491993122062</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1491993122062</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="74774000" />
+    <option name="totallyTimeSpent" value="76463000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1927" height="1038" extended-state="0" />
@@ -1101,8 +1101,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="64" column="48" lean-forward="true" selection-start-line="64" selection-start-column="48" selection-end-line="64" selection-end-column="48" />
+        <state relative-caret-position="346">
+          <caret line="65" column="27" lean-forward="false" selection-start-line="65" selection-start-column="27" selection-end-line="65" selection-end-column="27" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
           </folding>
