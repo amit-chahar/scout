@@ -207,7 +207,7 @@ function sendFirmwareObject(pData) {
             }
 
             var seed = perDfuCache.get(constants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC);
-            const expectedCrc = CRC32(dataToSend, seed);
+            const expectedCrc = CRC32.buf(dataToSend, seed);
             perDfuCache.set(constants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC, expectedCrc);
             logger.info("data packet sent: last offset: %s: new offset: %s", offset, newOffset);
             return helpers.sendData(packetCharacteristic, dataToSend);
