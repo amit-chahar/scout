@@ -120,53 +120,75 @@ function setupToChangeListener(pData) {
 }
 
 function firmwareDataTransferHandler(pData, response, isNotification) {
-    const TAG = "firmwareDataTransferHandler";
+    const TAG = "BIN: ";
     const parsedResponse = helpers.parseResponse(response);
     const requestOpCode = parsedResponse.requestOpCode;
-
-    const controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
 
     logger.debug(TAG + ": parsed response: ", parsedResponse);
 
     switch (requestOpCode) {
         case constants.CONTROL_OPCODES.CREATE:
-            logger.debug(TAG + ': CREATE');
+            logger.debug(TAG + 'CREATE response received');
             sendFirmwareObject(pData);
             break;
         case constants.CONTROL_OPCODES.SET_PRN:
-            logger.debug(TAG + ": PRN set successfully");
+            logger.debug(TAG + "SET PRN response received");
             break;
         case constants.CONTROL_OPCODES.CALCULATE_CHECKSUM:
-            console.log('CALCULATE_CHECKSUM');
+            console.verbose(TAG + 'CALCULATE CHECKSUM response received');
             // TODO: Check if offset and crc is correct before executing.
             checkFirmwareObjectCrc(pData, parsedResponse);
             break;
         case constants.CONTROL_OPCODES.EXECUTE:
-            console.log('EXECUTE');
-            executeFirmwareObject(pData);
+            logger.verbose(TAG + 'EXECUTE response received');
+            continueSending(pData);
             logger.info("firmware transfer completed");
             break;
         case constants.CONTROL_OPCODES.SELECT:
-            logger.debug('SELECT');
-            // TODO: Some logic to determine if a new object should be created or not.
-            perDfuCache.set(constants.FIRMWARE_BIN_FILE_OFFSET, 0);
-            perDfuCache.set(constants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC, -1);
-            perDfuCache.set(constants.FIRMWARE_BIN_FILE_CREATE_OBJECT_MAX_SIZE, parsedResponse['maximumSize']);
-
-            var stats = fs.statSync(pData[constants.FIRMWARE_BIN_FILE]);
-            var buf = Buffer.alloc(6);
-            buf.writeUInt8(constants.CONTROL_OPCODES.CREATE, 0);
-            buf.writeUInt8(constants.CONTROL_PARAMETERS.DATA_OBJECT, 1);
-            buf.writeUInt32LE(stats.size, 2);
-            logger.debug("sending command to select firmware file: ", buf);
-            helpers.writeDataToCharacteristic(controlPointCharacteristic, buf, false)
-                .catch(function (error) {
-                    throw error;
-                });
+            logger.verbose(TAG + 'SELECT response received');
+            initializeDefaultsForBinFileTransfer(pData, parsedResponse);
+            sendCreateCommand(pData);
             break;
         default:
-            throw new Error("Unknown request opcode received: " + helpers.controlOpCodeToString(requestOpCode));
+            throw new Error("Unknown request OpCode received: " + helpers.controlOpCodeToString(requestOpCode));
     }
+}
+
+function initializeDefaultsForBinFileTransfer(pData, parsedResponse) {
+    // TODO: Some logic to determine if a new object should be created or not.
+    var stats = fs.statSync(pData[constants.FIRMWARE_BIN_FILE]);
+    perDfuCache.set(constants.FIRMWARE_BIN_FILE_SIZE, stats.size);
+    perDfuCache.set(constants.FIRMWARE_BIN_FILE_OFFSET, 0);
+    perDfuCache.set(constants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC, -1);
+    logger.debug("maximum object size: " + parsedResponse['maximumSize']);
+    perDfuCache.set(constants.FIRMWARE_BIN_FILE_CREATE_OBJECT_MAX_SIZE, parsedResponse['maximumSize']);
+}
+
+function sendCreateCommand(pData) {
+    const controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
+    const binFileSize = perDfuCache.get(constants.FIRMWARE_BIN_FILE_SIZE);
+    const offset = perDfuCache.get(constants.FIRMWARE_BIN_FILE_OFFSET);
+    const maxObjectSize = perDfuCache.get(constants.FIRMWARE_BIN_FILE_CREATE_OBJECT_MAX_SIZE);
+    var objectSize;
+    if (binFileSize >= offset + maxObjectSize) {
+        objectSize = maxObjectSize;
+    } else {
+        objectSize = binFileSize - offset;
+    }
+    var buf = Buffer.alloc(6);
+    buf.writeUInt8(constants.CONTROL_OPCODES.CREATE, 0);
+    buf.writeUInt8(constants.CONTROL_PARAMETERS.DATA_OBJECT, 1);
+    buf.writeUInt32LE(objectSize, 2);
+    logger.verbose("sending create object command");
+    logger.debug("size of the object to be created: " + objectSize);
+    helpers.writeDataToCharacteristic(controlPointCharacteristic, buf, false)
+        .then(function () {
+            logger.verbose("create command sent successfully");
+        })
+        .catch(function (error) {
+            logger.error("sending create command");
+            throw error;
+        });
 }
 
 function sendFirmwareObject(pData) {
@@ -174,15 +196,15 @@ function sendFirmwareObject(pData) {
     var binFilePath = pData[constants.FIRMWARE_BIN_FILE];
     helpers.parseBinaryFile(binFilePath)
         .then(function (result) {
-            const expectedCrc = crc.crc32(result);
-            logger.debug("Firmware bin file expected CRC: ", expectedCrc);
-            pData[constants.FIRMWARE_BIN_FILE_EXPECTED_CRC] = expectedCrc;
+            // const expectedCrc = crc.crc32(result);
+            // logger.debug("Firmware bin file expected CRC: ", expectedCrc);
+            // pData[constants.FIRMWARE_BIN_FILE_EXPECTED_CRC] = expectedCrc;
             const createObjectMaxSize = perDfuCache.get(constants.FIRMWARE_BIN_FILE_CREATE_OBJECT_MAX_SIZE);
             const offset = perDfuCache.get(constants.FIRMWARE_BIN_FILE_OFFSET);
             var dataToSend = result.slice(offset, createObjectMaxSize);
             const newOffset = offset + createObjectMaxSize;
-            perDfuCache.set(constants.FIRMWARE_BIN_FILE_OFFSET, newOffset)
-            if (newOffset > len(result)) {
+            perDfuCache.set(constants.FIRMWARE_BIN_FILE_OFFSET, newOffset);
+            if (newOffset >= len(result)) {
                 //bin file sent successfully
                 perDfuCache.set(constants.FIRMWARE_BIN_FILE_SENT_SUCCESSFULLY, true);
             }
@@ -206,7 +228,7 @@ function sendFirmwareObject(pData) {
 function checkFirmwareObjectCrc(pData, parsedResponse) {
     const controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
     const expectedCrc = perDfuCache.get(constants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC);
-    const actualCrc = parsedResponse.data.crc32;
+    const actualCrc = parsedResponse['crc32'];
     logger.debug("expected CRC: %s, actual CRC: %s", expectedCrc, actualCrc);
     var buf = Buffer.alloc(1);
     buf.writeUInt8(constants.CONTROL_OPCODES.EXECUTE);
@@ -217,8 +239,14 @@ function checkFirmwareObjectCrc(pData, parsedResponse) {
         });
 }
 
-function executeFirmwareObject(pData){
-
+function continueSending(pData) {
+    const binFileSize = perDfuCache.get(constants.FIRMWARE_BIN_FILE_SIZE);
+    const offset = perDfuCache.get(constants.FIRMWARE_BIN_FILE_OFFSET);
+    if(offset >= binFileSize){
+        logger.info("bin file sent successfully");
+    } else {
+        sendCreateCommand(pData);
+    }
 }
 
 module.exports.controlPointNotificationHandler = controlPointNotificationHandler;

@@ -5,6 +5,8 @@ module.exports = {
     "FIRMWARE_ZIP_NAME": "firmwareZipName",
     "FIRMWARE_DAT_FILE": "firmwareDatFile",
     "FIRMWARE_BIN_FILE": "firmwareBinFile",
+    "FIRMWARE_DAT_FILE_SIZE": "firmwareDatFileSize",
+    "FIRMWARE_BIN_FILE_SIZE": "firmwareBinFileSize",
     "FIRMWARE_MANIFEST_FILE": "firmwareManifestFile",
     "FIRMWARE_DAT_FILE_EXPECTED_CRC": "datFileExpectedCrc",
     "FIRMWARE_BIN_FILE_EXPECTED_CRC": "binFileExpectedCrc",
@@ -52,7 +54,7 @@ module.exports = {
         "INVALID_OBJECT": 0x05,
         "UNSUPPORTED_TYPE": 0x07,
         "OPERATION_NOT_PERMITTED": 0x08,
-        "OPERATION_FAILED": 0x0A,
+        "OPERATION_FAILED": 0x0A
     },
 
     "SELECT_RESPONSE_FIELD": {
@@ -65,4 +67,4 @@ module.exports = {
         "OFFSET": 3,
         "CRC32": 7
     }
-}
+};
