@@ -148,8 +148,10 @@ function prepareDfuFiles(pData) {
     const zip = new AdmZip(zipFilePath);
     const zipEntries = zip.getEntries();
 
+    logger.info("extracting firmware files");
     //TODO: set extract path correctly
     zip.extractAllTo(FIRMWARES_EXTRACTED_BASEPATH, true);
+    logger.debug("extracted firmwares files to: " + FIRMWARES_EXTRACTED_BASEPATH);
 
     return Promise.all(zipEntries, (function (zipEntry) {
             if (path.extname(zipEntry.entryName()) === ".dat") {

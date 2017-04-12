@@ -83,8 +83,8 @@
       <file leaf-file-name="DfuService.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuService.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="796">
-              <caret line="183" column="0" lean-forward="true" selection-start-line="183" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
+            <state relative-caret-position="136">
+              <caret line="153" column="82" lean-forward="false" selection-start-line="153" selection-start-column="82" selection-end-line="153" selection-end-column="82" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
               </folding>
@@ -474,7 +474,7 @@
       <updated>1491565767475</updated>
       <workItem from="1491565769528" duration="6624000" />
       <workItem from="1491743150986" duration="47252000" />
-      <workItem from="1491913539896" duration="10578000" />
+      <workItem from="1491913539896" duration="10650000" />
     </task>
     <task id="LOCAL-00001" summary="disconnect method added">
       <created>1491727391668</created>
@@ -693,11 +693,18 @@
       <option name="project" value="LOCAL" />
       <updated>1491938586701</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="dfu service added">
+      <created>1491978252968</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1491978252968</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64454000" />
+    <option name="totallyTimeSpent" value="64526000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1927" height="1038" extended-state="0" />
@@ -982,8 +989,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuService.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="796">
-          <caret line="183" column="0" lean-forward="true" selection-start-line="183" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
+        <state relative-caret-position="136">
+          <caret line="153" column="82" lean-forward="false" selection-start-line="153" selection-start-column="82" selection-end-line="153" selection-end-column="82" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
           </folding>
