@@ -13,13 +13,14 @@ var path = require('path');
 var AdmZip = require('adm-zip');
 var Promise = require('bluebird');
 var util = require('util');
+var rimraf = require('rimraf');
 
 const FIRMWARES_BASEPATH = path.join(__dirname, "firmwares");
 const FIRMWARES_ZIPPED_BASEPATH = path.join(FIRMWARES_BASEPATH, "zipped");
-const FIRMWARES_EXTRACTED_BASEPATH = path.join(FIRMWARES_BASEPATH, "extracted");
+const FIRMWARES_TMP_BASEPATH = path.join(FIRMWARES_BASEPATH, "tmp");
 
 logger.debug("zipped firmwares basepath: ", FIRMWARES_ZIPPED_BASEPATH);
-logger.debug("extracted firmware basepath: ", FIRMWARES_EXTRACTED_BASEPATH);
+logger.debug("tmp directory basepath: ", FIRMWARES_TMP_BASEPATH);
 
 function intializeAndStart(firmwareZipName) {
     noble.on('stateChange', function (state) {
@@ -47,6 +48,7 @@ function startDfuProcess(peripheral, firmwareZipName) {
         .then(findDfuService)
         .then(findControlPointAndPacketCharacteristic)
         .then(enableNotificationOnControlPointCharacteristic)
+        .then(removeTmpDirectory)
         .then(prepareDfuFiles)
         .then(selectCommand)
         .catch(function (error) {
@@ -141,6 +143,15 @@ function enableNotificationOnControlPointCharacteristic(pData) {
         })
 }
 
+function removeTmpDirectory(pData) {
+    logger.debug("removing tmp directory: " + FIRMWARES_TMP_BASEPATH);
+    return helpers.removeDirectory(FIRMWARES_TMP_BASEPATH)
+        .then(function () {
+            logger.debug("tmp directory removed successfully");
+            return pData;
+        })
+}
+
 function prepareDfuFiles(pData) {
     var firmwareZipName = pData[constants.FIRMWARE_ZIP_NAME];
     var zipFilePath = path.join(FIRMWARES_ZIPPED_BASEPATH, firmwareZipName);
@@ -150,8 +161,8 @@ function prepareDfuFiles(pData) {
 
     logger.info("extracting firmware files");
     //TODO: set extract path correctly
-    zip.extractAllTo(FIRMWARES_EXTRACTED_BASEPATH, true);
-    logger.debug("extracted firmwares files to: " + FIRMWARES_EXTRACTED_BASEPATH);
+    zip.extractAllTo(FIRMWARES_TMP_BASEPATH, true);
+    logger.debug("extracted firmwares files to: " + FIRMWARES_TMP_BASEPATH);
 
     return Promise.all(zipEntries, (function (zipEntry) {
             if (path.extname(zipEntry.entryName()) === ".dat") {
@@ -173,13 +184,12 @@ function prepareDfuFiles(pData) {
 function selectCommand(pData) {
     var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
     var command = new Buffer([constants.CONTROL_OPCODES.SELECT, constants.CONTROL_PARAMETERS.COMMAND_OBJECT]);
-    controlPointCharacteristic.write(command, false, function (error) {
-        if (error) {
-            Promise.reject("writing select command to control characteristic");
-        }
-        log.info("select command sent: " + command.toString(16));
-        Promise.resolve(pData);
-    });
+    logger.debug("writing select command to control characteristic");
+    return helpers.writeDataToCharacteristic(controlPointCharacteristic, command, false)
+        .then(function () {
+            logger.info("select command sent: " + command.toString(16));
+            return pData;
+        })
 }
 
 module.exports.initializeAndStart = intializeAndStart;

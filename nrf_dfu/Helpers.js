@@ -121,6 +121,14 @@ function writeDataToCharacteristic(characteristic, data, withoutResponse) {
     });
 }
 
+function removeDirectory(path){
+    return new Promise(function(resolve, reject){
+        rimraf(path, function () {
+            resolve();
+        })
+    });
+}
+
 module.exports.delay = delay;
 module.exports.parseResponse = parseResponse;
 module.exports.controlOpCodeToString = controlOpCodeToString;
@@ -128,3 +136,4 @@ module.exports.resultCodeToString = resultCodeToString;
 module.exports.parseBinaryFile = parseBinaryFile;
 module.exports.sendData = sendData;
 module.exports.writeDataToCharacteristic = writeDataToCharacteristic;
+module.exports.removeDirectory = removeDirectory;
