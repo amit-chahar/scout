@@ -160,8 +160,8 @@ function initializeDefaultsForBinFileTransfer(pData, parsedResponse) {
     perDfuCache.set(constants.FIRMWARE_BIN_FILE_SIZE, stats.size);
     perDfuCache.set(constants.FIRMWARE_BIN_FILE_OFFSET, 0);
     perDfuCache.set(constants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC, -1);
-    logger.debug("maximum object size: " + parsedResponse['maximumSize']);
-    perDfuCache.set(constants.FIRMWARE_BIN_FILE_CREATE_OBJECT_MAX_SIZE, parsedResponse['maximumSize']);
+    logger.debug("maximum object size: " + parsedResponse['data']['maximumSize']);
+    perDfuCache.set(constants.FIRMWARE_BIN_FILE_CREATE_OBJECT_MAX_SIZE, parsedResponse['data']['maximumSize']);
 }
 
 function sendCreateCommand(pData) {
@@ -228,7 +228,7 @@ function sendFirmwareObject(pData) {
 function checkFirmwareObjectCrc(pData, parsedResponse) {
     const controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
     const expectedCrc = perDfuCache.get(constants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC);
-    const actualCrc = parsedResponse['crc32'];
+    const actualCrc = parsedResponse['data']['crc32'];
     logger.debug("expected CRC: %s, actual CRC: %s", expectedCrc, actualCrc);
     var buf = Buffer.alloc(1);
     buf.writeUInt8(constants.CONTROL_OPCODES.EXECUTE);
