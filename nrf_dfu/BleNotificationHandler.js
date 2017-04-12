@@ -19,7 +19,7 @@ function controlPointNotificationHandler(pData, response, isNotification) {
 
         switch (requestOpCode) {
             case constants.CONTROL_OPCODES.CREATE:
-                console.log('CREATE');
+                logger.debug('CREATE');
                 //setting PRN to zero
                 var command = new Buffer([constants.CONTROL_OPCODES.SET_PRN, 0x00, 0x00]);
                 controlPointCharacteristic.write(command, false, function (error) {
@@ -30,7 +30,7 @@ function controlPointNotificationHandler(pData, response, isNotification) {
                 });
                 break;
             case constants.CONTROL_OPCODES.SET_PRN:
-                console.log('SET_PRN');
+                logger.debug('SET_PRN');
                 var datFilePath = pData[constants.FIRMWARE_DAT_FILE];
                 helpers.parseBinaryFile(datFilePath)
                     .then(function (result) {
@@ -50,7 +50,7 @@ function controlPointNotificationHandler(pData, response, isNotification) {
                     );
                 break;
             case constants.CONTROL_OPCODES.CALCULATE_CHECKSUM:
-                console.log('CALCULATE_CHECKSUM');
+                logger.debug('CALCULATE_CHECKSUM');
                 // TODO: Check if offset and crc is correct before executing.
 
                 var buf = Buffer.alloc(1);
@@ -61,9 +61,9 @@ function controlPointNotificationHandler(pData, response, isNotification) {
                     });
                 break;
             case constants.CONTROL_OPCODES.EXECUTE:
-                console.log('EXECUTE');
-                controlPointCharacteristic.removeEventListener('data', controlPointNotificationHandler);
-                controlPointCharacteristic.addEventListener('data', function (response, isNotification) {
+                logger.debug('EXECUTE');
+                controlPointCharacteristic.removeListener('data', controlPointNotificationHandler);
+                controlPointCharacteristic.addListener('data', function (response, isNotification) {
                     firmwareDataTransferHandler(pData, response, isNotification);
                 });
                 var buf = Buffer.alloc(2);

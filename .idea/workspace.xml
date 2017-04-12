@@ -4,7 +4,6 @@
     <list default="true" id="1368c387-3bcf-4c5a-a756-c38ad3c5b926" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js" afterPath="$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/DfuService.js" afterPath="$PROJECT_DIR$/nrf_dfu/DfuService.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -69,11 +68,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DfuService.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DfuService.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuService.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="191">
-              <caret line="188" column="27" lean-forward="true" selection-start-line="188" selection-start-column="27" selection-end-line="188" selection-end-column="27" />
+            <state relative-caret-position="332">
+              <caret line="191" column="10" lean-forward="false" selection-start-line="191" selection-start-column="10" selection-end-line="191" selection-end-column="10" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
               </folding>
@@ -93,11 +92,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BleNotificationHandler.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="BleNotificationHandler.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="99" column="101" lean-forward="false" selection-start-line="99" selection-start-column="93" selection-end-line="99" selection-end-column="101" />
+            <state relative-caret-position="332">
+              <caret line="66" column="41" lean-forward="true" selection-start-line="66" selection-start-column="41" selection-end-line="66" selection-end-column="41" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
               </folding>
@@ -121,13 +120,15 @@
         <entry file="file://$PROJECT_DIR$/nrf_dfu/Helpers.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="112">
-              <caret line="22" column="45" lean-forward="true" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
+              <caret line="22" column="45" lean-forward="false" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
                 <element signature="n#!!block;n#controlOpCodeToString#0" expanded="false" />
                 <element signature="n#!!block;n#resultCodeToString#0" expanded="false" />
                 <element signature="n#!!block;n#parseBinaryFile#0" expanded="false" />
                 <element signature="n#!!block;n#sendData#0" expanded="false" />
+                <marker date="1491984614908" expanded="true" signature="3936:4066" ph="{...}" />
+                <marker date="1491984614908" expanded="true" signature="3986:4062" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -145,8 +146,8 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>securedfuservice</find>
-      <find>toString</find>
       <find>tostring</find>
+      <find>toString</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -174,8 +175,8 @@
         <option value="$PROJECT_DIR$/nrf_dfu/BleUtils.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/BleNotificationHelper.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/Helpers.js" />
-        <option value="$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/DfuService.js" />
+        <option value="$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js" />
       </list>
     </option>
   </component>
@@ -464,7 +465,7 @@
       <updated>1491565767475</updated>
       <workItem from="1491565769528" duration="6624000" />
       <workItem from="1491743150986" duration="47252000" />
-      <workItem from="1491913539896" duration="16679000" />
+      <workItem from="1491913539896" duration="17032000" />
     </task>
     <task id="LOCAL-00001" summary="disconnect method added">
       <created>1491727391668</created>
@@ -792,7 +793,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="70555000" />
+    <option name="totallyTimeSpent" value="70908000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1927" height="1038" extended-state="0" />
@@ -940,6 +941,8 @@
             <element signature="n#!!block;n#resultCodeToString#0" expanded="false" />
             <element signature="n#!!block;n#parseBinaryFile#0" expanded="false" />
             <element signature="n#!!block;n#sendData#0" expanded="false" />
+            <marker date="1491984614908" expanded="true" signature="3936:4066" ph="{...}" />
+            <marker date="1491984614908" expanded="true" signature="3986:4062" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1052,31 +1055,33 @@
     <entry file="file://$PROJECT_DIR$/nrf_dfu/Helpers.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
-          <caret line="22" column="45" lean-forward="true" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
+          <caret line="22" column="45" lean-forward="false" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
             <element signature="n#!!block;n#controlOpCodeToString#0" expanded="false" />
             <element signature="n#!!block;n#resultCodeToString#0" expanded="false" />
             <element signature="n#!!block;n#parseBinaryFile#0" expanded="false" />
             <element signature="n#!!block;n#sendData#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="99" column="101" lean-forward="false" selection-start-line="99" selection-start-column="93" selection-end-line="99" selection-end-column="101" />
-          <folding>
-            <element signature="e#0#48#0" expanded="false" />
+            <marker date="1491984614908" expanded="true" signature="3936:4066" ph="{...}" />
+            <marker date="1491984614908" expanded="true" signature="3986:4062" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuService.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="188" column="27" lean-forward="true" selection-start-line="188" selection-start-column="27" selection-end-line="188" selection-end-column="27" />
+        <state relative-caret-position="332">
+          <caret line="191" column="10" lean-forward="false" selection-start-line="191" selection-start-column="10" selection-end-line="191" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#48#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="332">
+          <caret line="66" column="41" lean-forward="true" selection-start-line="66" selection-start-column="41" selection-end-line="66" selection-end-column="41" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
           </folding>
