@@ -99,7 +99,6 @@ function setupToChangeListener(pData) {
     var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
     controlPointCharacteristic.once('removeListener', function (event, listener) {
         logger.debug("removed control point characteristic listener");
-        logger.debug("control point characteristic listener count: ", controlPointCharacteristic.listenerCount('data'));
         controlPointCharacteristic.on('data', function (response, isNotification) {
             firmwareDataTransferHandler(pData, response, isNotification);
         });
@@ -107,7 +106,6 @@ function setupToChangeListener(pData) {
 
     controlPointCharacteristic.once('newListener', function (event, listener) {
         logger.debug("added control point characteristic listener");
-        logger.debug("control point characteristic listener count: ", controlPointCharacteristic.listenerCount('data'));
         var buf = Buffer.alloc(2);
         buf.writeUInt8(constants.CONTROL_OPCODES.SELECT, 0);
         buf.writeUInt8(constants.CONTROL_PARAMETERS.DATA_OBJECT, 1);
@@ -122,12 +120,12 @@ function setupToChangeListener(pData) {
 function firmwareDataTransferHandler(pData, response, isNotification) {
     const TAG = "firmwareDataTransferHandler";
     const parsedResponse = helpers.parseResponse(response);
-    const requestOpCode = parsedResponse.responseOpCode;
+    const requestOpCode = parsedResponse.requestOpCode;
 
     const controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
     const packetCharacteristic = pData[constants.SECURE_DFU_PACKET_CHARACTERISTIC];
 
-    logger.debug(TAG + ": parsed respnse: ", parsedResponse);
+    logger.debug(TAG + ": parsed response: ", parsedResponse);
 
     switch (requestOpCode) {
         case constants.CONTROL_OPCODES.CREATE:
@@ -190,7 +188,7 @@ function firmwareDataTransferHandler(pData, response, isNotification) {
                 });
             break;
         default:
-            throw new Error("Unknown response opcode received: " + helpers.controlOpCodeToString(requestOpCode));
+            throw new Error("Unknown request opcode received: " + helpers.controlOpCodeToString(requestOpCode));
     }
 }
 

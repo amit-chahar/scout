@@ -92,11 +92,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BleNotificationHandler.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="BleNotificationHandler.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="69" column="22" lean-forward="true" selection-start-line="69" selection-start-column="22" selection-end-line="69" selection-end-column="22" />
+            <state relative-caret-position="184">
+              <caret line="121" column="39" lean-forward="true" selection-start-line="121" selection-start-column="39" selection-end-line="121" selection-end-column="39" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
               </folding>
@@ -116,19 +116,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Helpers.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Helpers.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/Helpers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="112">
-              <caret line="22" column="45" lean-forward="false" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
+            <state relative-caret-position="244">
+              <caret line="60" column="6" lean-forward="true" selection-start-line="60" selection-start-column="6" selection-end-line="60" selection-end-column="6" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
-                <element signature="n#!!block;n#controlOpCodeToString#0" expanded="false" />
                 <element signature="n#!!block;n#resultCodeToString#0" expanded="false" />
                 <element signature="n#!!block;n#parseBinaryFile#0" expanded="false" />
                 <element signature="n#!!block;n#sendData#0" expanded="false" />
-                <marker date="1491984614908" expanded="true" signature="3936:4066" ph="{...}" />
-                <marker date="1491984614908" expanded="true" signature="3986:4062" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -465,14 +462,7 @@
       <updated>1491565767475</updated>
       <workItem from="1491565769528" duration="6624000" />
       <workItem from="1491743150986" duration="47252000" />
-      <workItem from="1491913539896" duration="23602000" />
-    </task>
-    <task id="LOCAL-00006" summary="disconnect method added">
-      <created>1491750115456</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1491750115456</updated>
+      <workItem from="1491913539896" duration="24543000" />
     </task>
     <task id="LOCAL-00007" summary="disconnect method added">
       <created>1491750722673</created>
@@ -810,11 +800,18 @@
       <option name="project" value="LOCAL" />
       <updated>1491996001277</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="dfu service added">
+      <created>1491996142605</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1491996142605</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="77478000" />
+    <option name="totallyTimeSpent" value="78419000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1927" height="1038" extended-state="0" />
@@ -958,12 +955,9 @@
           <caret line="111" column="74" lean-forward="false" selection-start-line="111" selection-start-column="74" selection-end-line="111" selection-end-column="74" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
-            <element signature="n#!!block;n#controlOpCodeToString#0" expanded="false" />
             <element signature="n#!!block;n#resultCodeToString#0" expanded="false" />
             <element signature="n#!!block;n#parseBinaryFile#0" expanded="false" />
             <element signature="n#!!block;n#sendData#0" expanded="false" />
-            <marker date="1491984614908" expanded="true" signature="3936:4066" ph="{...}" />
-            <marker date="1491984614908" expanded="true" signature="3986:4062" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1073,22 +1067,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nrf_dfu/Helpers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="22" column="45" lean-forward="false" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#48#0" expanded="false" />
-            <element signature="n#!!block;n#controlOpCodeToString#0" expanded="false" />
-            <element signature="n#!!block;n#resultCodeToString#0" expanded="false" />
-            <element signature="n#!!block;n#parseBinaryFile#0" expanded="false" />
-            <element signature="n#!!block;n#sendData#0" expanded="false" />
-            <marker date="1491984614908" expanded="true" signature="3936:4066" ph="{...}" />
-            <marker date="1491984614908" expanded="true" signature="3986:4062" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuService.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="332">
@@ -1101,10 +1079,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="69" column="22" lean-forward="true" selection-start-line="69" selection-start-column="22" selection-end-line="69" selection-end-column="22" />
+        <state relative-caret-position="184">
+          <caret line="121" column="39" lean-forward="true" selection-start-line="121" selection-start-column="39" selection-end-line="121" selection-end-column="39" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nrf_dfu/Helpers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="60" column="6" lean-forward="true" selection-start-line="60" selection-start-column="6" selection-end-line="60" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#48#0" expanded="false" />
+            <element signature="n#!!block;n#resultCodeToString#0" expanded="false" />
+            <element signature="n#!!block;n#parseBinaryFile#0" expanded="false" />
+            <element signature="n#!!block;n#sendData#0" expanded="false" />
           </folding>
         </state>
       </provider>
