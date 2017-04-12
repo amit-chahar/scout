@@ -65,7 +65,8 @@ function controlPointNotificationHandler(pData, response, isNotification) {
                 logger.info("init packet sent");
                 logger.info("starting sending firmware file");
                 logger.debug("changing control point characteristic listeners");
-                changeListener(pData);
+                setupToChangeListener(pData);
+                controlPointCharacteristic.removeAllListeners("data");
                 break;
             case constants.CONTROL_OPCODES.SELECT:
                 logger.debug('SELECT');
@@ -94,7 +95,7 @@ function controlPointNotificationHandler(pData, response, isNotification) {
     }
 }
 
-function changeListener(pData) {
+function setupToChangeListener(pData) {
     var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
     controlPointCharacteristic.once('removeListener', function (event, listener) {
         logger.debug("removed control point characteristic listener");
