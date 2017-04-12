@@ -6,6 +6,7 @@ var helpers = require('./Helpers');
 var constants = require('./DfuConstants');
 var fs = require('fs');
 var crc = require('crc');
+var CRC32 = require('crc-32');
 var nrfGlobals = require("./NrfGlobals");
 var perDfuCache = nrfGlobals.perDfuCache;
 
@@ -158,7 +159,7 @@ function initializeDefaultsForBinFileTransfer(pData, parsedResponse) {
     var stats = fs.statSync(pData[constants.FIRMWARE_BIN_FILE]);
     perDfuCache.set(constants.FIRMWARE_BIN_FILE_SIZE, stats.size);
     perDfuCache.set(constants.FIRMWARE_BIN_FILE_OFFSET, 0);
-    perDfuCache.set(constants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC, -1);
+    perDfuCache.set(constants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC, 0);
     logger.debug("maximum object size: " + parsedResponse['data']['maximumSize']);
     perDfuCache.set(constants.FIRMWARE_BIN_FILE_CREATE_OBJECT_MAX_SIZE, parsedResponse['data']['maximumSize']);
 }
@@ -195,9 +196,6 @@ function sendFirmwareObject(pData) {
     var binFilePath = pData[constants.FIRMWARE_BIN_FILE];
     helpers.parseBinaryFile(binFilePath)
         .then(function (result) {
-            // const expectedCrc = crc.crc32(result);
-            // logger.debug("Firmware bin file expected CRC: ", expectedCrc);
-            // pData[constants.FIRMWARE_BIN_FILE_EXPECTED_CRC] = expectedCrc;
             const createObjectMaxSize = perDfuCache.get(constants.FIRMWARE_BIN_FILE_CREATE_OBJECT_MAX_SIZE);
             const offset = perDfuCache.get(constants.FIRMWARE_BIN_FILE_OFFSET);
             const newOffset = offset + createObjectMaxSize;
@@ -207,7 +205,9 @@ function sendFirmwareObject(pData) {
                 //bin file sent successfully
                 perDfuCache.set(constants.FIRMWARE_BIN_FILE_SENT_SUCCESSFULLY, true);
             }
-            const expectedCrc = crc.crc32(dataToSend);
+
+            var seed = perDfuCache.get(constants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC);
+            const expectedCrc = CRC32(dataToSend, seed);
             perDfuCache.set(constants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC, expectedCrc);
             logger.info("data packet sent: last offset: %s: new offset: %s", offset, newOffset);
             return helpers.sendData(packetCharacteristic, dataToSend);
