@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1368c387-3bcf-4c5a-a756-c38ad3c5b926" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js" afterPath="$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -465,14 +464,7 @@
       <updated>1491565767475</updated>
       <workItem from="1491565769528" duration="6624000" />
       <workItem from="1491743150986" duration="47252000" />
-      <workItem from="1491913539896" duration="23362000" />
-    </task>
-    <task id="LOCAL-00004" summary="disconnect method added">
-      <created>1491745400258</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1491745400258</updated>
+      <workItem from="1491913539896" duration="23461000" />
     </task>
     <task id="LOCAL-00005" summary="disconnect method added">
       <created>1491746141222</created>
@@ -810,11 +802,18 @@
       <option name="project" value="LOCAL" />
       <updated>1491994831310</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="dfu service added">
+      <created>1491995903730</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1491995903730</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="77238000" />
+    <option name="totallyTimeSpent" value="77337000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1927" height="1038" extended-state="0" />
