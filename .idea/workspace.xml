@@ -438,14 +438,7 @@
       <updated>1491565767475</updated>
       <workItem from="1491565769528" duration="6624000" />
       <workItem from="1491743150986" duration="47252000" />
-      <workItem from="1491913539896" duration="38566000" />
-    </task>
-    <task id="LOCAL-00012" summary="disconnect method added">
-      <created>1491760537323</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1491760537323</updated>
+      <workItem from="1491913539896" duration="38577000" />
     </task>
     <task id="LOCAL-00013" summary="disconnect method added">
       <created>1491764234438</created>
@@ -783,11 +776,18 @@
       <option name="project" value="LOCAL" />
       <updated>1492030304990</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="dfu service added">
+      <created>1492030697273</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1492030697273</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="92442000" />
+    <option name="totallyTimeSpent" value="92453000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1927" height="1038" extended-state="0" />
