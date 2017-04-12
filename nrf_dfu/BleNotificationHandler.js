@@ -62,18 +62,8 @@ function controlPointNotificationHandler(pData, response, isNotification) {
                 break;
             case constants.CONTROL_OPCODES.EXECUTE:
                 logger.debug('EXECUTE');
+                setupForChangingListener(pData);
                 controlPointCharacteristic.removeListener('data', controlPointNotificationHandler);
-                controlPointCharacteristic.addListener('data', function (response, isNotification) {
-                    firmwareDataTransferHandler(pData, response, isNotification);
-                });
-                var buf = Buffer.alloc(2);
-                buf.writeUInt8(constants.CONTROL_OPCODES.SELECT, 0);
-                buf.writeUInt8(constants.CONTROL_PARAMETERS.DATA_OBJECT, 1);
-                logger.info("starting sending firmware bin file");
-                helpers.writeDataToCharacteristic(controlPointCharacteristic, buf, false)
-                    .catch(function (error) {
-                        throw error;
-                    });
                 break;
             case constants.CONTROL_OPCODES.SELECT:
                 logger.debug('SELECT');
@@ -100,6 +90,34 @@ function controlPointNotificationHandler(pData, response, isNotification) {
                 throw new Error("Unknown response op-code received: " + helpers.controlOpCodeToString(requestOpCode));
         }
     }
+}
+
+function setupForChangingListener(pData) {
+    var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
+    controlPointCharacteristic.on('removeListener', function (event, listener) {
+        if (event === 'data' && listener.name === controlPointNotificationHandler.name) {
+            logger.debug("removed control point characteristic listener for init packet");
+            logger.debug("control point characteristic listener count: ", controlPointCharacteristic.listenerCount('data'));
+            controlPointCharacteristic.addListener('data', function (response, isNotification) {
+                firmwareDataTransferHandler(pData, response, isNotification);
+            });
+        }
+    });
+
+    controlPointCharacteristic.on('newListener', function (event, listener) {
+        if (event === 'data' && listener.name === firmwareDataTransferHandler.name) {
+            logger.debug("added control point characteristic listener for firmware transfer");
+            logger.debug("control point characteristic listener count: ", controlPointCharacteristic.listenerCount('data'));
+            var buf = Buffer.alloc(2);
+            buf.writeUInt8(constants.CONTROL_OPCODES.SELECT, 0);
+            buf.writeUInt8(constants.CONTROL_PARAMETERS.DATA_OBJECT, 1);
+            logger.info("starting sending firmware bin file");
+            helpers.writeDataToCharacteristic(controlPointCharacteristic, buf, false)
+                .catch(function (error) {
+                    throw error;
+                });
+        }
+    });
 }
 
 function firmwareDataTransferHandler(pData, response, isNotification) {
