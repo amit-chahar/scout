@@ -204,7 +204,7 @@ function sendFirmwareObject(pData) {
             var dataToSend = result.slice(offset, createObjectMaxSize);
             const newOffset = offset + createObjectMaxSize;
             perDfuCache.set(constants.FIRMWARE_BIN_FILE_OFFSET, newOffset);
-            if (newOffset >= len(result)) {
+            if (newOffset >= result.length) {
                 //bin file sent successfully
                 perDfuCache.set(constants.FIRMWARE_BIN_FILE_SENT_SUCCESSFULLY, true);
             }
