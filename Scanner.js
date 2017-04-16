@@ -9,6 +9,7 @@ const firebasePaths = require('./firebasePaths');
 const utils = require('./Utils');
 const logger = require('./Logger');
 const config = require('./Config');
+const firebaseDbKeys = require('./firebaseDatabaseKeys');
 
 var scanning = false;
 var scanTime;
@@ -18,8 +19,7 @@ function initializeAndStartScanner() {
     getFirebaseScanSettingAndStartScan();
     noble.on('stateChange', function (state) {
         if (state != 'poweredOn') {
-            logger.error(TAG + "invalid scanner state");
-            noble.stopScanning();
+            logger.error(TAG + "scanner state: " + state);
         }
     });
 }
@@ -29,12 +29,14 @@ function getFirebaseScanSettingAndStartScan() {
     firebaseDb.ref(firebasePaths.firebaseScannerPath).on('value', function (snapshot) {
         if (snapshot.exists()) {
             var scanSettings = snapshot.val();
-            scanTime = scanSettings["scanTime"];
-            logger.info(TAG + "starting scan for " + scanTime + " ms");
-            prepareToScan();
-            setTimeout(function () {
-                stopScan();
-            }, scanTime);
+            if(scanSettings[firebaseDbKeys.SCANNER_ENABLE] === true) {
+                scanTime = scanSettings[firebaseDbKeys.SCANNER_SCAN_TIME];
+                logger.info(TAG + "starting scan for " + scanTime + " ms");
+                prepareToScan();
+                setTimeout(function () {
+                    stopScan();
+                }, scanTime);
+            }
         }
     })
 }
@@ -44,6 +46,7 @@ function prepareToScan() {
         restartScan();
     } else {
         noble.once('scanStart', function () {
+            scanning = true;
             logger.verbose(TAG + "scan started successfully");
         });
         noble.startScanning();
@@ -65,12 +68,22 @@ function restartScan() {
 
 function stopScan() {
     logger.verbose(TAG + "stopping noble scan");
-    noble.once('scanStop', function () {
-        utils.restartBluetoothService();
-        logger.verbose(TAG + "scan stopped successfullly");
-        scanning = false;
-    });
-    noble.stopScanning();
+    if(scanning) {
+        noble.once('scanStop', function () {
+            utils.restartBluetoothService();
+            logger.verbose(TAG + "scan stopped successfullly");
+            scanning = false;
+            turnOffFirebaseScanner();
+        });
+        noble.stopScanning();
+    } else {
+        turnOffFirebaseScanner();
+    }
+}
+
+function turnOffFirebaseScanner(){
+    logger.verbose("turning off firebase scanner");
+    firebaseDb.ref(firebasePaths.firebaseScannerPath + "/enable").set(false);
 }
 
 noble.on('discover', function (peripheral) {
