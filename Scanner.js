@@ -55,7 +55,7 @@ function prepareToScan() {
 }
 
 function restartScan() {
-    verbose.info("restarting noble scan");
+    logger.verbose("restarting noble scan");
     noble.once('scanStop', function (error) {
         if (error) {
             logger.error("error stopping scan which restarting scan");
