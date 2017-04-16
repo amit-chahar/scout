@@ -16,6 +16,7 @@ logger.debug("firebase user key: " + utils.getUserKey());
 logger.debug("gateway name: " + utils.getGatewayName())
 logger.debug("firebase gateway key: " + utils.getValidFirebaseGatewayName());
 
+logger.debug("firebase gateway path: " + firebasePaths.firebaseGatewayPath);
 firebaseDb.ref(firebasePaths.firebaseGatewayPath).once('value')
     .then(function (snapshot) {
         const gateway = snapshot.val();
