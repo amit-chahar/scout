@@ -96,10 +96,10 @@ noble.on('discover', function (peripheral) {
     }
     logger.info(TAG + "peripheral found, address: %s, name: %s", btDevAddress, btDevName);
 
-    var btDevice = {
-        "btDevAddress": btDevAddress,
-        "btDevName": btDevName
-    };
+    var btDevice = {};
+    btDevice[firebaseDbKeys.SCANNED_DEVICES_BT_DEVICE_ADDRESS] = btDevAddress;
+    btDevice[firebaseDbKeys.SCANNED_DEVICES_BT_DEVICE_NAME] = btDevName;
+
     logger.debug(TAG + "firebase new scanned peripheral path: " + newScannedDevicePath);
     logger.debug(TAG + "firebase new peripheral: ", btDevice);
     firebaseDb.ref(newScannedDevicePath).set(btDevice);
