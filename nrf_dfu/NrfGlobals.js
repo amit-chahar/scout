@@ -3,7 +3,8 @@
  */
 const NodeCache = require('node-cache');
 const perDfuCache = new NodeCache({useClones: false});
-var EventEmitter = require('events').EventEmitter;
+const events = require('events');
+const eventEmitter = new events.EventEmitter();
 
 module.exports.perDfuCache = perDfuCache;
-module.exports.eventEmitter = EventEmitter;
+module.exports.eventEmitter = eventEmitter;

@@ -19,7 +19,7 @@ function initializeAndStartScanner() {
     getFirebaseScanSettingAndStartScan();
     noble.on('stateChange', function (state) {
         if (state != 'poweredOn') {
-            logger.error(TAG + "scanner state: " + state);
+            logger.verbose(TAG + "scanner state: " + state);
         }
     });
 }
@@ -97,8 +97,8 @@ noble.on('discover', function (peripheral) {
     logger.info(TAG + "peripheral found, address: %s, name: %s", btDevAddress, btDevName);
 
     var btDevice = {};
-    btDevice[firebaseDbKeys.SCANNED_DEVICES_BT_DEVICE_ADDRESS] = btDevAddress;
-    btDevice[firebaseDbKeys.SCANNED_DEVICES_BT_DEVICE_NAME] = btDevName;
+    btDevice[firebaseDbKeys.BT_DEVICE_ADDRESS] = btDevAddress;
+    btDevice[firebaseDbKeys.BT_DEVICE_NAME] = btDevName;
 
     logger.debug(TAG + "firebase new scanned peripheral path: " + newScannedDevicePath);
     logger.debug(TAG + "firebase new peripheral: ", btDevice);

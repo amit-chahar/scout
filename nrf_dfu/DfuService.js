@@ -24,22 +24,22 @@ const FIRMWARES_TMP_BASEPATH = path.join(FIRMWARES_BASEPATH, "tmp");
 logger.debug("zipped firmwares basepath: ", FIRMWARES_ZIPPED_BASEPATH);
 logger.debug("tmp directory basepath: ", FIRMWARES_TMP_BASEPATH);
 
-var context;
-
-function DfuService(firmwareZipName, deviceName, deviceAddress){
-    this.firmwareZipName = firmwareZipName;
-    this.deviceName = deviceName;
-    this.deviceAddress = deviceAddress;
-    eventEmitter.call(this);
-    context = this;
-    initializeAndStart(firmwareZipName);
-}
-
-util.inherits(DfuService, eventEmitter);
-
-DfuService.prototype.close = function () {
-    process.exit(0);
-}
+// var context;
+//
+// function DfuService(firmwareZipName, deviceName, deviceAddress){
+//     this.firmwareZipName = firmwareZipName;
+//     this.deviceName = deviceName;
+//     this.deviceAddress = deviceAddress;
+//     eventEmitter.call(this);
+//     context = this;
+//     initializeAndStart(firmwareZipName);
+// }
+//
+// util.inherits(DfuService, eventEmitter);
+//
+// DfuService.prototype.close = function () {
+//     process.exit(0);
+// }
 
 function initializeAndStart(firmwareZipName) {
     noble.on('stateChange', function (state) {
