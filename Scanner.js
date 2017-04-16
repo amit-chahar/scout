@@ -10,7 +10,7 @@ const utils = require('./Utils');
 var scanning = false;
 var scanTime;
 
-function initializeScanner() {
+function initializeAndStartScanner() {
     logger.verbose("scanner initialized");
     noble.on('stateChange', function (state) {
         if (state === 'poweredOn') {
@@ -93,3 +93,5 @@ noble.on('discover', function (peripheral) {
     };
     firebaseDb.ref(newScannedDevicePath).set(btDevice);
 });
+
+module.exports.initializeAndStartScanner = initializeAndStartScanner();

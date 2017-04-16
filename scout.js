@@ -23,6 +23,7 @@ firebaseDb.ref(firebasePaths.firebaseGatewayPath).once('value')
     .then(function (snapshot) {
         const gateway = snapshot.val();
         if(gateway == null){
+            logger.error("Gateway not present in database. Please add the gateway in app");
             return;
         }
         logger.debug("gateway info from firebase", gateway);
@@ -32,15 +33,11 @@ firebaseDb.ref(firebasePaths.firebaseGatewayPath).once('value')
             logger.error("Unable to authenticate gateway");
             return;
         }
-    })
-    .then(function () {
-        logger.error("Gateway not present in database. Please add the gateway in app");
-        return;
-    })
+    });
 
 function authenticated() {
     logger.info("gateway authenticated successfully");
-    require('./Scanner')
+    require('./Scanner').initializeAndStartScanner();
 }
 //
 // logger.info("starting nrf dfu service");
