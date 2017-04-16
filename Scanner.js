@@ -98,4 +98,4 @@ noble.on('discover', function (peripheral) {
     firebaseDb.ref(newScannedDevicePath).set(btDevice);
 });
 
-module.exports.initializeAndStartScanner = initializeAndStartScanner();
+module.exports.initializeAndStartScanner = initializeAndStartScanner;
