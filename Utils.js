@@ -2,6 +2,8 @@
  * Created by Amit-Chahar on 16-04-2017.
  */
 
+const TAG = "Utils: ";
+
 const config = require('./Config');
 const logger = require('./Logger');
 const execSync = require('child_process').execSync;
@@ -34,20 +36,21 @@ function getValidFirebseName(name){
 
 function restartBluetoothService(){
     const command = "sudo service bluetooth restart";
-    logger.verbose("Restarting bluetooth service");
+    logger.verbose(TAG + "Restarting bluetooth service");
     var returnCode = execSync(command);
+    logger.debug(TAG + "bluetooth service restart return code: ", returnCode);
     if(returnCode === 0){
-        logger.verbose("bluetooth service restarted successfully");
+        logger.verbose(TAG + "bluetooth service restarted successfully");
         return true;
     } else {
-        logger.verbose("unable to restart bluetooth service");
+        logger.verbose(TAG + "unable to restart bluetooth service");
     }
     return false;
 }
 
 function initializeFirebase() {
     if (config.Build.DEBUG === true) {
-        logger.debug("firebase debug configuration selected");
+        logger.debug(TAG + "firebase debug configuration selected");
         const firebaseConfig = {
             apiKey: "AIzaSyBB4ArjQhGkK_5GCCmNqNZkNsK8eyowJBs",
             authDomain: "wispero-patrol-debug.firebaseapp.com",
@@ -58,7 +61,7 @@ function initializeFirebase() {
         }
         firebase.initializeApp(firebaseConfig);
     } else {
-        logger.debug("firebase release configuration selected");
+        logger.debug(TAG + "firebase release configuration selected");
         const config = {
             apiKey: "AIzaSyD8JSTNZEumi28aW-Z-IldzC4ty078kuTg",
             authDomain: "wispero-patrol.firebaseapp.com",

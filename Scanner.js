@@ -1,6 +1,7 @@
 /**
  * Created by Amit-Chahar on 13-04-2017.
  */
+const TAG = "Scanner: ";
 var globals = require('./Globals');
 var noble = globals.noble;
 const firebaseDb = globals.firebaseDatabase;
@@ -13,23 +14,23 @@ var scanning = false;
 var scanTime;
 
 function initializeAndStartScanner() {
-    logger.verbose("scanner initialized");
+    logger.verbose(TAG + "scanner initialized");
     getFirebaseScanSettingAndStartScan();
     noble.on('stateChange', function (state) {
         if (state != 'poweredOn') {
-            logger.error("invalid scanner state");
+            logger.error(TAG + "invalid scanner state");
             noble.stopScanning();
         }
     });
 }
 
 function getFirebaseScanSettingAndStartScan() {
-    logger.debug("firebase scanner settings path: " + firebasePaths.firebaseScannerPath);
+    logger.debug(TAG + "firebase scanner settings path: " + firebasePaths.firebaseScannerPath);
     firebaseDb.ref(firebasePaths.firebaseScannerPath).on('value', function (snapshot) {
         if (snapshot.exists()) {
             var scanSettings = snapshot.val();
             scanTime = scanSettings["scanTime"];
-            logger.info("starting scan for " + scanTime + " ms");
+            logger.info(TAG + "starting scan for " + scanTime + " ms");
             prepareToScan();
             setTimeout(function () {
                 stopScan();
@@ -43,14 +44,14 @@ function prepareToScan() {
         restartScan();
     } else {
         noble.once('scanStart', function () {
-            logger.verbose("scan started successfully");
+            logger.verbose(TAG + "scan started successfully");
         });
         noble.startScanning();
     }
 }
 
 function restartScan() {
-    logger.verbose("restarting noble scan");
+    logger.verbose(TAG + "restarting noble scan");
     noble.once('scanStop', function () {
         utils.restartBluetoothService();
         scanning = false;
@@ -63,31 +64,31 @@ function restartScan() {
 }
 
 function stopScan() {
-    logger.verbose("stopping noble scan");
+    logger.verbose(TAG + "stopping noble scan");
     noble.once('scanStop', function () {
         utils.restartBluetoothService();
-        logger.verbose("scan stopped successfullly");
+        logger.verbose(TAG + "scan stopped successfullly");
         scanning = false;
     });
     noble.stopScanning();
 }
 
 noble.on('discover', function (peripheral) {
-    console.log("Peripheral found");
+    console.log(TAG + "Peripheral found");
     const newScannedDevicePath = firebasePaths.firebaseScannedDevicesPath + "/" + peripheral.id;
     const btDevAddress = peripheral.address;
     var btDevName = peripheral.advertisement.localName;
     if (btDevName === undefined) {
         btDevName = "unknown";
     }
-    logger.info("peripheral found, address: %s, name: %s", btDevAddress, btDevName);
+    logger.info(TAG + "peripheral found, address: %s, name: %s", btDevAddress, btDevName);
 
     var btDevice = {
         "btDevAddress": btDevAddress,
         "btDevName": btDevName
     };
-    logger.debug("firebase new scanned peripheral path: " + newScannedDevicePath);
-    logger.debug("firebase new peripheral: ", btDevice);
+    logger.debug(TAG + "firebase new scanned peripheral path: " + newScannedDevicePath);
+    logger.debug(TAG + "firebase new peripheral: ", btDevice);
     firebaseDb.ref(newScannedDevicePath).set(btDevice);
 });
 

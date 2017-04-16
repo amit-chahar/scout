@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1368c387-3bcf-4c5a-a756-c38ad3c5b926" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scanner.js" afterPath="$PROJECT_DIR$/Scanner.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Utils.js" afterPath="$PROJECT_DIR$/Utils.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -81,11 +82,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Scanner.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Scanner.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Scanner.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="71" column="16" lean-forward="false" selection-start-line="71" selection-start-column="16" selection-end-line="71" selection-end-column="16" />
+            <state relative-caret-position="237">
+              <caret line="32" column="23" lean-forward="false" selection-start-line="32" selection-start-column="19" selection-end-line="32" selection-end-column="23" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
               </folding>
@@ -93,11 +94,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Utils.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Utils.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Utils.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="6" column="21" lean-forward="false" selection-start-line="6" selection-start-column="21" selection-end-line="6" selection-end-column="21" />
+            <state relative-caret-position="44">
+              <caret line="4" column="20" lean-forward="false" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
               </folding>
@@ -121,6 +122,7 @@
       <find>toString</find>
       <find>firmware transfter</find>
       <find>crc</find>
+      <find>info</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -178,9 +180,10 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="width" value="1927" />
-    <option name="height" value="1038" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectLevelVcsManager">
     <OptionsSetting value="false" id="Update" />
@@ -321,14 +324,7 @@
       <workItem from="1491565769528" duration="6624000" />
       <workItem from="1491743150986" duration="47252000" />
       <workItem from="1491913539896" duration="62529000" />
-      <workItem from="1492339275129" duration="6264000" />
-    </task>
-    <task id="LOCAL-00034" summary="dfu service added">
-      <created>1491978349432</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1491978349432</updated>
+      <workItem from="1492339275129" duration="8042000" />
     </task>
     <task id="LOCAL-00035" summary="dfu service added">
       <created>1491978372271</created>
@@ -666,24 +662,31 @@
       <option name="project" value="LOCAL" />
       <updated>1492348420060</updated>
     </task>
-    <option name="localTasksCounter" value="83" />
+    <task id="LOCAL-00083" summary="firebase scanner added">
+      <created>1492348531682</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1492348531682</updated>
+    </task>
+    <option name="localTasksCounter" value="84" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="122669000" />
+    <option name="totallyTimeSpent" value="124447000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="0" width="1927" height="1038" extended-state="0" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2505319" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24907456" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298969" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298969" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3298969" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32616082" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1049,20 +1052,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Scanner.js">
+    <entry file="file://$PROJECT_DIR$/Utils.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="71" column="16" lean-forward="false" selection-start-line="71" selection-start-column="16" selection-end-line="71" selection-end-column="16" />
+        <state relative-caret-position="44">
+          <caret line="4" column="20" lean-forward="false" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Utils.js">
+    <entry file="file://$PROJECT_DIR$/Scanner.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="6" column="21" lean-forward="false" selection-start-line="6" selection-start-column="21" selection-end-line="6" selection-end-column="21" />
+        <state relative-caret-position="237">
+          <caret line="32" column="23" lean-forward="false" selection-start-line="32" selection-start-column="19" selection-end-line="32" selection-end-column="23" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
           </folding>
