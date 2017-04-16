@@ -13,10 +13,9 @@ var scanTime;
 
 function initializeAndStartScanner() {
     logger.verbose("scanner initialized");
+    getFirebaseScanSettingAndStartScan();
     noble.on('stateChange', function (state) {
-        if (state === 'poweredOn') {
-            getFirebaseScanSettingAndStartScan();
-        } else {
+        if (state != 'poweredOn') {
             logger.error("invalid scanner state");
             noble.stopScanning();
             return;
