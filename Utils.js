@@ -4,7 +4,7 @@
 
 const config = require('./Config');
 const logger = require('./Logger');
-const exec = require('child_process').execSync;
+const execSync = require('child_process').execSync;
 const firebase = require('firebase');
 
 function getUserEmail(){
