@@ -3,51 +3,93 @@
  */
 var globals = require('./Globals');
 var noble = globals.noble;
+const firebaseDb = globals.firebaseDatabase;
+const firebasePaths = require('./firebasePaths');
+const utils = require('./Utils');
 
-noble.on('stateChange', function (state) {
-    if (state === 'poweredOn') {
-        noble.startScanning();
+var scanning = false;
+var scanTime;
+
+function initializeScanner() {
+    logger.verbose("scanner initialized");
+    noble.on('stateChange', function (state) {
+        if (state === 'poweredOn') {
+            getFirebaseScanSettingAndStartScan();
+        } else {
+            logger.error("invalid scanner state");
+            noble.stopScanning();
+            return;
+        }
+    });
+}
+
+function getFirebaseScanSettingAndStartScan() {
+    firebaseDb.ref(firebasePaths).on('value', function (snapshot) {
+        var scanSettings = snapshot.val();
+        scanTime = scanSettings["scanTime"];
+        logger.info("starting scan for " + scanTime + " ms");
+        prepareToScan();
+        setTimeout(function () {
+            stopScan();
+        }, scanTime);
+    })
+}
+
+function prepareToScan() {
+    if (scanning) {
+        restartScan();
     } else {
-        noble.stopScanning();
+        noble.once('scanStart', function (error) {
+            if (error) {
+                logger.error("error starting scan, restarting now");
+                restartScan();
+            } else {
+                logger.verbose("scan started successfully");
+            }
+        });
+        noble.startScanning();
     }
-});
+}
+
+function restartScan() {
+    verbose.info("restarting noble scan");
+    noble.once('scanStop', function (error) {
+        if (error) {
+            logger.error("error stopping scan which restarting scan");
+            utils.restartBluetoothService();
+        }
+        scanning = false;
+        prepareToScan();
+    });
+    noble.stopScanning();
+}
+
+function stopScan() {
+    logger.verbose("stopping noble scan");
+    noble.once('scanStop', function (error) {
+        if (error) {
+            logger.error("error stopping scan");
+            utils.restartBluetoothService();
+        }
+        logger.verbose("scan stopped successfullly");
+        scanning = false;
+    });
+    noble.stopScanning();
+}
 
 noble.on('discover', function (peripheral) {
     console.log("Peripheral found");
-    if (peripheral.advertisement.localName === peripheral_name || peripheral.id === peripheralIdOrAddress || peripheral.address === peripheralIdOrAddress) {
-        noble.stopScanning();
-
-        console.log('peripheral with ID ' + peripheral.id + ' found');
-        var advertisement = peripheral.advertisement;
-
-
-
-        var localName = advertisement.localName;
-        var txPowerLevel = advertisement.txPowerLevel;
-        var manufacturerData = advertisement.manufacturerData;
-        var serviceData = advertisement.serviceData;
-        var serviceUuids = advertisement.serviceUuids;
-        if (localName) {
-            console.log('  Local Name        = ' + localName);
-        }
-
-        if (txPowerLevel) {
-            console.log('  TX Power Level    = ' + txPowerLevel);
-        }
-
-        if (manufacturerData) {
-            console.log('  Manufacturer Data = ' + manufacturerData.toString('hex'));
-        }
-
-        if (serviceData) {
-            console.log('  Service Data      = ' + serviceData);
-        }
-
-        if (serviceUuids) {
-            console.log('  Service UUIDs     = ' + serviceUuids);
-        }
-
-        mPeripheral = peripheral;
-        explore(peripheral);
+    const newScannedDevicePath = firebasePaths.firebaseScannedDevicesPath + "/" + peripheral.id;
+    const btDevAddress = peripheral.address;
+    var btDevName = peripheral.advertisement.localName;
+    if(btDevName === undefined){
+        btDevName = "unknown";
     }
+    logger.info("peripheral found, address: %s, name: %s", btDevAddress, btDevName);
+
+    var btDevice = {
+        "btDevAddress": btDevAddress,
+        "btDevName": btDevName
+    };
+    firebaseDb.ref(newScannedDevicePath).set(btDevice);
 });
