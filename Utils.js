@@ -8,25 +8,21 @@ const exec = require('child_process').exec;
 function getUserEmail(){
     const gatewayIdParts = config.GATEWAY_ID.split(".");
     const userEmail = gatewayIdParts.splice(1, gatewayIdParts.length).join(".");
-    logger.info("user email: " + userEmail);
     return userEmail;
 }
 
 function getGatewayName(){
     const gatewayName = config.GATEWAY_ID.split(".")[0];
-    logger.info("gateway name: " + gatewayName);
     return gatewayName;
 }
 
 function getValidFirebaseGatewayName(){
     const gatewayName = getValidFirebseName(getGatewayName());
-    logger.debug("valid firebase gateway name: " + gatewayName);
     return gatewayName;
 }
 
 function getUserKey(){
     const userKey = getValidFirebseName(getUserEmail());
-    logger.debug("user key: " + userKey);
     return userKey;
 }
 

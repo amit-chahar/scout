@@ -9,9 +9,16 @@ var firebaseDb = globals.firebaseDatabase;
 var config = require('./Config');
 var Promise = require('bluebird');
 const firebasePaths = require('./firebasePaths');
+const utils = require('./Utils');
+
+logger.debug("user email: " + utils.getUserEmail());
+logger.debug("firebase user key: " + utils.getUserKey());
+logger.debug("gateway name: " + utils.getGatewayName())
+logger.debug("firebase gateway key: " + utils.getValidFirebaseGatewayName());
 
 firebaseDb.ref(firebasePaths.firebaseGatewayPath).once('value', function (snapshot) {
     const gateway = snapshot.val();
+    logger.debug("gateway info from firebase", gateway);
     if(gateway["secretKey"] === config.SECRET_KEY){
         authenticated();
     } else {
