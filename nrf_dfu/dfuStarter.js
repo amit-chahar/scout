@@ -8,6 +8,7 @@ var noble = globals.noble;
 var Promise = require('bluebird');
 var utils = require('../Utils');
 const nrfDfuConfig = require('./nrfDfuConfig');
+const logger = require('../Logger');
 
 const dfu_service_uuid = "8e400001f3154f609fb8838830daea50";
 const dfu_char_uuid = "8e400001f3154f609fb8838830daea50";
