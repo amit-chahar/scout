@@ -26,13 +26,15 @@ function initializeAndStartScanner() {
 function getFirebaseScanSettingAndStartScan() {
     logger.debug("firebase scanner settings path: " + firebasePaths.firebaseScannerPath);
     firebaseDb.ref(firebasePaths.firebaseScannerPath).on('value', function (snapshot) {
-        var scanSettings = snapshot.val();
-        scanTime = scanSettings["scanTime"];
-        logger.info("starting scan for " + scanTime + " ms");
-        prepareToScan();
-        setTimeout(function () {
-            stopScan();
-        }, scanTime);
+        if(snapshot.exists()) {
+            var scanSettings = snapshot.val();
+            scanTime = scanSettings["scanTime"];
+            logger.info("starting scan for " + scanTime + " ms");
+            prepareToScan();
+            setTimeout(function () {
+                stopScan();
+            }, scanTime);
+        }
     })
 }
 

@@ -21,17 +21,16 @@ logger.debug("firebase gateway key: " + utils.getValidFirebaseGatewayName());
 logger.debug("firebase gateway path: " + firebasePaths.firebaseGatewayPath);
 firebaseDb.ref(firebasePaths.firebaseGatewayPath).once('value')
     .then(function (snapshot) {
-        const gateway = snapshot.val();
-        if(gateway == null){
-            logger.error("Gateway not present in database. Please add the gateway in app");
-            return;
-        }
-        logger.debug("gateway info from firebase", gateway);
-        if (gateway["secretKey"] === config.SECRET_KEY) {
-            authenticated();
+        if(snapshot.exists()) {
+            const gateway = snapshot.val();
+            logger.debug("gateway info from firebase", gateway);
+            if (gateway["secretKey"] === config.SECRET_KEY) {
+                authenticated();
+            } else {
+                logger.error("Unable to authenticate gateway");
+            }
         } else {
-            logger.error("Unable to authenticate gateway");
-            return;
+            logger.error("Gateway not present in database. Please add the gateway in app");
         }
     });
 
