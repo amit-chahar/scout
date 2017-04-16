@@ -31,7 +31,7 @@ function getUserKey(){
 }
 
 function getValidFirebseName(name){
-    return name.replace(".", ",");
+    return name.split(".").join(",");
 }
 
 function restartBluetoothService(){
