@@ -24,6 +24,6 @@ function authenticated() {
     logger.info("gateway authenticated successfully");
     require('./Scanner')
 }
-
-logger.info("starting nrf dfu service");
-nrf_dfu.startNrfDfuService();
+//
+// logger.info("starting nrf dfu service");
+// nrf_dfu.startNrfDfuService();
