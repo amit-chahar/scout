@@ -5,5 +5,5 @@ module.exports = {
     "BOOTLOADER_MODE_DEVICE_NAME": "Wispero_DFU",
 
     "GATEWAY_ID": "raspberrypi.amit.chahar@wispero.com",
-    "SECRET_KEY": "notagoodsecretkey"
+    "SECRET_KEY": "Notagoodsecretkey"
 }
