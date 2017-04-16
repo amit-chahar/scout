@@ -22,6 +22,9 @@ logger.debug("firebase gateway path: " + firebasePaths.firebaseGatewayPath);
 firebaseDb.ref(firebasePaths.firebaseGatewayPath).once('value')
     .then(function (snapshot) {
         const gateway = snapshot.val();
+        if(gateway == null){
+            return;
+        }
         logger.debug("gateway info from firebase", gateway);
         if (gateway["secretKey"] === config.SECRET_KEY) {
             authenticated();
@@ -29,6 +32,9 @@ firebaseDb.ref(firebasePaths.firebaseGatewayPath).once('value')
             logger.error("Unable to authenticate gateway");
             return;
         }
+    })
+    .then(function () {
+        logger.error("Gateway not present in database. Please add the gateway in app");
     })
 
 function authenticated() {
