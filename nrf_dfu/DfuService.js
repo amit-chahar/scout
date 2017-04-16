@@ -14,6 +14,8 @@ var AdmZip = require('adm-zip');
 var Promise = require('bluebird');
 var util = require('util');
 var nrfGlobals = require('./NrfGlobals');
+var util = require('util');
+var eventEmitter = nrfGlobals.eventEmitter;
 
 const FIRMWARES_BASEPATH = path.join(__dirname, "firmwares");
 const FIRMWARES_ZIPPED_BASEPATH = path.join(FIRMWARES_BASEPATH, "zipped");
@@ -22,7 +24,24 @@ const FIRMWARES_TMP_BASEPATH = path.join(FIRMWARES_BASEPATH, "tmp");
 logger.debug("zipped firmwares basepath: ", FIRMWARES_ZIPPED_BASEPATH);
 logger.debug("tmp directory basepath: ", FIRMWARES_TMP_BASEPATH);
 
-function intializeAndStart(firmwareZipName) {
+var context;
+
+function DfuService(firmwareZipName, deviceName, deviceAddress){
+    this.firmwareZipName = firmwareZipName;
+    this.deviceName = deviceName;
+    this.deviceAddress = deviceAddress;
+    eventEmitter.call(this);
+    context = this;
+    initializeAndStart(firmwareZipName);
+}
+
+util.inherits(DfuService, eventEmitter);
+
+DfuService.prototype.close = function () {
+    process.exit(0);
+}
+
+function initializeAndStart(firmwareZipName) {
     noble.on('stateChange', function (state) {
         if (state === 'poweredOn') {
             noble.startScanning();
@@ -70,6 +89,7 @@ function connectToPeripheral(pData) {
                 return;
             }
             logger.info("peripheral disconnected: ", peripheral.address);
+            process.exit();
         });
 
         peripheral.connect(function (error) {
@@ -208,4 +228,4 @@ function setPrn(pData){
         });
 }
 
-module.exports.initializeAndStart = intializeAndStart;
+module.exports.initializeAndStart = initializeAndStart;
