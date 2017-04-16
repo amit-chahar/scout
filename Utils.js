@@ -9,43 +9,42 @@ const logger = require('./Logger');
 const execSync = require('child_process').execSync;
 const firebase = require('firebase');
 
-function getUserEmail(){
+function getUserEmail() {
     const gatewayIdParts = config.GATEWAY_ID.split(".");
     const userEmail = gatewayIdParts.splice(1, gatewayIdParts.length).join(".");
     return userEmail;
 }
 
-function getGatewayName(){
+function getGatewayName() {
     const gatewayName = config.GATEWAY_ID.split(".")[0];
     return gatewayName;
 }
 
-function getValidFirebaseGatewayName(){
+function getValidFirebaseGatewayName() {
     const gatewayName = getValidFirebseName(getGatewayName());
     return gatewayName;
 }
 
-function getUserKey(){
+function getUserKey() {
     const userKey = getValidFirebseName(getUserEmail());
     return userKey;
 }
 
-function getValidFirebseName(name){
+function getValidFirebseName(name) {
     return name.split(".").join(",");
 }
 
-function restartBluetoothService(){
+function restartBluetoothService() {
     const command = "sudo service bluetooth restart";
     logger.verbose(TAG + "Restarting bluetooth service");
-    var returnCode = execSync(command);
-    logger.debug(TAG + "bluetooth service restart return code: ", returnCode);
-    if(returnCode === 0){
+    try {
+        execSync(command);
         logger.verbose(TAG + "bluetooth service restarted successfully");
         return true;
-    } else {
-        logger.verbose(TAG + "unable to restart bluetooth service");
+    } catch (error) {
+        logger.verbose(TAG + "unable to restart bluetooth service, error: ", error);
+        return false;
     }
-    return false;
 }
 
 function initializeFirebase() {
@@ -78,6 +77,6 @@ module.exports.initializeFirebase = initializeFirebase;
 module.exports.getUserEmail = getUserEmail;
 module.exports.getGatewayName = getGatewayName;
 module.exports.getValidFirebaseGatewayName = getValidFirebaseGatewayName;
-module.exports. getUserKey = getUserKey;
+module.exports.getUserKey = getUserKey;
 module.exports.getValidFirebaseName = getValidFirebseName;
 module.exports.restartBluetoothService = restartBluetoothService;
