@@ -5,6 +5,8 @@
 const config = require('./Config');
 const logger = require('./Logger');
 const exec = require('child_process').exec;
+const firebase = require('firebase');
+
 function getUserEmail(){
     const gatewayIdParts = config.GATEWAY_ID.split(".");
     const userEmail = gatewayIdParts.splice(1, gatewayIdParts.length).join(".");
@@ -43,6 +45,33 @@ function restartBluetoothService(){
     return false;
 }
 
+function initializeFirebase() {
+    if (config.Build.DEBUG === true) {
+        logger.debug("firebase debug configuration selected");
+        const firebaseConfig = {
+            apiKey: "AIzaSyBB4ArjQhGkK_5GCCmNqNZkNsK8eyowJBs",
+            authDomain: "wispero-patrol-debug.firebaseapp.com",
+            databaseURL: "https://wispero-patrol-debug.firebaseio.com",
+            projectId: "wispero-patrol-debug",
+            storageBucket: "wispero-patrol-debug.appspot.com",
+            messagingSenderId: "500145202622"
+        }
+        firebase.initializeApp(firebaseConfig);
+    } else {
+        logger.debug("firebase release configuration selected");
+        const config = {
+            apiKey: "AIzaSyD8JSTNZEumi28aW-Z-IldzC4ty078kuTg",
+            authDomain: "wispero-patrol.firebaseapp.com",
+            databaseURL: "https://wispero-patrol.firebaseio.com",
+            projectId: "wispero-patrol",
+            storageBucket: "wispero-patrol.appspot.com",
+            messagingSenderId: "460959009015"
+        };
+        firebase.initializeApp(config);
+    }
+}
+
+module.exports.initializeFirebase = initializeFirebase;
 module.exports.getUserEmail = getUserEmail;
 module.exports.getGatewayName = getGatewayName;
 module.exports.getValidFirebaseGatewayName = getValidFirebaseGatewayName;
