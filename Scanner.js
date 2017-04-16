@@ -6,6 +6,7 @@ var noble = globals.noble;
 const firebaseDb = globals.firebaseDatabase;
 const firebasePaths = require('./firebasePaths');
 const utils = require('./Utils');
+const logger = require('./Logger');
 
 var scanning = false;
 var scanTime;
@@ -24,7 +25,8 @@ function initializeAndStartScanner() {
 }
 
 function getFirebaseScanSettingAndStartScan() {
-    firebaseDb.ref(firebasePaths).on('value', function (snapshot) {
+    logger.debug("firebase scanner settings path: " + firebasePaths.firebaseScannerPath);
+    firebaseDb.ref(firebasePaths.firebaseScannerPath).on('value', function (snapshot) {
         var scanSettings = snapshot.val();
         scanTime = scanSettings["scanTime"];
         logger.info("starting scan for " + scanTime + " ms");
@@ -91,6 +93,8 @@ noble.on('discover', function (peripheral) {
         "btDevAddress": btDevAddress,
         "btDevName": btDevName
     };
+    logger.debug("firebase new scanned peripheral path: " + newScannedDevicePath);
+    logger.debug("firebase new peripheral: ", btDevice);
     firebaseDb.ref(newScannedDevicePath).set(btDevice);
 });
 
