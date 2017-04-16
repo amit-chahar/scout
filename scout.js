@@ -35,6 +35,7 @@ firebaseDb.ref(firebasePaths.firebaseGatewayPath).once('value')
     })
     .then(function () {
         logger.error("Gateway not present in database. Please add the gateway in app");
+        return;
     })
 
 function authenticated() {
