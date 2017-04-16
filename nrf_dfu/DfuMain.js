@@ -42,10 +42,10 @@ function finishPendingDfuTasks() {
 function onTaskAdded(snapshot){
     if(snapshot.exists()) {
         pendingDfuTasksRef.off('value', onTaskAdded);
+        var dfuTask = snapshot.val();
         pendingDfuTasksRef.child("/" + snapshot.key).remove()
             .then(function () {
                 logger.verbose(TAG + "dfu task removed from pending tasks list");
-                var dfuTask = snapshot.val();
                 dfuTask[firebaseDbKeys.DFU_PROGRESS] = 0;
                 return currentDfuTaskRef.set(dfuTask)
             })
