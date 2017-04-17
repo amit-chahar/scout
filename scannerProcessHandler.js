@@ -4,7 +4,7 @@
 const TAG = "Scanner Process Handler: ";
 const logger = require('./Logger');
 const firebaseUtils = require('./firebaseUtils');
-const firebaseDb = firebaseUtils.firebaseDb;
+const firebaseDb = firebaseUtils.firebaseDb();
 const firebasePaths = require('./firebasePaths');
 const firebaseDbKeys = require('./firebaseDatabaseKeys');
 const fork = require('child_process').fork;

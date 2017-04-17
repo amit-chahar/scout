@@ -60,11 +60,11 @@ function getValidFirebseName(name) {
     return name.split(".").join(",");
 }
 
-module.exports.firebaseDb = getFirebaseDb();
 module.exports.userEmail = getUserEmail();
 module.exports.gatewayName = getGatewayName();
 module.exports.gatewayNameAsKey = getGatewayNameAsKey();
 module.exports.userEmailAsKey = getUserEmailAsKey();
 
 module.exports.initializeFirebase = initializeFirebase;
+module.exports.firebaseDb = getFirebaseDb;
 module.exports.getValidFirebaseName = getValidFirebseName;

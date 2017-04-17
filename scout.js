@@ -6,7 +6,7 @@ const TAG = "Scout: ";
 const logger = require('./Logger');
 const firebaseUtils = require('./firebaseUtils');
 firebaseUtils.initializeFirebase();
-const firebaseDb = firebaseUtils.firebaseDb;
+const firebaseDb = firebaseUtils.firebaseDb();
 
 
 var nrf_dfu = require('./nrf_dfu/DfuMain');
