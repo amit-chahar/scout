@@ -45,7 +45,7 @@ function onTaskAdded(snapshot){
         pendingDfuTasksRef.off('value', onTaskAdded);
         var dfuTaskSnapshot = snapshot;
         snapshot.forEach(function (dfuTask) {
-            logger.info(TAG + "snapshot key: ", dfuTask.key);
+            logger.info(TAG + "snapshot key: ", dfuTask.val()[firebaseDbKeys.FIRMWARE_FILE_NAME]);
         })
         pendingDfuTasksRef.child("/" + snapshot.key).remove()
             .then(function () {
