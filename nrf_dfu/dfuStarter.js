@@ -81,7 +81,7 @@ function explore(peripheral) {
     logger.verbose(TAG + "exploring peripheral");
 
     peripheral.once('disconnect', function () {
-        logger.verbose(TAG + "Peripheral disconnected, reconnecting...");
+        logger.verbose(TAG + "Peripheral disconnected");
     });
 
     peripheral.connect(function (error) {

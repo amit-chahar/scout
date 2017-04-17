@@ -30,7 +30,7 @@ function startNrfDfuService(){
         .then(function (snapshot) {
             if(snapshot.exists()){
                 logger.verbose(TAG + "unfinished current task: ", snapshot.val());
-                doDfu(snapshot);
+                downloadFirmwareFileFromCloud(snapshot.val());
             } else {
                 finishPendingDfuTasks();
             }
@@ -45,17 +45,16 @@ function onTaskAdded(snapshot){
     if(snapshot.exists()) {
         pendingDfuTasksRef.off('value', onTaskAdded);
         snapshot.forEach(function (pendingDfuTaskSnapshot) {
-            startPendingDfuTask(pendingDfuTaskSnapshot);
+            startPendingDfuTask(pendingDfuTaskSnapshot.val());
         })
     }
 
 }
 
-function startPendingDfuTask(dfuTaskSnapshot){
-    const dfuTask = dfuTaskSnapshot.val();
-    pendingDfuTasksRef.child("/" + dfuTaskSnapshot.key).remove()
+function startPendingDfuTask(dfuTask){
+    pendingDfuTasksRef.child("/" + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]).remove()
         .then(function () {
-            logger.verbose(TAG + "dfu task removed from pending tasks list: " + dfuTaskSnapshot.key);
+            logger.verbose(TAG + "dfu task removed from pending tasks list: " + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]);
             dfuTask[firebaseDbKeys.DFU_PROGRESS] = 0;
             logger.verbose(TAG + "initializing progress of current task to 0");
             return currentDfuTaskRef.set(dfuTask)
@@ -66,7 +65,7 @@ function startPendingDfuTask(dfuTaskSnapshot){
             restartDeviceInDfuMode(dfuTask);
         })
         .catch(function (error) {
-            logger.error(TAG + "adding current DFU task: ", dfuTaskSnapshot.child(firebaseDbKeys.BT_DEVICE_ADDRESS)).val();
+            logger.error(TAG + "adding current DFU task: ", dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]);
         })
 }
 
