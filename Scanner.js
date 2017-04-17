@@ -88,7 +88,7 @@ function stopScan() {
     logger.verbose(TAG + "stopping noble scan");
     if (scanning) {
         noble.once('scanStop', function () {
-            utils.nobleRemoveAllListeners(noble);
+            // utils.nobleRemoveAllListeners(noble);
             utils.restartBluetoothService();
             logger.verbose(TAG + "scan stopped successfullly");
             scanning = false;
