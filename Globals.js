@@ -3,7 +3,9 @@
  */
 var noble = require('noble');
 var firebase = require('firebase');
+var utils = require('./Utils');
 
+utils.initializeFirebase();
 const firebaseDatabase = firebase.database();
 
 module.exports.noble = noble;

@@ -17,6 +17,8 @@ const dfu_cccd_uuid = "00000290200001000800000805f9b34fb";
 var mPeripheralAddress, mPeripheral, mService, mCharacteristic, mDescriptor;
 var deviceFound = false;
 
+restartDeviceInBootloaderMode("08:66:98:c5:9a:e0");
+
 function restartDeviceInBootloaderMode(peripheralAddress) {
     mPeripheralAddress = peripheralAddress;
     noble.startScanning();
