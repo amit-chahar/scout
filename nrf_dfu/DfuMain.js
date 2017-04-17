@@ -96,7 +96,7 @@ function downloadFirmwareFileFromCloud(dfuTask){
 
 function doDfu(dfuTask){
     logger.verbose(TAG + "starting Dfu task: ", dfuTask);
-    const firmwareFileName = dfuTask[firebaseDbKeys.FIRMWARE_FILE_NAME];
+    const firmwareFileName = dfuTask["firmwareFileName"];
     logger.info("starting DFU process: firmware: " + firmwareFileName);
     DfuService.initializeAndStart(firmwareFileName);
 }
