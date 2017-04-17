@@ -44,7 +44,7 @@ function onTaskAdded(snapshot){
     if(snapshot.exists()) {
         pendingDfuTasksRef.off('value', onTaskAdded);
         var dfuTaskSnapshot = snapshot;
-        logger.info(TAG + "snapshot key: ", snapshot.key);
+        logger.info(TAG + "snapshot key: ", snapshot[0].key);
         pendingDfuTasksRef.child("/" + snapshot.key).remove()
             .then(function () {
                 logger.verbose(TAG + "dfu task removed from pending tasks list");
