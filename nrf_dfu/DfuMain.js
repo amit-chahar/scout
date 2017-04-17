@@ -15,6 +15,7 @@ const dfuStarter = require("./dfuStarter");
 const eventNames = require("./eventNames");
 const download = require('download');
 const path = require('path');
+const Promise = require('bluebird');
 
 var taskInProgress = false;
 
