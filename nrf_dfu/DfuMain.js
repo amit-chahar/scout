@@ -27,9 +27,9 @@ function startNrfDfuService(){
 
     firebaseDb.ref(firebasePaths.firebaseCurrentDfuTaskPath).once('value')
         .then(function (snapshot) {
-            logger.verbose(TAG + "unfinished current task: ", snapshot.val());
+            logger.verbose(TAG + "unfinished current task: ", snapshot[0].val());
             if(snapshot.exists()){
-                doDfu(snapshot.val());
+                doDfu(snapshot);
             } else {
                 finishPendingDfuTasks();
             }
