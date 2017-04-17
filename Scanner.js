@@ -139,4 +139,4 @@ function addDiscoverListener() {
         firebaseDb.ref(newScannedDevicePath).set(btDevice);
     });
 }
-module.exports.initializeAndStartScanner = getFirebaseScanSettingAndStartScan();
+module.exports.initializeAndStartScanner = getFirebaseScanSettingAndStartScan;

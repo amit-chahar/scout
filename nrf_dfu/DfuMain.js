@@ -27,7 +27,6 @@ const pendingDfuTasksRef = firebaseDb.ref(firebasePaths.firebasePendingDfuTasksP
 function startNrfDfuService() {
 
     firebaseDb.ref(firebasePaths.firebaseScannerPath + "/" + firebaseDbKeys.SCANNER_ENABLE).on('value', function (snapshot) {
-        logger.info("snapshot val: " + snapshot.val());
         if(!snapshot.val()) {
             firebaseDb.ref(firebasePaths.firebaseCurrentDfuTaskPath).once('value')
                 .then(function (snapshot) {
