@@ -44,29 +44,26 @@ function finishPendingDfuTasks() {
 function onTaskAdded(snapshot){
     if(snapshot.exists()) {
         pendingDfuTasksRef.off('value', onTaskAdded);
-        snapshot.forEach(function (pendingDfuTask) {
-            startPendingDfuTask(pendingDfuTask);
+        snapshot.forEach(function (pendingDfuTaskSnapshot) {
+            startPendingDfuTask(pendingDfuTaskSnapshot);
         })
     }
 
 }
 
-function startPendingDfuTask(dfuTask){
-    pendingDfuTasksRef.child("/" + dfuTask.key).remove()
+function startPendingDfuTask(dfuTaskSnapshot){
+    const dfuTask = dfuTaskSnapshot.val();
+    pendingDfuTasksRef.child("/" + dfuTaskSnapshot.key).remove()
         .then(function () {
-            logger.verbose(TAG + "dfu task removed from pending tasks list");
-            return currentDfuTaskRef.set(dfuTask)
-        })
-        .then(function () {
-            var updates = {};
-            updates[firebaseDbKeys.DFU_PROGRESS] = 0;
+            logger.verbose(TAG + "dfu task removed from pending tasks list: " + dfuTaskSnapshot.key);
+            dfuTask[firebaseDbKeys.DFU_PROGRESS] = 0;
             logger.verbose(TAG + "initializing progress of current task to 0");
-            return currentDfuTaskRef.update(updates)
+            return currentDfuTaskRef.set(dfuTask)
         })
         .then(function () {
             eventEmitter.removeAllListeners(eventNames.DEVICE_NOT_FOUND);
             eventEmitter.removeAllListeners(eventNames.DEVICE_RESTARTED_IN_BOOTLOADER_MODE);
-            restartDeviceInDfuMode(dfuTaskSnapshot);
+            restartDeviceInDfuMode(dfuTask);
         })
         .catch(function (error) {
             logger.error(TAG + "adding current DFU task: ", dfuTaskSnapshot.child(firebaseDbKeys.BT_DEVICE_ADDRESS)).val();
@@ -77,10 +74,8 @@ function restartDeviceInDfuMode(dfuTask) {
     eventEmitter.once(eventNames.DEVICE_NOT_FOUND, function () {
         currentDfuTaskRef.set({})
             .then(function () {
+                logger.info(TAG + "current DFU task failed: " + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]);
                 return failedDfuTasksRef.child("/" + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]).set(dfuTask)
-            })
-            .then(function () {
-                logger.info(TAG + "current DFU task failed");
             })
             .catch(function (error) {
                 logger.error(TAG + "adding DFU task to failed tasks list");
@@ -91,24 +86,25 @@ function restartDeviceInDfuMode(dfuTask) {
         logger.info(TAG + "device restarted in bootloader mode");
         downloadFirmwareFileFromCloud(dfuTask);
     })
+
     dfuStarter.restartDeviceInBootloaderMode();
 }
 
-function downloadFirmwareFileFromCloud(dfuTaskSnapshot){
-    const downloadUrl = dfuTaskSnapshot.child(firebaseDbKeys.FIRMWARE_DOWNLOAD_URL).val();
-    const firmwareFileName = dfuTaskSnapshot.child(firebaseDbKeys.FIRMWARE_FILE_NAME).val();
+function downloadFirmwareFileFromCloud(dfuTask){
+    const downloadUrl = dfuTask[firebaseDbKeys.FIRMWARE_DOWNLOAD_URL];
+    const firmwareFileName = dfuTask[firebaseDbKeys.FIRMWARE_FILE_NAME];
     const downloadDestination = path.join(__dirname, "firmwares", "zipped");
     download(downloadUrl, downloadDestination)
         .then(function () {
             logger.info("firmware file %s downloaded" + firmwareFileName);
-            doDfu(dfuTaskSnapshot);
+            doDfu(dfuTask);
         })
 }
 
-function doDfu(dfuTaskSnapshot){
-    var dfuTaskKey = dfuTaskSnapshot.key;
-    const firmwareFileName = dfuTaskSnapshot.child(firebaseDbKeys.FIRMWARE_FILE_NAME).val();
-    logger.verbose(TAG + "starting Dfu task: ", dfuTaskKey);
+function doDfu(dfuTask){
+    const btDeviceAddress = dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS];
+    const firmwareFileName = dfuTask[firebaseDbKeys.FIRMWARE_FILE_NAME];
+    logger.verbose(TAG + "starting Dfu task: ", btDeviceAddress);
     logger.info("starting DFU process: firmware: " + firmwareFileName);
     DfuService.initializeAndStart(firmwareFileName);
 }
