@@ -11,17 +11,24 @@ const logger = require('./Logger');
 const config = require('./Config');
 const firebaseDbKeys = require('./firebaseDatabaseKeys');
 
+var startedScanning = false;
 var scanning = false;
 var scanTime;
 
 function initializeAndStartScanner() {
     noble.on('stateChange', function (state) {
         if (state === 'poweredOn') {
+            startedScanning = true;
             getFirebaseScanSettingAndStartScan();
         }
         logger.verbose(TAG + "scanner state: " + state);
     });
     utils.restartBluetoothService();
+    setTimeout(function () {
+        if(!startedScanning){
+            getFirebaseScanSettingAndStartScan();
+        }
+    }, 2000);
     logger.verbose(TAG + "scanner initialized");
 }
 
