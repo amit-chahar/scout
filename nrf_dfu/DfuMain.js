@@ -27,7 +27,8 @@ const pendingDfuTasksRef = firebaseDb.ref(firebasePaths.firebasePendingDfuTasksP
 function startNrfDfuService() {
 
     firebaseDb.ref(firebasePaths.firebaseScannerPath + "/" + firebaseDbKeys.SCANNER_ENABLE).on('value', function (snapshot) {
-        if(!snapshot.val()) {
+        if(!snapshot.val() && !taskInProgress) {
+            taskInProgress = true;
             firebaseDb.ref(firebasePaths.firebaseCurrentDfuTaskPath).once('value')
                 .then(function (snapshot) {
                     if (snapshot.exists()) {
@@ -42,17 +43,19 @@ function startNrfDfuService() {
 }
 
 function finishPendingDfuTasks() {
-    pendingDfuTasksRef.limitToFirst(1).on('value', onTaskAdded);
+    pendingDfuTasksRef.once('value', onTaskAdded);
 }
 
 function onTaskAdded(snapshot) {
     if (snapshot.exists()) {
-        pendingDfuTasksRef.off();
+        // pendingDfuTasksRef.off();
         snapshot.forEach(function (pendingDfuTaskSnapshot) {
             logger.info("got pending task: " + pendingDfuTaskSnapshot.val()[firebaseDbKeys.BT_DEVICE_ADDRESS]);
             startPendingDfuTask(pendingDfuTaskSnapshot.val());
             return true;
         })
+    } else {
+        taskInProgress = false;
     }
 
 }
