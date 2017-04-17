@@ -50,14 +50,14 @@ function listenerScanStop() {
 }
 
 function invalidPeripheral(){
-    utils.nobleRemoveAllListeners();
+    utils.nobleRemoveAllListeners(noble);
     scanningFirstTime = false;
     utils.restartBluetoothService();
     eventEmitter.emit(eventNames.DEVICE_NOT_FOUND);
 }
 
 function validPeripheral(){
-    utils.nobleRemoveAllListeners();
+    utils.nobleRemoveAllListeners(noble);
     scanningFirstTime = false;
     mPeripheral.disconnect();
     utils.restartBluetoothService();

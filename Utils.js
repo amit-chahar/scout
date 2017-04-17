@@ -4,7 +4,6 @@
 
 const TAG = "Utils: ";
 const globals = require('./Globals');
-const noble = globals.noble;
 const config = require('./Config');
 const logger = require('./Logger');
 const execSync = require('child_process').execSync;
@@ -74,7 +73,7 @@ function initializeFirebase() {
     }
 }
 
-function nobleRemoveAllListeners(){
+function nobleRemoveAllListeners(noble){
     noble.removeAllListeners('stateChange');
     noble.removeAllListeners('scanStart');
     noble.removeAllListeners('scanStop');
