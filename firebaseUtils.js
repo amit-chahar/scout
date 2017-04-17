@@ -36,6 +36,35 @@ function getFirebaseDb(){
     return firebase.database();
 }
 
+function getUserEmail() {
+    const gatewayIdParts = config.GATEWAY_ID.split(".");
+    const userEmail = gatewayIdParts.splice(1, gatewayIdParts.length).join(".");
+    return userEmail;
+}
+
+function getGatewayName() {
+    const gatewayName = config.GATEWAY_ID.split(".")[0];
+    return gatewayName;
+}
+
+function getGatewayNameAsKey() {
+    return getValidFirebseName(getGatewayName());
+}
+
+function getUserEmailAsKey() {
+    const userEmailAsKey = getValidFirebseName(getUserEmail());
+    return userEmailAsKey;
+}
+
+function getValidFirebseName(name) {
+    return name.split(".").join(",");
+}
+
 module.exports.firebaseDb = getFirebaseDb();
+module.exports.userEmail = getUserEmail();
+module.exports.gatewayName = getGatewayName();
+module.exports.gatewayNameAsKey = getGatewayNameAsKey();
+module.exports.userEmailAsKey = getUserEmailAsKey();
 
 module.exports.initializeFirebase = initializeFirebase;
+module.exports.getValidFirebaseName = getValidFirebseName;

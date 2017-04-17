@@ -7,18 +7,18 @@ const logger = require('./Logger');
 const firebaseUtils = require('./firebaseUtils');
 firebaseUtils.initializeFirebase();
 const firebaseDb = firebaseUtils.firebaseDb;
-const utils = require('./Utils');
 
 
 var nrf_dfu = require('./nrf_dfu/DfuMain');
 var config = require('./Config');
 var Promise = require('bluebird');
 const firebasePaths = require('./firebasePaths');
+const scannerProcessHandler = require('./scannerProcessHandler');
 
-logger.debug("user email: " + utils.getUserEmail());
-logger.debug("firebase user key: " + utils.getUserKey());
-logger.debug("gateway name: " + utils.getGatewayName())
-logger.debug("firebase gateway key: " + utils.getValidFirebaseGatewayName());
+logger.debug("user email: " + firebaseUtils.userEmail);
+logger.debug("firebase user email as key: " + firebaseUtils.userEmailAsKey);
+logger.debug("gateway name: " + firebaseUtils.gatewayName)
+logger.debug("firebase gateway key: " + firebaseUtils.gatewayNameAsKey);
 
 logger.debug("firebase gateway path: " + firebasePaths.firebaseGatewayPath);
 firebaseDb.ref(firebasePaths.firebaseGatewayPath).once('value')
@@ -38,6 +38,7 @@ firebaseDb.ref(firebasePaths.firebaseGatewayPath).once('value')
 
 function authenticated() {
     logger.info("gateway authenticated successfully");
-    require('./Scanner').initializeAndStartScanner();
-    nrf_dfu.startNrfDfuService();
+    // require('./Scanner').initializeAndStartScanner();
+    // nrf_dfu.startNrfDfuService();
+    scannerProcessHandler();
 }
