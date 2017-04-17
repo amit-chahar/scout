@@ -24,25 +24,30 @@ const pendingDfuTasksRef = firebaseDb.ref(firebasePaths.firebasePendingDfuTasksP
     completedDfuTasksRef = firebaseDb.ref(firebasePaths.firebaseCompletedDfuTasksPath),
     failedDfuTasksRef = firebaseDb.ref(firebasePaths.firebaseFailedDfuTasksPath);
 
-function startNrfDfuService(){
+function startNrfDfuService() {
 
-    firebaseDb.ref(firebasePaths.firebaseCurrentDfuTaskPath).once('value')
-        .then(function (snapshot) {
-            if(snapshot.exists()){
-                logger.verbose(TAG + "unfinished current task: ", snapshot.val());
-                restartDeviceInDfuMode(snapshot.val());
-            } else {
-                finishPendingDfuTasks();
-            }
-        })
+    firebaseDb.ref(firebasePaths.firebaseScannerPath + "/" + firebaseDbKeys.SCANNER_ENABLE).on('value', function (snapshot) {
+        logger.info("snapshot val: " + snapshot.val());
+        if(!snapshot.val()) {
+            firebaseDb.ref(firebasePaths.firebaseCurrentDfuTaskPath).once('value')
+                .then(function (snapshot) {
+                    if (snapshot.exists()) {
+                        logger.verbose(TAG + "unfinished current task: ", snapshot.val());
+                        restartDeviceInDfuMode(snapshot.val());
+                    } else {
+                        finishPendingDfuTasks();
+                    }
+                });
+        }
+    })
 }
 
 function finishPendingDfuTasks() {
     pendingDfuTasksRef.limitToFirst(1).on('value', onTaskAdded)
 }
 
-function onTaskAdded(snapshot){
-    if(snapshot.exists()) {
+function onTaskAdded(snapshot) {
+    if (snapshot.exists()) {
         pendingDfuTasksRef.off('value', onTaskAdded);
         snapshot.forEach(function (pendingDfuTaskSnapshot) {
             startPendingDfuTask(pendingDfuTaskSnapshot.val());
@@ -51,7 +56,7 @@ function onTaskAdded(snapshot){
 
 }
 
-function startPendingDfuTask(dfuTask){
+function startPendingDfuTask(dfuTask) {
     pendingDfuTasksRef.child("/" + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]).remove()
         .then(function () {
             logger.verbose(TAG + "dfu task removed from pending tasks list: " + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]);
@@ -82,7 +87,7 @@ function restartDeviceInDfuMode(dfuTask) {
     dfuStarter.restartDeviceInBootloaderMode();
 }
 
-function currentDfuTaskFailed(dfuTask){
+function currentDfuTaskFailed(dfuTask) {
     currentDfuTaskRef.set({})
         .then(function () {
             logger.info(TAG + "current DFU task failed: " + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]);
@@ -96,7 +101,7 @@ function currentDfuTaskFailed(dfuTask){
         });
 }
 
-function downloadFirmwareFileFromCloud(dfuTask){
+function downloadFirmwareFileFromCloud(dfuTask) {
     const downloadUrl = dfuTask[firebaseDbKeys.FIRMWARE_DOWNLOAD_URL];
     const firmwareFileName = dfuTask[firebaseDbKeys.FIRMWARE_FILE_NAME];
     const downloadDestination = path.join(__dirname, "firmwares", "zipped");
@@ -107,7 +112,7 @@ function downloadFirmwareFileFromCloud(dfuTask){
         })
 }
 
-function doDfu(dfuTask){
+function doDfu(dfuTask) {
     // var initFileSent = false;
     // var firmwareFileSent = false;
     // var dfufinished = false;
@@ -127,7 +132,7 @@ function doDfu(dfuTask){
         noActivity = false;
     });
 
-    eventEmitter.once(eventNames.DFU_TASK_FIRMWARE_FILE_SENT,function () {
+    eventEmitter.once(eventNames.DFU_TASK_FIRMWARE_FILE_SENT, function () {
         updateCurrentTaskProgress(80);
     });
 
@@ -151,7 +156,7 @@ function updateCurrentTaskProgress(percent) {
         })
 }
 
-function currentTaskCompleted(dfuTask){
+function currentTaskCompleted(dfuTask) {
     completedDfuTasksRef.child("/" + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]).set(dfuTask)
         .then(function () {
             logger.info(TAG + "DFU task completed: " + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]);
