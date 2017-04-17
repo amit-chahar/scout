@@ -41,6 +41,7 @@ function getFirebaseScanSettingAndStartScan() {
                 scanTime = scanSettings[firebaseDbKeys.SCANNER_SCAN_TIME];
                 logger.info(TAG + "starting scan for " + scanTime + " ms");
                 // prepareToScan();
+                addDiscoverListener();
                 startScanning();
                 setTimeout(function () {
                     stopScan();
@@ -88,7 +89,7 @@ function stopScan() {
     logger.verbose(TAG + "stopping noble scan");
     if (scanning) {
         noble.once('scanStop', function () {
-            // utils.nobleRemoveAllListeners(noble);
+            utils.nobleRemoveAllListeners(noble);
             utils.restartBluetoothService();
             logger.verbose(TAG + "scan stopped successfullly");
             scanning = false;
@@ -105,23 +106,24 @@ function turnOffFirebaseScanner() {
     firebaseDb.ref(firebasePaths.firebaseScannerPath + "/enable").set(false);
 }
 
-noble.on('discover', function (peripheral) {
-    console.log(TAG + "Peripheral found");
-    const newScannedDevicePath = firebasePaths.firebaseScannedDevicesPath + "/" + peripheral.id;
-    const btDevAddress = peripheral.address;
-    var btDevName = peripheral.advertisement.localName;
-    if (btDevName === undefined) {
-        btDevName = "unknown";
-    }
-    logger.info(TAG + "peripheral found, address: %s, name: %s", btDevAddress, btDevName);
+function addDiscoverListener() {
+    noble.on('discover', function (peripheral) {
+        console.log(TAG + "Peripheral found");
+        const newScannedDevicePath = firebasePaths.firebaseScannedDevicesPath + "/" + peripheral.id;
+        const btDevAddress = peripheral.address;
+        var btDevName = peripheral.advertisement.localName;
+        if (btDevName === undefined) {
+            btDevName = "unknown";
+        }
+        logger.info(TAG + "peripheral found, address: %s, name: %s", btDevAddress, btDevName);
 
-    var btDevice = {};
-    btDevice[firebaseDbKeys.BT_DEVICE_ADDRESS] = btDevAddress;
-    btDevice[firebaseDbKeys.BT_DEVICE_NAME] = btDevName;
+        var btDevice = {};
+        btDevice[firebaseDbKeys.BT_DEVICE_ADDRESS] = btDevAddress;
+        btDevice[firebaseDbKeys.BT_DEVICE_NAME] = btDevName;
 
-    logger.debug(TAG + "firebase new scanned peripheral path: " + newScannedDevicePath);
-    logger.debug(TAG + "firebase new peripheral: ", btDevice);
-    firebaseDb.ref(newScannedDevicePath).set(btDevice);
-});
-
+        logger.debug(TAG + "firebase new scanned peripheral path: " + newScannedDevicePath);
+        logger.debug(TAG + "firebase new peripheral: ", btDevice);
+        firebaseDb.ref(newScannedDevicePath).set(btDevice);
+    });
+}
 module.exports.initializeAndStartScanner = initializeAndStartScanner;
