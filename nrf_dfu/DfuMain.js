@@ -27,6 +27,7 @@ function startNrfDfuService(){
 
     firebaseDb.ref(firebasePaths.firebaseCurrentDfuTaskPath).once('value')
         .then(function (snapshot) {
+            logger.verbose(TAG + "unfinished current task: ", snapshot.val());
             if(snapshot.exists()){
                 doDfu(snapshot.val());
             } else {
@@ -89,13 +90,13 @@ function downloadFirmwareFileFromCloud(dfuTask){
     download(downloadUrl, downloadDestination)
         .then(function () {
             logger.info("firmware file %s downloaded", dfuTask[firebaseDbKeys.FIRMWARE_FILE_NAME]);
-            startDfuProcess();
+            doDfu(dfuTask);
         })
 }
 
 function doDfu(dfuTask){
     const firmwareFileName = dfuTask[firebaseDbKeys.FIRMWARE_FILE_NAME];
-    logger.info("starting nrf DFU: firmware: " + firmwareFileName);
+    logger.info("starting DFU process: firmware: " + firmwareFileName);
     DfuService.initializeAndStart(firmwareFileName);
 }
 
