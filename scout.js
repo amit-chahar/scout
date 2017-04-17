@@ -9,7 +9,7 @@ firebaseUtils.initializeFirebase();
 const firebaseDb = firebaseUtils.firebaseDb();
 
 
-var nrf_dfu = require('./nrf_dfu/DfuMain');
+// var nrf_dfu = require('./nrf_dfu/DfuMain');
 var config = require('./Config');
 var Promise = require('bluebird');
 const firebasePaths = require('./firebasePaths');
