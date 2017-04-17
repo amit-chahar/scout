@@ -45,7 +45,7 @@ function onTaskAdded(snapshot){
         pendingDfuTasksRef.off('value', onTaskAdded);
         var dfuTask;
         Promise.all(snapshot, function (pendingDfuTask) {
-            logger.info(TAG + "selected pending DFU task: " + pendingDfuTask.key;
+            logger.info(TAG + "selected pending DFU task: " + pendingDfuTask.key);
             dfuTask = pendingDfuTask;
         }).then(function () {
 
