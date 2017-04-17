@@ -16,6 +16,7 @@ const dfu_cccd_uuid = "00000290200001000800000805f9b34fb";
 
 var mPeripheralAddress, mPeripheral, mService, mCharacteristic, mDescriptor;
 var deviceFound = false;
+var scanningFirstTime = true;
 
 restartDeviceInBootloaderMode("08:66:98:c5:9a:e0");
 
@@ -23,7 +24,7 @@ function restartDeviceInBootloaderMode(peripheralAddress) {
     mPeripheralAddress = peripheralAddress;
     noble.on('stateChange', function (state) {
         logger.verbose(TAG + "noble state: " + state);
-        if(state === 'poweredOn'){
+        if(state === 'poweredOn' && scanningFirstTime){
             noble.startScanning();
         }
     });
@@ -45,11 +46,13 @@ noble.on('scanStop', function () {
 });
 
 function invalidPeripheral(){
+    scanningFirstTime = false;
     utils.restartBluetoothService();
     eventEmitter.emit(eventNames.DEVICE_NOT_FOUND);
 }
 
 function validPeripheral(){
+    scanningFirstTime = false;
     utils.restartBluetoothService();
     eventEmitter.emit(eventNames.DEVICE_RESTARTED_IN_BOOTLOADER_MODE);
 }

@@ -24,8 +24,8 @@
       <file leaf-file-name="dfuStarter.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuStarter.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="24" column="54" lean-forward="false" selection-start-line="24" selection-start-column="54" selection-end-line="24" selection-end-column="54" />
+            <state relative-caret-position="474">
+              <caret line="54" column="30" lean-forward="false" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -380,14 +380,7 @@
       <workItem from="1491565769528" duration="6624000" />
       <workItem from="1491743150986" duration="47252000" />
       <workItem from="1491913539896" duration="62529000" />
-      <workItem from="1492339275129" duration="28467000" />
-    </task>
-    <task id="LOCAL-00064" summary="dfu service added">
-      <created>1492338313761</created>
-      <option name="number" value="00064" />
-      <option name="presentableId" value="LOCAL-00064" />
-      <option name="project" value="LOCAL" />
-      <updated>1492338313761</updated>
+      <workItem from="1492339275129" duration="28606000" />
     </task>
     <task id="LOCAL-00065" summary="firebase scanner added">
       <created>1492339150621</created>
@@ -725,11 +718,18 @@
       <option name="project" value="LOCAL" />
       <updated>1492415712614</updated>
     </task>
-    <option name="localTasksCounter" value="113" />
+    <task id="LOCAL-00113" summary="dfu service connected to firebase">
+      <created>1492415866853</created>
+      <option name="number" value="00113" />
+      <option name="presentableId" value="LOCAL-00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1492415866853</updated>
+    </task>
+    <option name="localTasksCounter" value="114" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="144872000" />
+    <option name="totallyTimeSpent" value="145011000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -1159,8 +1159,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuStarter.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="24" column="54" lean-forward="false" selection-start-line="24" selection-start-column="54" selection-end-line="24" selection-end-column="54" />
+        <state relative-caret-position="474">
+          <caret line="54" column="30" lean-forward="false" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
           <folding />
         </state>
       </provider>
