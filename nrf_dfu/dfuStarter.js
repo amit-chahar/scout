@@ -21,11 +21,13 @@ restartDeviceInBootloaderMode("08:66:98:c5:9a:e0");
 
 function restartDeviceInBootloaderMode(peripheralAddress) {
     mPeripheralAddress = peripheralAddress;
-    utils.restartBluetoothService();
-    noble.startScanning();
     noble.on('stateChange', function (state) {
         logger.verbose(TAG + "noble state: " + state);
+        if(state === 'poweredOn'){
+            noble.startScanning();
+        }
     });
+    utils.restartBluetoothService();
     setTimeout(function () {
         noble.stopScanning();
     }, nrfDfuConfig.DFU_STARTER_SCAN_TIME)
