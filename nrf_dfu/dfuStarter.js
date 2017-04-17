@@ -21,11 +21,14 @@ var scanningFirstTime = true;
 // restartDeviceInBootloaderMode("08:66:98:c5:9a:e0");
 
 function restartDeviceInBootloaderMode(peripheralAddress) {
+    addDiscoverListener();
+    addScanStartStopListener();
     mPeripheralAddress = peripheralAddress;
     noble.on('stateChange', listenerStateChange);
     utils.restartBluetoothService();
     setTimeout(function () {
         noble.stopScanning();
+        logger.verbose(TAG + "peripheral not found");
     }, nrfDfuConfig.DFU_STARTER_SCAN_TIME)
 }
 
@@ -36,16 +39,18 @@ function listenerStateChange(state) {
     }
 }
 
-noble.on('scanStart', listenerScanStart)
-function listenerScanStart() {
-    logger.verbose(TAG + "scan started");
-}
+function addScanStartStopListener(){
+    noble.on('scanStart', listenerScanStart)
+    function listenerScanStart() {
+        logger.verbose(TAG + "scan started");
+    }
 
-noble.on('scanStop', listenerScanStop);
-function listenerScanStop() {
-    logger.verbose(TAG + "scan stopped");
-    if(!deviceFound) {
-        invalidPeripheral();
+    noble.on('scanStop', listenerScanStop);
+    function listenerScanStop() {
+        logger.verbose(TAG + "scan stopped");
+        if(!deviceFound) {
+            invalidPeripheral();
+        }
     }
 }
 
@@ -64,18 +69,19 @@ function validPeripheral(){
     eventEmitter.emit(eventNames.DEVICE_RESTARTED_IN_BOOTLOADER_MODE);
 }
 
-noble.on('discover', listenerDiscover);
-function listenerDiscover(peripheral) {
-    if (peripheral.address === mPeripheralAddress) {
-        logger.debug(TAG + "peripheral with address %s found", mPeripheralAddress);
-        deviceFound = true;
-        noble.stopScanning();
+function addDiscoverListener() {
+    noble.on('discover', listenerDiscover);
+    function listenerDiscover(peripheral) {
+        if (peripheral.address === mPeripheralAddress) {
+            logger.debug(TAG + "peripheral with address %s found", mPeripheralAddress);
+            deviceFound = true;
+            noble.stopScanning();
 
-        mPeripheral = peripheral;
-        explore(peripheral);
+            mPeripheral = peripheral;
+            explore(peripheral);
+        }
     }
 }
-
 
 function explore(peripheral) {
     logger.verbose(TAG + "exploring peripheral");
