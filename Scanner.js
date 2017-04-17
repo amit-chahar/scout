@@ -15,22 +15,22 @@ var startedScanning = false;
 var scanning = false;
 var scanTime;
 
-function initializeAndStartScanner() {
-    noble.on('stateChange', function (state) {
-        if (state === 'poweredOn') {
-            startedScanning = true;
-            getFirebaseScanSettingAndStartScan();
-        }
-        logger.verbose(TAG + "scanner state: " + state);
-    });
-    utils.restartBluetoothService();
-    setTimeout(function () {
-        if(!startedScanning){
-            getFirebaseScanSettingAndStartScan();
-        }
-    }, 2000);
-    logger.verbose(TAG + "scanner initialized");
-}
+// function initializeAndStartScanner() {
+//     noble.on('stateChange', function (state) {
+//         if (state === 'poweredOn') {
+//             startedScanning = true;
+//             getFirebaseScanSettingAndStartScan();
+//         }
+//         logger.verbose(TAG + "scanner state: " + state);
+//     });
+//     utils.restartBluetoothService();
+//     setTimeout(function () {
+//         if(!startedScanning){
+//             getFirebaseScanSettingAndStartScan();
+//         }
+//     }, 2000);
+//     logger.verbose(TAG + "scanner initialized");
+// }
 
 function getFirebaseScanSettingAndStartScan() {
     logger.debug(TAG + "firebase scanner settings path: " + firebasePaths.firebaseScannerPath);
@@ -52,11 +52,24 @@ function getFirebaseScanSettingAndStartScan() {
 }
 
 function startScanning(){
+    noble.on('stateChange', function (state) {
+        if (state === 'poweredOn') {
+            startedScanning = true;
+            noble.startScanning();
+        }
+        logger.verbose(TAG + "scanner state: " + state);
+    });
+    utils.restartBluetoothService();
+    setTimeout(function () {
+        if(!startedScanning){
+            noble.startScanning();
+        }
+    }, 2000);
+    logger.verbose(TAG + "scanner initialized");
     noble.once('scanStart', function () {
         scanning = true;
         logger.verbose(TAG + "scan started successfully");
     });
-    noble.startScanning();
 }
 
 function prepareToScan() {
@@ -126,4 +139,4 @@ function addDiscoverListener() {
         firebaseDb.ref(newScannedDevicePath).set(btDevice);
     });
 }
-module.exports.initializeAndStartScanner = initializeAndStartScanner;
+module.exports.initializeAndStartScanner = getFirebaseScanSettingAndStartScan();
