@@ -51,9 +51,9 @@ function onTaskAdded(snapshot){
             })
             .then(function () {
                 logger.info(TAG + "current DFU task: ", dfuTask);
-                restartDeviceInDfuMode(dfuTask);
                 eventEmitter.removeAllListeners(eventNames.DEVICE_NOT_FOUND);
                 eventEmitter.removeAllListeners(eventNames.DEVICE_RESTARTED_IN_BOOTLOADER_MODE);
+                restartDeviceInDfuMode(dfuTask);
             })
             .catch(function (error) {
                 logger.error(TAG + "adding current DFU task: ", dfuTask);
