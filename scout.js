@@ -38,6 +38,3 @@ function authenticated() {
     //require('./Scanner').initializeAndStartScanner();
     nrf_dfu.startNrfDfuService();
 }
-//
-// logger.info("starting nrf dfu service");
-// nrf_dfu.startNrfDfuService();

@@ -30,7 +30,7 @@ function startNrfDfuService(){
         .then(function (snapshot) {
             if(snapshot.exists()){
                 logger.verbose(TAG + "unfinished current task: ", snapshot.val());
-                downloadFirmwareFileFromCloud(snapshot.val());
+                restartDeviceInDfuMode(snapshot.val());
             } else {
                 finishPendingDfuTasks();
             }
