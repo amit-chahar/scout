@@ -42,13 +42,14 @@ function startNrfDfuService() {
 }
 
 function finishPendingDfuTasks() {
-    pendingDfuTasksRef.limitToFirst(1).on('value', onTaskAdded)
+    pendingDfuTasksRef.limitToFirst(1).on('value', onTaskAdded).off();
 }
 
 function onTaskAdded(snapshot) {
     if (snapshot.exists()) {
-        pendingDfuTasksRef.off('value', onTaskAdded);
+        // pendingDfuTasksRef.off('value', onTaskAdded);
         snapshot.forEach(function (pendingDfuTaskSnapshot) {
+            logger.info("got pending task: " + pendingDfuTaskSnapshot.val()[firebaseDbKeys.BT_DEVICE_ADDRESS]);
             startPendingDfuTask(pendingDfuTaskSnapshot.val());
         })
     }
