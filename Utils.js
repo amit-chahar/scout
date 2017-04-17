@@ -3,7 +3,8 @@
  */
 
 const TAG = "Utils: ";
-
+const globals = require('./Globals');
+const noble = globals.noble;
 const config = require('./Config');
 const logger = require('./Logger');
 const execSync = require('child_process').execSync;
@@ -73,6 +74,13 @@ function initializeFirebase() {
     }
 }
 
+function nobleRemoveAllListeners(){
+    noble.removeAllListeners('stateChange');
+    noble.removeAllListeners('scanStart');
+    noble.removeAllListeners('scanStop');
+    noble.removeAllListeners('discover');
+}
+
 module.exports.initializeFirebase = initializeFirebase;
 module.exports.getUserEmail = getUserEmail;
 module.exports.getGatewayName = getGatewayName;
@@ -80,3 +88,4 @@ module.exports.getValidFirebaseGatewayName = getValidFirebaseGatewayName;
 module.exports.getUserKey = getUserKey;
 module.exports.getValidFirebaseName = getValidFirebseName;
 module.exports.restartBluetoothService = restartBluetoothService;
+module.exports.nobleRemoveAllListeners = nobleRemoveAllListeners;
