@@ -27,8 +27,8 @@ function startNrfDfuService(){
 
     firebaseDb.ref(firebasePaths.firebaseCurrentDfuTaskPath).once('value')
         .then(function (snapshot) {
-            logger.verbose(TAG + "unfinished current task: ", snapshot.val());
             if(snapshot.exists()){
+                logger.verbose(TAG + "unfinished current task: ", snapshot.val());
                 doDfu(snapshot);
             } else {
                 finishPendingDfuTasks();
@@ -44,6 +44,7 @@ function onTaskAdded(snapshot){
     if(snapshot.exists()) {
         pendingDfuTasksRef.off('value', onTaskAdded);
         var dfuTaskSnapshot = snapshot;
+        logger.info(TAG + "snapshot key: ", snapshot.key);
         pendingDfuTasksRef.child("/" + snapshot.key).remove()
             .then(function () {
                 logger.verbose(TAG + "dfu task removed from pending tasks list");

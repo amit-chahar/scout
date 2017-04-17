@@ -79,6 +79,18 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="firebasePaths.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/firebasePaths.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="452">
+              <caret line="40" column="29" lean-forward="true" selection-start-line="40" selection-start-column="29" selection-end-line="40" selection-end-column="29" />
+              <folding>
+                <element signature="e#0#48#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="firebaseDatabaseKeys.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/firebaseDatabaseKeys.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -106,8 +118,8 @@
       <file leaf-file-name="DfuMain.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuMain.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="106" column="38" lean-forward="true" selection-start-line="106" selection-start-column="38" selection-end-line="106" selection-end-column="38" />
+            <state relative-caret-position="342">
+              <caret line="46" column="26" lean-forward="false" selection-start-line="46" selection-start-column="26" selection-end-line="46" selection-end-column="26" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
               </folding>
@@ -355,14 +367,7 @@
       <workItem from="1491565769528" duration="6624000" />
       <workItem from="1491743150986" duration="47252000" />
       <workItem from="1491913539896" duration="62529000" />
-      <workItem from="1492339275129" duration="24969000" />
-    </task>
-    <task id="LOCAL-00051" summary="dfu service added">
-      <created>1491993122062</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1491993122062</updated>
+      <workItem from="1492339275129" duration="25465000" />
     </task>
     <task id="LOCAL-00052" summary="dfu service added">
       <created>1491994831309</created>
@@ -700,11 +705,18 @@
       <option name="project" value="LOCAL" />
       <updated>1492411367081</updated>
     </task>
-    <option name="localTasksCounter" value="100" />
+    <task id="LOCAL-00100" summary="dfu service connected to firebase">
+      <created>1492412357666</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1492412357666</updated>
+    </task>
+    <option name="localTasksCounter" value="101" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="141374000" />
+    <option name="totallyTimeSpent" value="141870000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -1100,16 +1112,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/firebasePaths.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="25" column="9" lean-forward="false" selection-start-line="25" selection-start-column="9" selection-end-line="25" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#48#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuService.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="276">
@@ -1130,10 +1132,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/firebasePaths.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="452">
+          <caret line="40" column="29" lean-forward="true" selection-start-line="40" selection-start-column="29" selection-end-line="40" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#48#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuMain.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="106" column="38" lean-forward="true" selection-start-line="106" selection-start-column="38" selection-end-line="106" selection-end-column="38" />
+        <state relative-caret-position="342">
+          <caret line="46" column="26" lean-forward="false" selection-start-line="46" selection-start-column="26" selection-end-line="46" selection-end-column="26" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
           </folding>
