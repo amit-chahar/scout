@@ -18,7 +18,7 @@ var mPeripheralAddress, mPeripheral, mService, mCharacteristic, mDescriptor;
 var deviceFound = false;
 var scanningFirstTime = true;
 
-restartDeviceInBootloaderMode("08:66:98:c5:9a:e0");
+// restartDeviceInBootloaderMode("08:66:98:c5:9a:e0");
 
 function restartDeviceInBootloaderMode(peripheralAddress) {
     mPeripheralAddress = peripheralAddress;

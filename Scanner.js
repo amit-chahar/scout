@@ -15,13 +15,14 @@ var scanning = false;
 var scanTime;
 
 function initializeAndStartScanner() {
-    logger.verbose(TAG + "scanner initialized");
-    getFirebaseScanSettingAndStartScan();
     noble.on('stateChange', function (state) {
-        if (state != 'poweredOn') {
-            logger.verbose(TAG + "scanner state: " + state);
+        if (state === 'poweredOn') {
+            getFirebaseScanSettingAndStartScan();
         }
+        logger.verbose(TAG + "scanner state: " + state);
     });
+    utils.restartBluetoothService();
+    logger.verbose(TAG + "scanner initialized");
 }
 
 function getFirebaseScanSettingAndStartScan() {
@@ -29,7 +30,7 @@ function getFirebaseScanSettingAndStartScan() {
     firebaseDb.ref(firebasePaths.firebaseScannerPath).on('value', function (snapshot) {
         if (snapshot.exists()) {
             var scanSettings = snapshot.val();
-            if(scanSettings[firebaseDbKeys.SCANNER_ENABLE] === true) {
+            if (scanSettings[firebaseDbKeys.SCANNER_ENABLE] === true) {
                 scanTime = scanSettings[firebaseDbKeys.SCANNER_SCAN_TIME];
                 logger.info(TAG + "starting scan for " + scanTime + " ms");
                 prepareToScan();
@@ -68,8 +69,9 @@ function restartScan() {
 
 function stopScan() {
     logger.verbose(TAG + "stopping noble scan");
-    if(scanning) {
+    if (scanning) {
         noble.once('scanStop', function () {
+            utils.nobleRemoveAllListeners(noble);
             utils.restartBluetoothService();
             logger.verbose(TAG + "scan stopped successfullly");
             scanning = false;
@@ -81,7 +83,7 @@ function stopScan() {
     }
 }
 
-function turnOffFirebaseScanner(){
+function turnOffFirebaseScanner() {
     logger.verbose("turning off firebase scanner");
     firebaseDb.ref(firebasePaths.firebaseScannerPath + "/enable").set(false);
 }
