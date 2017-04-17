@@ -18,6 +18,7 @@ module.exports = {
     "FIRMWARE_DAT_FILE_CREATE_OBJECT_MAX_SIZE": "datFileCreateObjectMaxSize",
     "FIRMWARE_BIN_FILE_SENT_SUCCESSFULLY": "binFileSentSuccessfully",
     "FIRMWARE_DAT_FILE_SENT_SUCCESSFULLY": "datFileSentSuccessfully",
+    "FIRMWARE_SENT_SUCCESSFULLY": "firmwareSentSuccessfully",
     "PERIPHERAL": "peripheral",
     "SECURE_DFU_SERVICE": "secureDfuService",
     "SECURE_DFU_SERVICE_UUID": "0000fe590000-1000800000805f9b34fb",

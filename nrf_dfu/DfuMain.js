@@ -71,14 +71,7 @@ function startPendingDfuTask(dfuTask){
 
 function restartDeviceInDfuMode(dfuTask) {
     eventEmitter.once(eventNames.DEVICE_NOT_FOUND, function () {
-        currentDfuTaskRef.set({})
-            .then(function () {
-                logger.info(TAG + "current DFU task failed: " + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]);
-                return failedDfuTasksRef.child("/" + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]).set(dfuTask)
-            })
-            .catch(function (error) {
-                logger.error(TAG + "adding DFU task to failed tasks list");
-            })
+        currentDfuTaskFailed(dfuTask);
     });
 
     eventEmitter.once(eventNames.DEVICE_RESTARTED_IN_BOOTLOADER_MODE, function () {
@@ -87,6 +80,20 @@ function restartDeviceInDfuMode(dfuTask) {
     })
 
     dfuStarter.restartDeviceInBootloaderMode();
+}
+
+function currentDfuTaskFailed(dfuTask){
+    currentDfuTaskRef.set({})
+        .then(function () {
+            logger.info(TAG + "current DFU task failed: " + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]);
+            return failedDfuTasksRef.child("/" + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]).set(dfuTask)
+        })
+        .then(function () {
+            finishPendingDfuTasks();
+        })
+        .catch(function (error) {
+            logger.error(TAG + "adding DFU task to failed tasks list");
+        });
 }
 
 function downloadFirmwareFileFromCloud(dfuTask){
@@ -101,11 +108,66 @@ function downloadFirmwareFileFromCloud(dfuTask){
 }
 
 function doDfu(dfuTask){
+    // var initFileSent = false;
+    // var firmwareFileSent = false;
+    // var dfufinished = false;
     const btDeviceAddress = dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS];
     const firmwareFileName = dfuTask[firebaseDbKeys.FIRMWARE_FILE_NAME];
     logger.verbose(TAG + "starting Dfu task: ", btDeviceAddress);
     logger.info("starting DFU process: firmware: " + firmwareFileName);
+
+    removeAllEventListeners();
+
+    eventEmitter.once(eventNames.DFU_TASK_FAILED, function () {
+        currentDfuTaskFailed(dfuTask);
+    });
+
+    eventEmitter.once(eventNames.DFU_TASK_INIT_PACKET_SENT, function () {
+        updateCurrentTaskProgress(30);
+        noActivity = false;
+    });
+
+    eventEmitter.once(eventNames.DFU_TASK_FIRMWARE_FILE_SENT,function () {
+        updateCurrentTaskProgress(80);
+    });
+
+    eventEmitter.once(eventNames.DFU_TASK_COMPLETED, function () {
+        updateCurrentTaskProgress(100);
+        currentTaskCompleted(dfuTask);
+    })
+
     DfuService.initializeAndStart(firmwareFileName);
+}
+
+function updateCurrentTaskProgress(percent) {
+    // var updates = {};
+    // updates["/" + firebaseDbKeys.DFU_PROGRESS] = percent;
+    currentDfuTaskRef.child("/" + firebaseDbKeys.DFU_PROGRESS).set(percent)
+        .then(function () {
+            logger.verbose(TAG + "progress update successfully: ", percent);
+        })
+        .catch(function (error) {
+            logger.error(TAG + "updating progress");
+        })
+}
+
+function currentTaskCompleted(dfuTask){
+    completedDfuTasksRef.child("/" + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]).set(dfuTask)
+        .then(function () {
+            logger.info(TAG + "DFU task completed: " + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]);
+        })
+        .catch(function (error) {
+            logger.error(TAG + "unable to update completed task: " + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]);
+        })
+}
+
+function removeAllEventListeners() {
+    eventEmitter.removeAllListeners(eventNames.DFU_TASK_FAILED);
+    eventEmitter.removeAllListeners(eventNames.DEVICE_NOT_FOUND);
+    eventEmitter.removeAllListeners(eventNames.DEVICE_RESTARTED_IN_BOOTLOADER_MODE);
+    eventEmitter.removeAllListeners(eventNames.DFU_TASK_COMPLETED);
+    eventEmitter.removeAllListeners(eventNames.DFU_TASK_INIT_PACKET_SENT);
+    eventEmitter.removeAllListeners(eventNames.DFU_TASK_FIRMWARE_FILE_SENT);
 }
 
 module.exports.startNrfDfuService = startNrfDfuService;

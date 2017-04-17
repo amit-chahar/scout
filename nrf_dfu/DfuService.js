@@ -1,6 +1,8 @@
 /**
  * Created by Amit-Chahar on 10-04-2017.
  */
+const TAG = "DFU Service: ";
+
 var globals = require("../Globals");
 var noble = globals.noble;
 var config = require("../Config");
@@ -16,6 +18,9 @@ var util = require('util');
 var nrfGlobals = require('./NrfGlobals');
 var util = require('util');
 var eventEmitter = nrfGlobals.eventEmitter;
+const utils = require('../Utils');
+const eventNames = require('./eventNames');
+const nrfDfuConfig = require('./nrfDfuConfig');
 
 const FIRMWARES_BASEPATH = path.join(__dirname, "firmwares");
 const FIRMWARES_ZIPPED_BASEPATH = path.join(FIRMWARES_BASEPATH, "zipped");
@@ -24,6 +29,7 @@ const FIRMWARES_TMP_BASEPATH = path.join(FIRMWARES_BASEPATH, "tmp");
 logger.debug("zipped firmwares basepath: ", FIRMWARES_ZIPPED_BASEPATH);
 logger.debug("tmp directory basepath: ", FIRMWARES_TMP_BASEPATH);
 
+var deviceFound = false;
 // var context;
 //
 // function DfuService(firmwareZipName, deviceName, deviceAddress){
@@ -42,9 +48,15 @@ logger.debug("tmp directory basepath: ", FIRMWARES_TMP_BASEPATH);
 // }
 
 function initializeAndStart(firmwareZipName) {
+    utils.restartBluetoothService();
     noble.on('stateChange', function (state) {
         if (state === 'poweredOn') {
             noble.startScanning();
+            setTimeout(function () {
+                if (!deviceFound) {
+                    noble.stopScanning();
+                }
+            }, nrfDfuConfig.DFU_MAIN_PROCESS_SCAN_TIMEOUT);
         } else {
             noble.stopScanning();
         }
@@ -52,11 +64,26 @@ function initializeAndStart(firmwareZipName) {
 
     noble.on('discover', function (peripheral) {
         if (peripheral.advertisement.localName === config.BOOTLOADER_MODE_DEVICE_NAME) {
+            deviceFound = true;
             logger.info("Peripheral found advertising in bootloader mode: ", peripheral.address);
             noble.stopScanning();
             startDfuProcess(peripheral, firmwareZipName);
         }
     });
+}
+
+noble.on('stopScan', function () {
+    if (!deviceFound) {
+        logger.verbose(TAG + "scan timeout, device not found");
+        logger.info(TAG + "DFU task failed");
+        taskFailed();
+    }
+});
+
+function taskFailed() {
+    utils.nobleRemoveAllListeners(noble);
+    utils.restartBluetoothService();
+    eventEmitter.emit(eventNames.DFU_TASK_FAILED);
 }
 
 function startDfuProcess(peripheral, firmwareZipName) {
@@ -76,7 +103,8 @@ function startDfuProcess(peripheral, firmwareZipName) {
         .then(selectCommand)
         .catch(function (error) {
             logger.error("firmware update halted");
-            throw error;
+            taskFailed();
+            // throw error;
         })
 }
 
@@ -84,12 +112,17 @@ function connectToPeripheral(pData) {
     var peripheral = pData[constants.PERIPHERAL];
     return new Promise(function (resolve, reject) {
         peripheral.on("disconnect", function (error) {
-            if (error) {
-                logger.error("disconnecting peripheral");
-                return;
+            const taskSuccessful = nrfGlobals.perDfuCache.get(constants.FIRMWARE_BIN_FILE_SENT_SUCCESSFULLY);
+            if (taskSuccessful) {
+                eventEmitter.emit(eventNames.DFU_TASK_COMPLETED);
+            } else {
+                eventEmitter.emit(eventNames.DFU_TASK_FAILED);
             }
+            utils.nobleRemoveAllListeners(noble);
+            utils.restartBluetoothService();
+            logger.error("disconnecting peripheral");
             logger.info("peripheral disconnected: ", peripheral.address);
-            process.exit();
+            // process.exit();
         });
 
         peripheral.connect(function (error) {
@@ -98,7 +131,7 @@ function connectToPeripheral(pData) {
             }
             logger.info("Connected to peripheral: " + peripheral.address);
             resolve(pData);
-        })
+        });
     })
 }
 
@@ -217,7 +250,7 @@ function selectCommand(pData) {
         })
 }
 
-function setPrn(pData){
+function setPrn(pData) {
     var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
     var buf = Buffer.alloc(3);
     buf.writeUInt8(constants.CONTROL_OPCODES.SET_PRN, 0);
@@ -229,3 +262,4 @@ function setPrn(pData){
 }
 
 module.exports.initializeAndStart = initializeAndStart;
+module.exports.taskFailed = taskFailed;

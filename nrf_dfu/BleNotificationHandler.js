@@ -1,6 +1,8 @@
 /**
  * Created by Amit-Chahar on 10-04-2017.
  */
+const TAG = "Notification Handler: ";
+
 var logger = require('../Logger');
 var helpers = require('./Helpers');
 var constants = require('./DfuConstants');
@@ -9,6 +11,9 @@ var crc = require('crc');
 var CRC32 = require('crc-32');
 var nrfGlobals = require("./NrfGlobals");
 var perDfuCache = nrfGlobals.perDfuCache;
+var dfuService = require('./DfuService');
+const eventEmitter = nrfGlobals.eventEmitter;
+const eventNames = require('./eventNames');
 
 function controlPointNotificationHandler(pData, response, isNotification) {
     var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
@@ -27,7 +32,9 @@ function controlPointNotificationHandler(pData, response, isNotification) {
                 var command = new Buffer([constants.CONTROL_OPCODES.SET_PRN, 0x00, 0x00]);
                 controlPointCharacteristic.write(command, false, function (error) {
                     if (error) {
-                        throw new error("Unable to send set PRN command");
+                        logger.error("Unable to send set PRN command");
+                        dfuService.taskFailed();
+                        return;
                     }
                     logger.info("set PRN command sent");
                 });
@@ -48,7 +55,8 @@ function controlPointNotificationHandler(pData, response, isNotification) {
                         return helpers.writeDataToCharacteristic(controlPointCharacteristic, buf, false);
                     })
                     .catch(function (error) {
-                            throw error;
+                            // throw error;
+                            dfuService.taskFailed();
                         }
                     );
                 break;
@@ -60,7 +68,8 @@ function controlPointNotificationHandler(pData, response, isNotification) {
                 buf.writeUInt8(constants.CONTROL_OPCODES.EXECUTE, 0);
                 helpers.writeDataToCharacteristic(controlPointCharacteristic, buf, false)
                     .catch(function (error) {
-                        throw error;
+                        // throw error;
+                        dfuService.taskFailed();
                     });
                 break;
             case constants.CONTROL_OPCODES.EXECUTE:
@@ -86,7 +95,8 @@ function controlPointNotificationHandler(pData, response, isNotification) {
                 command.writeUInt32LE(fileSize, 2);
                 controlPointCharacteristic.write(command, false, function (error) {
                     if (error) {
-                        throw new Error("sending create object command for init packet");
+                        logger.error("sending create object command for init packet");
+                        dfuService.taskFailed();
                     }
                     logger.debug("create object command sent: ", command);
                 })
@@ -102,6 +112,7 @@ function setupToChangeListener(pData) {
     var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
     controlPointCharacteristic.once('removeListener', function (event, listener) {
         logger.debug("removed control point characteristic listener");
+        eventEmitter.emit(eventNames.DFU_TASK_INIT_PACKET_SENT);
         controlPointCharacteristic.on('data', function (response, isNotification) {
             firmwareDataTransferHandler(pData, response, isNotification);
         });
@@ -115,7 +126,8 @@ function setupToChangeListener(pData) {
         logger.info("starting sending firmware bin file");
         helpers.writeDataToCharacteristic(controlPointCharacteristic, buf, false)
             .catch(function (error) {
-                throw error;
+                // throw error;
+                dfuService.taskFailed();
             });
     });
 }
@@ -243,6 +255,8 @@ function continueSending(pData) {
     const offset = perDfuCache.get(constants.FIRMWARE_BIN_FILE_OFFSET);
     if(offset >= binFileSize){
         logger.info("bin file sent successfully");
+        eventEmitter.emit(eventNames.DFU_TASK_FIRMWARE_FILE_SENT);
+        perDfuCache.set(constants.FIRMWARE_SENT_SUCCESSFULLY, true);
     } else {
         sendCreateCommand(pData);
     }

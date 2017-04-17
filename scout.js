@@ -35,6 +35,6 @@ firebaseDb.ref(firebasePaths.firebaseGatewayPath).once('value')
 
 function authenticated() {
     logger.info("gateway authenticated successfully");
-    //require('./Scanner').initializeAndStartScanner();
+    require('./Scanner').initializeAndStartScanner();
     nrf_dfu.startNrfDfuService();
 }
