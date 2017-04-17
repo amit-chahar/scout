@@ -40,7 +40,8 @@ function getFirebaseScanSettingAndStartScan() {
             if (scanSettings[firebaseDbKeys.SCANNER_ENABLE] === true) {
                 scanTime = scanSettings[firebaseDbKeys.SCANNER_SCAN_TIME];
                 logger.info(TAG + "starting scan for " + scanTime + " ms");
-                prepareToScan();
+                // prepareToScan();
+                startScanning();
                 setTimeout(function () {
                     stopScan();
                 }, scanTime);
@@ -49,8 +50,17 @@ function getFirebaseScanSettingAndStartScan() {
     })
 }
 
+function startScanning(){
+    noble.once('scanStart', function () {
+        scanning = true;
+        logger.verbose(TAG + "scan started successfully");
+    });
+    noble.startScanning();
+}
+
 function prepareToScan() {
     if (scanning) {
+        logger.verbose(TAG + "restarting scan");
         restartScan();
     } else {
         noble.once('scanStart', function () {
