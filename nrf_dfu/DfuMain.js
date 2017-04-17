@@ -44,34 +44,33 @@ function finishPendingDfuTasks() {
 function onTaskAdded(snapshot){
     if(snapshot.exists()) {
         pendingDfuTasksRef.off('value', onTaskAdded);
-        var dfuTask;
-        Promise.map(snapshot, function (pendingDfuTask) {
-            logger.info(TAG + "selected pending DFU task: " + pendingDfuTask.key);
-            dfuTask = pendingDfuTask;
-        }).then(function () {
-
+        snapshot.forEach(function (pendingDfuTask) {
+            startPendingDfuTask(pendingDfuTask);
         })
-        pendingDfuTasksRef.child("/" + snapshot.key).remove()
-            .then(function () {
-                logger.verbose(TAG + "dfu task removed from pending tasks list");
-                return currentDfuTaskRef.set(dfuTask)
-            })
-            .then(function () {
-                var updates = {};
-                updates[firebaseDbKeys.DFU_PROGRESS] = 0;
-                logger.verbose(TAG + "initializing progress of current task to 0");
-                return currentDfuTaskRef.update(updates)
-            })
-            .then(function () {
-                eventEmitter.removeAllListeners(eventNames.DEVICE_NOT_FOUND);
-                eventEmitter.removeAllListeners(eventNames.DEVICE_RESTARTED_IN_BOOTLOADER_MODE);
-                restartDeviceInDfuMode(dfuTaskSnapshot);
-            })
-            .catch(function (error) {
-                logger.error(TAG + "adding current DFU task: ", dfuTaskSnapshot.child(firebaseDbKeys.BT_DEVICE_ADDRESS)).val();
-            })
     }
 
+}
+
+function startPendingDfuTask(dfuTask){
+    pendingDfuTasksRef.child("/" + dfuTask.key).remove()
+        .then(function () {
+            logger.verbose(TAG + "dfu task removed from pending tasks list");
+            return currentDfuTaskRef.set(dfuTask)
+        })
+        .then(function () {
+            var updates = {};
+            updates[firebaseDbKeys.DFU_PROGRESS] = 0;
+            logger.verbose(TAG + "initializing progress of current task to 0");
+            return currentDfuTaskRef.update(updates)
+        })
+        .then(function () {
+            eventEmitter.removeAllListeners(eventNames.DEVICE_NOT_FOUND);
+            eventEmitter.removeAllListeners(eventNames.DEVICE_RESTARTED_IN_BOOTLOADER_MODE);
+            restartDeviceInDfuMode(dfuTaskSnapshot);
+        })
+        .catch(function (error) {
+            logger.error(TAG + "adding current DFU task: ", dfuTaskSnapshot.child(firebaseDbKeys.BT_DEVICE_ADDRESS)).val();
+        })
 }
 
 function restartDeviceInDfuMode(dfuTask) {
