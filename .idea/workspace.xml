@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1368c387-3bcf-4c5a-a756-c38ad3c5b926" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Globals.js" afterPath="$PROJECT_DIR$/Globals.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/dfuStarter.js" afterPath="$PROJECT_DIR$/nrf_dfu/dfuStarter.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scout.js" afterPath="$PROJECT_DIR$/scout.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -23,11 +21,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="dfuStarter.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="dfuStarter.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuStarter.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="7" column="34" lean-forward="true" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
+            <state relative-caret-position="248">
+              <caret line="23" column="36" lean-forward="false" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -69,11 +67,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="scout.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="scout.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scout.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="44">
-              <caret line="4" column="5" lean-forward="false" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="5" />
+            <state relative-caret-position="198">
+              <caret line="11" column="34" lean-forward="true" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
               </folding>
@@ -196,9 +194,9 @@
         <option value="$PROJECT_DIR$/firebaseDatabaseKeys.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/DfuService.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/DfuMain.js" />
-        <option value="$PROJECT_DIR$/nrf_dfu/dfuStarter.js" />
         <option value="$PROJECT_DIR$/Globals.js" />
         <option value="$PROJECT_DIR$/scout.js" />
+        <option value="$PROJECT_DIR$/nrf_dfu/dfuStarter.js" />
       </list>
     </option>
   </component>
@@ -382,14 +380,7 @@
       <workItem from="1491565769528" duration="6624000" />
       <workItem from="1491743150986" duration="47252000" />
       <workItem from="1491913539896" duration="62529000" />
-      <workItem from="1492339275129" duration="28206000" />
-    </task>
-    <task id="LOCAL-00062" summary="dfu service added">
-      <created>1492032595924</created>
-      <option name="number" value="00062" />
-      <option name="presentableId" value="LOCAL-00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1492032595929</updated>
+      <workItem from="1492339275129" duration="28312000" />
     </task>
     <task id="LOCAL-00063" summary="dfu service added">
       <created>1492032887666</created>
@@ -727,11 +718,18 @@
       <option name="project" value="LOCAL" />
       <updated>1492414953240</updated>
     </task>
-    <option name="localTasksCounter" value="111" />
+    <task id="LOCAL-00111" summary="dfu service connected to firebase">
+      <created>1492415601284</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1492415601285</updated>
+    </task>
+    <option name="localTasksCounter" value="112" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="144611000" />
+    <option name="totallyTimeSpent" value="144717000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -1139,14 +1137,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuStarter.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="34" lean-forward="true" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Globals.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
@@ -1159,11 +1149,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scout.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="4" column="5" lean-forward="false" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="5" />
+        <state relative-caret-position="198">
+          <caret line="11" column="34" lean-forward="true" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuStarter.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="23" column="36" lean-forward="false" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
