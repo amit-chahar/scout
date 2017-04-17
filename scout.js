@@ -2,12 +2,15 @@
  * Created by Amit-Chahar on 11-04-2017.
  */
 //This is the starting point for the firmware update service
-const globals = require('./Globals');
+const TAG = "Scout: ";
+const logger = require('./Logger');
+const firebaseUtils = require('./firebaseUtils');
+firebaseUtils.initializeFirebase();
+const firebaseDb = firebaseUtils.firebaseDb;
 const utils = require('./Utils');
 
-var logger = require('./Logger');
+
 var nrf_dfu = require('./nrf_dfu/DfuMain');
-var firebaseDb = globals.firebaseDatabase;
 var config = require('./Config');
 var Promise = require('bluebird');
 const firebasePaths = require('./firebasePaths');
