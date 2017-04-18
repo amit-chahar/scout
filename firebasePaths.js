@@ -1,14 +1,14 @@
 /**
  * Created by Amit-Chahar on 16-04-2017.
  */
-const utils = require('./Utils');
+const firebaseUtils = require('./firebaseUtils');
 
 function getFirebaseGatewayPath(){
-    return utils.getUserKey() + "/gateways/" + utils.getValidFirebaseGatewayName();
+    return firebaseUtils.userEmailAsKey + "/gateways/" + firebaseUtils.gatewayNameAsKey;
 }
 
 function getFirebaseGatewayBasePath(){
-    return utils.getUserKey() + "/" + utils.getValidFirebaseGatewayName();
+    return firebaseUtils.userEmailAsKey + "/" + firebaseUtils.gatewayNameAsKey;
 }
 
 function getFirebaseScannerPath(){
