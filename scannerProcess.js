@@ -18,7 +18,7 @@ noble.on('stateChange', function (state) {
     }
     logger.verbose(TAG + "scanner state: " + state);
 });
-systemUtils.restartBluetoothService();
+// systemUtils.restartBluetoothService();
 setTimeout(function () {
     if (!startedScanning) {
         startScan();
