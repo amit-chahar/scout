@@ -10,5 +10,6 @@ module.exports = {
         "DEBUG": true
     },
     "BOOTLOADER_MODE_DEVICE_NAME": "Wispero_DFU",
+    "SCANNER_PROCESS_TIME_OUT": 20000,
     "TIMEOUT_AFTER_BLUETOOTH_SERVICE_RESTART": 1000
 }

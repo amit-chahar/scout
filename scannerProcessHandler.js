@@ -9,6 +9,7 @@ const firebasePaths = require('./firebasePaths');
 const firebaseDbKeys = require('./firebaseDatabaseKeys');
 const fork = require('child_process').fork;
 const path = require('path');
+const config = require('./Config');
 
 module.exports = function () {
     logger.debug(TAG + "firebase scanner settings path: " + firebasePaths.firebaseScannerPath);
@@ -19,9 +20,6 @@ module.exports = function () {
                 const scanTime = scanSettings[firebaseDbKeys.SCANNER_SCAN_TIME];
                 logger.info(TAG + "starting scan for " + scanTime + " ms");
                 startScanning(scanTime);
-                setTimeout(function () {
-                    stopScan();
-                }, scanTime);
             }
         }
     });
@@ -31,7 +29,7 @@ module.exports = function () {
         const args = [scanTime.toString()];
         const scannerProcess = fork(modulePath, args);
 
-        scannerProcess.on('message', function(btDevice){
+        scannerProcess.on('message', function (btDevice) {
             logger.debug(TAG + "firebase new peripheral: ", btDevice);
             const newScannedDevicePath = firebasePaths.firebaseScannedDevicesPath + "/" + btDevice[firebaseDbKeys.BT_DEVICE_ADDRESS];
             firebaseDb.ref(newScannedDevicePath).set(btDevice);
@@ -41,5 +39,10 @@ module.exports = function () {
             logger.verbose("turning off firebase scanner");
             firebaseDb.ref(firebasePaths.firebaseScannerPath + "/enable").set(false);
         })
+
+        setTimeout(function () {
+            logger.verbose(TAG + "scanner process timed out, sending kill signal");
+            scannerProcess.kill();
+        }, config.SCANNER_PROCESS_TIME_OUT);
     }
 }
