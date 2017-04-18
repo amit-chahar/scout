@@ -27,8 +27,9 @@ module.exports = function () {
     });
 
     function startScanning(scanTime) {
-        const modulePath = path.join(__dirname, "scannerProcess.js", [scanTime.toString()]);
-        const scannerProcess = fork(modulePath);
+        const modulePath = path.join(__dirname, "scannerProcess.js");
+        const args = [scanTime.toString()];
+        const scannerProcess = fork(modulePath, args);
 
         scannerProcess.on('message', function(btDevice){
             logger.debug(TAG + "firebase new peripheral: ", btDevice);

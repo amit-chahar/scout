@@ -52,8 +52,7 @@ function getGatewayNameAsKey() {
 }
 
 function getUserEmailAsKey() {
-    const userEmailAsKey = getValidFirebseName(getUserEmail());
-    return userEmailAsKey;
+    return getValidFirebseName(getUserEmail());
 }
 
 function getValidFirebseName(name) {
