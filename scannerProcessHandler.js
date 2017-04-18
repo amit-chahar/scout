@@ -25,6 +25,7 @@ module.exports = function () {
     });
 
     function startScanning(scanTime) {
+        var processRunning = true;
         const modulePath = path.join(__dirname, "scannerProcess.js");
         const args = [scanTime.toString()];
         const scannerProcess = fork(modulePath, args);
@@ -36,13 +37,16 @@ module.exports = function () {
         })
 
         scannerProcess.on('close', function (code) {
+            processRunning = false;
             logger.verbose("turning off firebase scanner");
             firebaseDb.ref(firebasePaths.firebaseScannerPath + "/enable").set(false);
         })
 
         setTimeout(function () {
-            logger.verbose(TAG + "scanner process timed out, sending kill signal");
-            scannerProcess.kill('SIGHUP');
+            if(processRunning) {
+                logger.verbose(TAG + "scanner process timed out, sending kill signal");
+                scannerProcess.kill('SIGHUP');
+            }
         }, config.SCANNER_PROCESS_TIME_OUT);
     }
 }
