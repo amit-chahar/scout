@@ -34,7 +34,6 @@ function startScan() {
     noble.startScanning();
     setTimeout(function () {
         stopScan();
-        process.disconnect();
     }, scanTime);
 }
 function stopScan() {
@@ -47,6 +46,7 @@ function stopScan() {
         });
         noble.stopScanning();
     }
+    process.exit(0);
 }
 
 noble.on('discover', function (peripheral) {
