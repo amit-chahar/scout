@@ -26,6 +26,7 @@ module.exports = function () {
 
     function startScanning(scanTime) {
         var processRunning = true;
+        const scannerProcessTimeout = scanTime + 5000;
         const modulePath = path.join(__dirname, "scannerProcess.js");
         const args = [scanTime.toString()];
         const scannerProcess = fork(modulePath, args);
@@ -47,6 +48,6 @@ module.exports = function () {
                 logger.verbose(TAG + "scanner process timed out, sending kill signal");
                 scannerProcess.kill('SIGHUP');
             }
-        }, config.SCANNER_PROCESS_TIME_OUT);
+        }, scannerProcessTimeout);
     }
 }
