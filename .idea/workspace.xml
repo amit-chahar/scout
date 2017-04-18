@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1368c387-3bcf-4c5a-a756-c38ad3c5b926" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/dfuStarterProcess.js" afterPath="$PROJECT_DIR$/nrf_dfu/dfuStarterProcess.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/BleUtils.js" afterPath="$PROJECT_DIR$/nrf_dfu/BleUtils.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -79,7 +79,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dfuStarterProcess.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="dfuStarterProcess.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuStarterProcess.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="806">
@@ -91,6 +91,29 @@
                 <element signature="n#!!block;n#stopScan#0" expanded="false" />
                 <element signature="n#!!block;n#terminate#0" expanded="false" />
                 <element signature="n#!!block;n#startListeningForNotificationsOnCharacteristic#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BleUtils.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/nrf_dfu/BleUtils.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="197">
+              <caret line="68" column="11" lean-forward="false" selection-start-line="68" selection-start-column="11" selection-end-line="68" selection-end-column="11" />
+              <folding>
+                <element signature="e#0#48#0" expanded="false" />
+                <element signature="n#!!block;n#connectToPeripheral#0" expanded="false" />
+                <element signature="n#!!block;n#discoverServices#0" expanded="false" />
+                <element signature="n#!!block;n#discoverCharacteristics#0" expanded="false" />
+                <element signature="n#!!block;n#discoverDescriptors#0" expanded="false" />
+                <element signature="n#!!block;n#discoverCCCD#0" expanded="false" />
+                <element signature="n#!!block;n#writeValueToDescriptor#0" expanded="false" />
+                <element signature="n#!!block;n#discoverAppDfuService#0" expanded="false" />
+                <element signature="n#!!block;n#discoverAppDfuCharacteristic#0" expanded="false" />
+                <element signature="n#!!block;n#enableNotificationsOnBleServer#0" expanded="false" />
+                <element signature="n#!!block;n#enableNotificationsOnBleClient#0" expanded="false" />
+                <element signature="n#!!block;n#enableNotifications#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -188,8 +211,8 @@
         <option value="$PROJECT_DIR$/nrf_dfu/DfuMain.js" />
         <option value="$PROJECT_DIR$/scannerProcess.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/DfuConstants.js" />
-        <option value="$PROJECT_DIR$/nrf_dfu/BleUtils.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/dfuStarterProcess.js" />
+        <option value="$PROJECT_DIR$/nrf_dfu/BleUtils.js" />
       </list>
     </option>
   </component>
@@ -373,14 +396,7 @@
       <workItem from="1491565769528" duration="6624000" />
       <workItem from="1491743150986" duration="47252000" />
       <workItem from="1491913539896" duration="62529000" />
-      <workItem from="1492339275129" duration="72588000" />
-    </task>
-    <task id="LOCAL-00105" summary="dfu service connected to firebase">
-      <created>1492413796629</created>
-      <option name="number" value="00105" />
-      <option name="presentableId" value="LOCAL-00105" />
-      <option name="project" value="LOCAL" />
-      <updated>1492413796629</updated>
+      <workItem from="1492339275129" duration="72695000" />
     </task>
     <task id="LOCAL-00106" summary="dfu service connected to firebase">
       <created>1492413866947</created>
@@ -718,11 +734,18 @@
       <option name="project" value="LOCAL" />
       <updated>1492526603010</updated>
     </task>
-    <option name="localTasksCounter" value="154" />
+    <task id="LOCAL-00154" summary="dfu service connected to firebase">
+      <created>1492526817956</created>
+      <option name="number" value="00154" />
+      <option name="presentableId" value="LOCAL-00154" />
+      <option name="project" value="LOCAL" />
+      <updated>1492526817956</updated>
+    </task>
+    <option name="localTasksCounter" value="155" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="188993000" />
+    <option name="totallyTimeSpent" value="189100000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -1208,27 +1231,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nrf_dfu/BleUtils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="235" column="57" lean-forward="false" selection-start-line="235" selection-start-column="57" selection-end-line="235" selection-end-column="57" />
-          <folding>
-            <element signature="e#0#48#0" expanded="false" />
-            <element signature="n#!!block;n#connectToPeripheral#0" expanded="false" />
-            <element signature="n#!!block;n#discoverServices#0" expanded="false" />
-            <element signature="n#!!block;n#discoverCharacteristics#0" expanded="false" />
-            <element signature="n#!!block;n#discoverDescriptors#0" expanded="false" />
-            <element signature="n#!!block;n#discoverCCCD#0" expanded="false" />
-            <element signature="n#!!block;n#writeValueToDescriptor#0" expanded="false" />
-            <element signature="n#!!block;n#discoverAppDfuService#0" expanded="false" />
-            <element signature="n#!!block;n#discoverAppDfuCharacteristic#0" expanded="false" />
-            <element signature="n#!!block;n#enableNotificationsOnBleServer#0" expanded="false" />
-            <element signature="n#!!block;n#enableNotificationsOnBleClient#0" expanded="false" />
-            <element signature="n#!!block;n#enableNotifications#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/BleNotificationHelper.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="520">
@@ -1258,6 +1260,27 @@
             <element signature="n#!!block;n#stopScan#0" expanded="false" />
             <element signature="n#!!block;n#terminate#0" expanded="false" />
             <element signature="n#!!block;n#startListeningForNotificationsOnCharacteristic#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nrf_dfu/BleUtils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="68" column="11" lean-forward="false" selection-start-line="68" selection-start-column="11" selection-end-line="68" selection-end-column="11" />
+          <folding>
+            <element signature="e#0#48#0" expanded="false" />
+            <element signature="n#!!block;n#connectToPeripheral#0" expanded="false" />
+            <element signature="n#!!block;n#discoverServices#0" expanded="false" />
+            <element signature="n#!!block;n#discoverCharacteristics#0" expanded="false" />
+            <element signature="n#!!block;n#discoverDescriptors#0" expanded="false" />
+            <element signature="n#!!block;n#discoverCCCD#0" expanded="false" />
+            <element signature="n#!!block;n#writeValueToDescriptor#0" expanded="false" />
+            <element signature="n#!!block;n#discoverAppDfuService#0" expanded="false" />
+            <element signature="n#!!block;n#discoverAppDfuCharacteristic#0" expanded="false" />
+            <element signature="n#!!block;n#enableNotificationsOnBleServer#0" expanded="false" />
+            <element signature="n#!!block;n#enableNotificationsOnBleClient#0" expanded="false" />
+            <element signature="n#!!block;n#enableNotifications#0" expanded="false" />
           </folding>
         </state>
       </provider>

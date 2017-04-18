@@ -66,7 +66,7 @@ function writeCharacteristic(characteristic, data, withoutResponse){
         logger.error(TAG + "characteristic is undefined");
         throw new Error();
     }
-    new Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
         characteristic.write(data, withoutResponse, function (error) {
             if (error) {
                 logger.error(TAG + "writing characteristic");
