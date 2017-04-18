@@ -42,7 +42,7 @@ module.exports = function () {
 
         setTimeout(function () {
             logger.verbose(TAG + "scanner process timed out, sending kill signal");
-            scannerProcess.kill();
+            scannerProcess.kill('SIGHUP');
         }, config.SCANNER_PROCESS_TIME_OUT);
     }
 }
