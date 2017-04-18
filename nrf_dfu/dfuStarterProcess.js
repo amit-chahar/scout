@@ -104,5 +104,6 @@ function startListeningForNotifyEvent(characteristic) {
                     terminate();
                 })
         }
-    })
+    });
+    return characteristic;
 }
