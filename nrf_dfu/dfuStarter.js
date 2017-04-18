@@ -29,7 +29,7 @@ function restartDeviceInBootloaderMode(peripheralAddress) {
     setTimeout(function () {
         noble.stopScanning();
         logger.verbose(TAG + "peripheral not found");
-    }, nrfDfuConfig.DFU_STARTER_SCAN_TIME)
+    }, nrfDfuConfig.DFU_STARTER_SCAN_TIMEOUT)
 }
 
 function listenerStateChange(state) {

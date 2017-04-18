@@ -35,6 +35,10 @@ function getFirebaseFailedDfuTasksPath(){
     return getFirebaseGatewayBasePath() + "/failedDfuTasks";
 }
 
+function getDfuModeFlagPath(){
+    return getFirebaseGatewayBasePath() + "/dfuModeFlag";
+}
+
 module.exports.firebaseGatewayPath = getFirebaseGatewayPath();
 module.exports.firebaseScannerPath = getFirebaseScannerPath();
 module.exports.firebaseScannedDevicesPath = getFirebaseScannedDevicesPath();
@@ -42,3 +46,4 @@ module.exports.firebaseCurrentDfuTaskPath = getFirebaseCurrentDfuTaskPath();
 module.exports.firebasePendingDfuTasksPath = getFirebasePendingDfuTasksPath();
 module.exports.firebaseCompletedDfuTasksPath = getFirebaseCompletedDfuTasksPath();
 module.exports.firebaseFailedDfuTasksPath = getFirebaseFailedDfuTasksPath();
+module.exports.firebaseDfuModeFlagPath = getDfuModeFlagPath();

@@ -3,14 +3,15 @@
  */
 const TAG = "Dfu Main: ";
 
+const firebaseUtils = require('../firebaseUtils');
+const firebaseDb = firebaseUtils.firebaseDb();
+const firebasePaths = require("../firebasePaths");
+const firebaseDbKeys = require("../firebaseDatabaseKeys");
+
 var DfuService = require("./DfuService");
 var logger = require("../Logger.js");
 var nrfGlobals = require('./NrfGlobals');
 const eventEmitter = nrfGlobals.eventEmitter;
-const globals = require("../Globals");
-const firebaseDb = globals.firebaseDatabase;
-const firebasePaths = require("../firebasePaths");
-const firebaseDbKeys = require("../firebaseDatabaseKeys");
 const dfuStarter = require("./dfuStarter");
 const eventNames = require("./eventNames");
 const download = require('download');
@@ -22,7 +23,10 @@ var taskInProgress = false;
 const pendingDfuTasksRef = firebaseDb.ref(firebasePaths.firebasePendingDfuTasksPath),
     currentDfuTaskRef = firebaseDb.ref(firebasePaths.firebaseCurrentDfuTaskPath),
     completedDfuTasksRef = firebaseDb.ref(firebasePaths.firebaseCompletedDfuTasksPath),
-    failedDfuTasksRef = firebaseDb.ref(firebasePaths.firebaseFailedDfuTasksPath);
+    failedDfuTasksRef = firebaseDb.ref(firebasePaths.firebaseFailedDfuTasksPath),
+    dfuModeFlag = firebaseDb.ref(firebasePaths.firebaseDfuModeFlagPath);
+
+const dfuTasksArr = [];
 
 function startNrfDfuService() {
 
@@ -42,22 +46,42 @@ function startNrfDfuService() {
     })
 }
 
-function finishPendingDfuTasks() {
-    pendingDfuTasksRef.on('value', onTaskAdded);
+function initialize(){
+    dfuModeFlag.on('value', function (snapshot) {
+        if(snapshot.exists()){
+            if(snapshot.val()) {
+                logger.info(TAG + "DFU mode ON");
+                getDfuTasks();
+            }
+        }
+    });
 }
 
-function onTaskAdded(snapshot) {
-    if (snapshot.exists()) {
-        pendingDfuTasksRef.off();
-        snapshot.forEach(function (pendingDfuTaskSnapshot) {
-            logger.info("got pending task: " + pendingDfuTaskSnapshot.val()[firebaseDbKeys.BT_DEVICE_ADDRESS]);
-            startPendingDfuTask(pendingDfuTaskSnapshot.val());
-            return true;
+function getDfuTasks(){
+    currentDfuTaskRef.once('value')
+        .then(function(snapshot){
+            if(snapshot.exists()){
+                logger.verbose(TAG + "found an unfinished current DFU task, pushed into tasks array");
+                dfuTasksArr.push(snapshot.val());
+            }
         })
-    } else {
-        taskInProgress = false;
-    }
+        .then(function () {
+            return pendingDfuTasksRef.once('value');
+        })
+        .then(function (snapshot) {
+            snapshot.forEach(function (dfuTaskSnapshot) {
+                dfuTasksArr.push(dfuTaskSnapshot.val());
+            });
+            finishPendingDfuTasks();
+        })
+        .catch(function (error) {
+            logger.info(TAG + "unable to get dfu tasks from server.");
+            throw error;
+        });
+}
 
+function finishPendingDfuTasks() {
+    const dfuTask = dfuTasksArr.shift();
 }
 
 function startPendingDfuTask(dfuTask) {

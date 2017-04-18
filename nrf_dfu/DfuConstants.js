@@ -2,6 +2,9 @@
  * Created by Amit-Chahar on 10-04-2017.
  */
 module.exports = {
+    "APPLICATION_DFU_SERVICE_UUID": "8e400001f3154f609fb8838830daea50",
+    "APPLICATION_DFU_CHAR_UUID": "8e400001f3154f609fb8838830daea50",
+
     "FIRMWARE_ZIP_NAME": "firmwareZipName",
     "FIRMWARE_DAT_FILE": "firmwareDatFile",
     "FIRMWARE_BIN_FILE": "firmwareBinFile",

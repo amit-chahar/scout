@@ -26,7 +26,7 @@ noble.on('stateChange', function (state) {
 // }, 3000);
 
 function startScan() {
-    logger.verbose(TAG + "starting scan")
+    logger.verbose(TAG + "starting scan");
     noble.once('scanStart', function () {
         scanning = true;
         logger.verbose(TAG + "scan started successfully");
