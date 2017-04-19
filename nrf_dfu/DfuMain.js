@@ -8,7 +8,6 @@ const firebaseDb = firebaseUtils.firebaseDb();
 const firebasePaths = require("../firebasePaths");
 const firebaseDbKeys = require("../firebaseDatabaseKeys");
 
-var DfuService = require("./DfuService");
 var logger = require("../Logger.js");
 var nrfGlobals = require('./NrfGlobals');
 const eventEmitter = nrfGlobals.eventEmitter;
