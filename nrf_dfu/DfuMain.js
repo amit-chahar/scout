@@ -242,4 +242,4 @@ function removeAllEventListeners() {
     eventEmitter.removeAllListeners(eventNames.DFU_TASK_FIRMWARE_FILE_SENT);
 }
 
-module.exports.startNrfDfuService = startNrfDfuService;
+module.exports.initialize = initialize;

@@ -14,6 +14,7 @@ var config = require('./Config');
 var Promise = require('bluebird');
 const firebasePaths = require('./firebasePaths');
 const scannerProcessHandler = require('./scannerProcessHandler');
+const nrfDfu = require('./nrf_dfu/DfuMain');
 
 logger.debug("user email: " + firebaseUtils.userEmail);
 logger.debug("firebase user email as key: " + firebaseUtils.userEmailAsKey);
@@ -41,4 +42,5 @@ function authenticated() {
     // require('./Scanner').initializeAndStartScanner();
     // nrf_dfu.startNrfDfuService();
     scannerProcessHandler();
+    nrfDfu.initialize();
 }
