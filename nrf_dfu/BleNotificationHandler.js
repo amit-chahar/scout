@@ -4,7 +4,7 @@
 const TAG = "Notification Handler: ";
 
 var logger = require('../Logger');
-var helpers = require('./Helpers');
+var helpers = require('./dfuUtils');
 var constants = require('./DfuConstants');
 var fs = require('fs');
 var crc = require('crc');

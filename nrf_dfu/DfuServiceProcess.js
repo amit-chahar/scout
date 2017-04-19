@@ -1,4 +1,7 @@
 /**
+ * Created by Amit-Chahar on 19-04-2017.
+ */
+/**
  * Created by Amit-Chahar on 10-04-2017.
  */
 const TAG = "DFU Service: ";
@@ -10,45 +13,22 @@ var logger = require("../Logger");
 var notificationHelper = require('./BleNotificationHelper');
 var constants = require('./DfuConstants');
 var notificationHandler = require('./BleNotificationHandler');
-var helpers = require('./dfuUtils');
+var dfuUtils = require('./dfuUtils');
 var path = require('path');
 var AdmZip = require('adm-zip');
 var Promise = require('bluebird');
 var util = require('util');
 var nrfGlobals = require('./NrfGlobals');
-var util = require('util');
 var eventEmitter = nrfGlobals.eventEmitter;
 const utils = require('../Utils');
 const eventNames = require('./eventNames');
-const nrfDfuConfig = require('./nrfDfuConfig');
+const dfuConfig = require('./nrfDfuConfig');
 
-const FIRMWARES_BASEPATH = path.join(__dirname, "firmwares");
-const FIRMWARES_ZIPPED_BASEPATH = path.join(FIRMWARES_BASEPATH, "zipped");
-const FIRMWARES_TMP_BASEPATH = path.join(FIRMWARES_BASEPATH, "tmp");
-
-logger.debug("zipped firmwares basepath: ", FIRMWARES_ZIPPED_BASEPATH);
-logger.debug("tmp directory basepath: ", FIRMWARES_TMP_BASEPATH);
+logger.debug(TAG + "zipped firmwares basepath: ", dfuConfig.FIRMWARES_ZIPPED_BASEPATH);
+logger.debug("tmp directory basepath: ", dfuConfig.FIRMWARES_TMP_BASEPATH);
 
 var deviceFound = false;
-// var context;
-//
-// function DfuService(firmwareZipName, deviceName, deviceAddress){
-//     this.firmwareZipName = firmwareZipName;
-//     this.deviceName = deviceName;
-//     this.deviceAddress = deviceAddress;
-//     eventEmitter.call(this);
-//     context = this;
-//     initializeAndStart(firmwareZipName);
-// }
-//
-// util.inherits(DfuService, eventEmitter);
-//
-// DfuService.prototype.close = function () {
-//     process.exit(0);
-// }
 
-function initializeAndStart(firmwareZipName) {
-    utils.restartBluetoothService();
     noble.on('stateChange', function (state) {
         if (state === 'poweredOn') {
             noble.startScanning();
@@ -56,7 +36,7 @@ function initializeAndStart(firmwareZipName) {
                 if (!deviceFound) {
                     noble.stopScanning();
                 }
-            }, nrfDfuConfig.DFU_MAIN_PROCESS_SCAN_TIMEOUT);
+            }, dfuConfig.DFU_MAIN_PROCESS_SCAN_TIMEOUT);
         } else {
             noble.stopScanning();
         }
@@ -70,7 +50,6 @@ function initializeAndStart(firmwareZipName) {
             startDfuProcess(peripheral, firmwareZipName);
         }
     });
-}
 
 noble.on('stopScan', function () {
     if (!deviceFound) {
@@ -202,7 +181,7 @@ function enableNotificationOnControlPointCharacteristic(pData) {
 
 function removeTmpDirectory(pData) {
     logger.debug("removing tmp directory: " + FIRMWARES_TMP_BASEPATH);
-    return helpers.removeDirectory(FIRMWARES_TMP_BASEPATH)
+    return dfuUtils.removeDirectory(FIRMWARES_TMP_BASEPATH)
         .then(function () {
             logger.debug("tmp directory removed successfully");
             return pData;
@@ -243,7 +222,7 @@ function selectCommand(pData) {
     var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
     var command = new Buffer([constants.CONTROL_OPCODES.SELECT, constants.CONTROL_PARAMETERS.COMMAND_OBJECT]);
     logger.debug("writing select command to control characteristic");
-    return helpers.writeDataToCharacteristic(controlPointCharacteristic, command, false)
+    return dfuUtils.writeDataToCharacteristic(controlPointCharacteristic, command, false)
         .then(function () {
             logger.info("select command sent: ", command);
             return pData;
@@ -255,7 +234,7 @@ function setPrn(pData) {
     var buf = Buffer.alloc(3);
     buf.writeUInt8(constants.CONTROL_OPCODES.SET_PRN, 0);
     buf.writeUInt16BE(0x0000, 1); //PRN = 0
-    helpers.writeDataToCharacteristic(controlPointCharacteristic, buf, false)
+    dfuUtils.writeDataToCharacteristic(controlPointCharacteristic, buf, false)
         .catch(function (error) {
             throw error;
         });

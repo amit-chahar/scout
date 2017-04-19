@@ -98,7 +98,7 @@ function startListeningForNotifyEvent(characteristic) {
             var data = Buffer.from([0x01]);
             bleUtils.writeCharacteristic(characteristic, data, false)
                 .then(function () {
-                    console.log(TAG + "send data here");
+                    process.send(true);
                 })
                 .catch(function (error) {
                     terminate();

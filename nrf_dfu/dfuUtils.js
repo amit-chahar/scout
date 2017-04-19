@@ -14,6 +14,7 @@ function delay(t) {
     });
 }
 
+
 function parseResponse(response) {
     const responseCode = response.readUInt8(0);
     const requestOpCode = response.readUInt8(1);
