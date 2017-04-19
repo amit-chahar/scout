@@ -58,7 +58,7 @@ function getDfuTasks(){
     currentDfuTaskRef.once('value')
         .then(function(snapshot){
             if(snapshot.exists()){
-                logger.verbose(TAG + "found an unfinished current DFU task, pushed into tasks array: " + snapshot.val()[firebaseDbKeys.BT_DEVICE_ADDRESS]);
+                logger.verbose(TAG + "found an unfinished current DFU task, pushed into tasks array: " + snapshot.val().toJSON());
                 dfuTasksArr.push(snapshot.val());
             }
         })
