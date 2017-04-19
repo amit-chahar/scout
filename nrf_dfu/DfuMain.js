@@ -11,7 +11,6 @@ const firebaseDbKeys = require("../firebaseDatabaseKeys");
 var logger = require("../Logger.js");
 var nrfGlobals = require('./NrfGlobals');
 const eventEmitter = nrfGlobals.eventEmitter;
-const dfuStarter = require("./dfuStarter");
 const eventNames = require("./eventNames");
 const download = require('download');
 const path = require('path');
