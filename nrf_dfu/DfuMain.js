@@ -58,8 +58,10 @@ function getDfuTasks(){
     currentDfuTaskRef.once('value')
         .then(function(snapshot){
             if(snapshot.exists()){
-                logger.verbose(TAG + "found an unfinished current DFU task, pushed into tasks array: " + snapshot.toJSON());
-                dfuTasksArr.push(snapshot.val());
+                snapshot.forEach(function (dfuTask) {
+                    logger.verbose(TAG + "found an unfinished current DFU task, pushed into tasks array: " + snapshot.toJSON());
+                    dfuTasksArr.push(snapshot.val());
+                })
             }
         })
         .then(function () {
