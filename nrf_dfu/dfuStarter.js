@@ -1,7 +1,7 @@
 const TAG = "DFU starter: ";
 
 var globals = require('../Globals');
-var nrfGlobals = require('./NrfGlobals');
+var nrfGlobals = require('./dfuCache');
 var eventEmitter = nrfGlobals.eventEmitter;
 var eventNames = require('./eventNames');
 var noble = globals.noble;

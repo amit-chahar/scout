@@ -15,7 +15,7 @@ var path = require('path');
 var AdmZip = require('adm-zip');
 var Promise = require('bluebird');
 var util = require('util');
-var nrfGlobals = require('./NrfGlobals');
+var nrfGlobals = require('./dfuCache');
 var util = require('util');
 var eventEmitter = nrfGlobals.eventEmitter;
 const utils = require('../Utils');
@@ -92,7 +92,7 @@ function startDfuProcess(peripheral, firmwareZipName) {
     pData[constants.PERIPHERAL] = peripheral;
 
     //clean per DFU cache
-    nrfGlobals.perDfuCache.flushAll();
+    nrfGlobals.dfuCache.flushAll();
 
     connectToPeripheral(pData)
         .then(findDfuService)
@@ -112,7 +112,7 @@ function connectToPeripheral(pData) {
     var peripheral = pData[constants.PERIPHERAL];
     return new Promise(function (resolve, reject) {
         peripheral.on("disconnect", function (error) {
-            const taskSuccessful = nrfGlobals.perDfuCache.get(constants.FIRMWARE_BIN_FILE_SENT_SUCCESSFULLY);
+            const taskSuccessful = nrfGlobals.dfuCache.get(constants.FIRMWARE_BIN_FILE_SENT_SUCCESSFULLY);
             if (taskSuccessful) {
                 eventEmitter.emit(eventNames.DFU_TASK_COMPLETED);
             } else {
@@ -224,13 +224,13 @@ function prepareDfuFiles(pData) {
     return Promise.map(zipEntries, (function (zipEntry) {
             var entryName = zipEntry.entryName;
             if (path.extname(entryName) === ".dat") {
-                pData[constants.FIRMWARE_DAT_FILE] = path.join(FIRMWARES_TMP_BASEPATH, entryName);
+                pData[constants.FIRMWARE_DAT_FILE_PATH] = path.join(FIRMWARES_TMP_BASEPATH, entryName);
                 logger.debug("firmware dat file: ", entryName);
             } else if (path.extname(zipEntry.entryName) === ".bin") {
-                pData[constants.FIRMWARE_BIN_FILE] = path.join(FIRMWARES_TMP_BASEPATH, entryName);
+                pData[constants.FIRMWARE_BIN_FILE_PATH] = path.join(FIRMWARES_TMP_BASEPATH, entryName);
                 logger.debug("firmware bin file: ", entryName);
             } else if (path.extname(zipEntry.entryName) === ".json") {
-                pData[constants.FIRMWARE_MANIFEST_FILE] = path.join(FIRMWARES_TMP_BASEPATH, entryName);
+                pData[constants.FIRMWARE_MANIFEST_FILE_PATH] = path.join(FIRMWARES_TMP_BASEPATH, entryName);
                 logger.debug("firmware manifest file: ", entryName);
             }
         })

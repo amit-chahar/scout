@@ -4,7 +4,7 @@
 var logger = require('../Logger');
 var Promise = require('bluebird');
 var helpers = require('./dfuUtils');
-var bleUtils = require('./BleUtils');
+var bleUtils = require('./bleUtils');
 
 function enableNotifications(characteristic, enable, TAG) {
 

@@ -9,7 +9,7 @@ const firebasePaths = require("../firebasePaths");
 const firebaseDbKeys = require("../firebaseDatabaseKeys");
 
 var logger = require("../Logger.js");
-var nrfGlobals = require('./NrfGlobals');
+var nrfGlobals = require('./dfuCache');
 const eventEmitter = nrfGlobals.eventEmitter;
 const eventNames = require("./eventNames");
 const download = require('download');
@@ -158,6 +158,7 @@ function currentDfuTaskFailed(dfuTask) {
         })
         .catch(function (error) {
             logger.error(TAG + "adding DFU task to failed tasks list");
+            logger.error(error);
             setTimeout(function () {
                 logger.info(TAG + "retrying add DFU task to failed tasks list");
                 currentDfuTaskFailed(dfuTask);
@@ -173,6 +174,11 @@ function downloadFirmwareFileFromCloud(dfuTask) {
         .then(function () {
             logger.info("firmware file %s downloaded" + firmwareFileName);
             doDfu(dfuTask);
+        })
+        .catch(function (error) {
+            logger.error(TAG + "downloading firmware file");
+            logger.error(error);
+            currentDfuTaskFailed(dfuTask);
         })
 }
 

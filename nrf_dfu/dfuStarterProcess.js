@@ -3,7 +3,7 @@
  */
 const TAG = "DFU Starter Process: ";
 
-const bleUtils = require('./BleUtils');
+const bleUtils = require('./bleUtils');
 const noble = require('noble');
 const dfuConfig = require('./nrfDfuConfig');
 const logger = require('../Logger');
@@ -11,6 +11,7 @@ const systemUtils = require('../systemUtils');
 // const mPeripheralAddress = process.argv[2];
 const mPeripheralAddress = "08:66:98:c5:9a:e0";
 var scanning = false;
+var deviceFound = false;
 
 noble.on('stateChange', function (state) {
     logger.verbose(TAG + "noble state: " + state);
@@ -42,7 +43,9 @@ function stopScan() {
     }
 
     //if no device is found and scan stopped, then terminate
-    terminate();
+    if(!deviceFound) {
+        terminate();
+    }
 }
 
 function terminate(){
@@ -53,7 +56,7 @@ noble.on('discover', function (peripheral) {
     if (peripheral.address === mPeripheralAddress) {
         logger.debug(TAG + "peripheral with address %s found", mPeripheralAddress);
         deviceFound = true;
-        noble.stopScanning();
+        stopScan();
 
         peripheral.once('disconnect', function () {
             logger.verbose(TAG + "Peripheral disconnected");

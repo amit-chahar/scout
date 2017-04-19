@@ -1,9 +1,10 @@
 /**
- * Created by Amit-Chahar on 10-04-2017.
+ * Created by Amit-Chahar on 19-04-2017.
  */
-const TAG = "Notification Handler: ";
+const TAG = "DFU Notification Handler: ";
 
-var logger = require('../Logger');
+const logger = require('../Logger');
+const bleUtils = require('./bleUtils');
 var helpers = require('./dfuUtils');
 var constants = require('./DfuConstants');
 var fs = require('fs');
@@ -14,10 +15,26 @@ var dfuService = require('./DfuService');
 const eventEmitter = nrfGlobals.eventEmitter;
 const eventNames = require('./eventNames');
 
+function setPrn(controlPointCharacteristic, prn){
+    var command = Buffer.alloc(3)
+    command.writeUInt8(constants.CONTROL_OPCODES.SET_PRN, 0);
+    command.writeUInt16LE(prn, 1);
+    logger.debug(TAG + "sending set PRN command: ", command);
+    return bleUtils.writeCharacteristic(controlPointCharacteristic, command, false)
+        .then(function () {
+            logger.verbose(TAG + "set PRN command sent successfully");
+        })
+        .catch(function (error) {
+            logger.error(TAG + "set PRN command not sent");
+            throw new Error(error)
+        })
+}
+
 function initPacketNotificationHandler(dfuCharacteristics, response, isNotification) {
     if (!isNotification) {
         return;
     }
+
     var controlPointCharacteristic = dfuCharacteristics[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
     var packetCharacteristic = dfuCharacteristics[constants.SECURE_DFU_PACKET_CHARACTERISTIC];
 
@@ -28,7 +45,7 @@ function initPacketNotificationHandler(dfuCharacteristics, response, isNotificat
 
     switch (requestOpCode) {
         case constants.CONTROL_OPCODES.CREATE:
-            logger.debug('CREATE');
+            logger.debug(TAG + "CREATE object notification received");
             //setting PRN to zero
             var command = new Buffer([constants.CONTROL_OPCODES.SET_PRN, 0x00, 0x00]);
             controlPointCharacteristic.write(command, false, function (error) {
@@ -82,30 +99,55 @@ function initPacketNotificationHandler(dfuCharacteristics, response, isNotificat
             controlPointCharacteristic.removeAllListeners("data");
             break;
         case constants.CONTROL_OPCODES.SELECT:
-            logger.debug('SELECT');
+            logger.verbose('SELECT command notification received');
             // TODO: Some logic to determine if a new object should be created or not.
-            //check the size of the dat file
-            const initFilePath = dfuCache.get(constants.FIRMWARE_DAT_FILE_PATH);
-            logger.debug("init file path: ", initFilePath);
-            const stats = fs.statSync(initFilePath);
-            const fileSize = stats.size;
-            logger.debug("init packet size in bytes: ", fileSize);
-            var command = new Buffer(6);
-            command.writeUInt8(constants.CONTROL_OPCODES.CREATE, 0);
-            command.writeUInt8(constants.CONTROL_PARAMETERS.COMMAND_OBJECT, 1);
-            command.writeUInt32LE(fileSize, 2);
-            controlPointCharacteristic.write(command, false, function (error) {
-                if (error) {
-                    logger.error("sending create object command for init packet");
-                    dfuService.taskFailed();
-                }
-                logger.debug("create object command sent: ", command);
-            })
-            ;
+            //TODO: retry logic
+            initializeDefaultsForDatFileTransfer(parsedResponse);
+            createCommandObject(controlPointCharacteristic, dfuCache.get(constants.FIRMWARE_DAT_FILE_SIZE));
             break;
         default:
             throw new Error("Unknown response op-code received: " + helpers.controlOpCodeToString(requestOpCode));
     }
+}
+
+function initializeDefaultsForDatFileTransfer(parsedResponse) {
+    // TODO: Some logic to determine if a new object should be created or not.
+    var stats = fs.statSync(dfuCache.get(constants.FIRMWARE_DAT_FILE_PATH));
+    logger.debug("init packet size in bytes: ", stats.size);
+    dfuCache.set(constants.FIRMWARE_DAT_FILE_SIZE, stats.size);
+    dfuCache.set(constants.FIRMWARE_DAT_FILE_OFFSET, 0);
+    dfuCache.set(constants.FIRMWARE_DAT_FILE_CHUNK_EXPECTED_CRC, 0);
+    logger.debug("maximum object size for DAT file: " + parsedResponse['data']['maximumSize']);
+    dfuCache.set(constants.FIRMWARE_DAT_FILE_CREATE_OBJECT_MAX_SIZE, parsedResponse['data']['maximumSize']);
+}
+
+function createCommandObject(controlPointCharacteristic, size){
+    const objectType = Buffer.from([constants.CONTROL_PARAMETERS.COMMAND_OBJECT]);
+    logger.debug(TAG, "create command object: ", objectType);
+    createObject(objectType, size);
+}
+
+function createDataObject(controlPointCharacteristic, size){
+    const objectType = Buffer.from([constants.CONTROL_PARAMETERS.DATA_OBJECT]);
+    logger.debug(TAG, "create data object: ", objectType);
+    createObject(objectType, size);
+}
+
+function createObject(controlPointCharacteristic, objectType, size){
+    var data = Buffer.alloc(6);
+    data.writeUInt8(constants.CONTROL_OPCODES.CREATE, 0);
+    data.writeUInt8(objectType, 1);
+    data.writeUInt32LE(size, 2);
+    logger.debug(TAG + "sending create object command: ", data);
+    bleUtils.writeCharacteristic(controlPointCharacteristic, data, false)
+        .then(function () {
+            logger.debug(TAG + "create object command sent successfully");
+        })
+        .catch(function (error) {
+            logger.error(TAG + "sending create object command not sent");
+            logger.error(error);
+            terminate();
+        })
 }
 
 function setupToChangeListener(pData) {
@@ -260,6 +302,10 @@ function continueSending(pData) {
     } else {
         sendCreateCommand(pData);
     }
+}
+
+function terminate(){
+
 }
 
 module.exports.controlPointNotificationHandler = initPacketNotificationHandler;

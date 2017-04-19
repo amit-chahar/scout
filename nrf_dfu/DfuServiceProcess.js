@@ -6,11 +6,11 @@
  */
 const TAG = "DFU Service: ";
 
-var globals = require("../Globals");
-var noble = globals.noble;
+const bleUtils = require('./bleUtils');
+const dfuBleUtils = require('./nrfDfuBleUtils');
+var noble = require('noble');
 var config = require("../Config");
 var logger = require("../Logger");
-var notificationHelper = require('./BleNotificationHelper');
 var constants = require('./DfuConstants');
 var notificationHandler = require('./BleNotificationHandler');
 var dfuUtils = require('./dfuUtils');
@@ -18,215 +18,171 @@ var path = require('path');
 var AdmZip = require('adm-zip');
 var Promise = require('bluebird');
 var util = require('util');
-var nrfGlobals = require('./NrfGlobals');
-var eventEmitter = nrfGlobals.eventEmitter;
-const utils = require('../Utils');
-const eventNames = require('./eventNames');
+var nrfGlobals = require('./dfuCache');
 const dfuConfig = require('./nrfDfuConfig');
+const dfuCache = require('./dfuCache');
+
+const mFirmwareZipName = process.argv[2];
 
 logger.debug(TAG + "zipped firmwares basepath: ", dfuConfig.FIRMWARES_ZIPPED_BASEPATH);
 logger.debug("tmp directory basepath: ", dfuConfig.FIRMWARES_TMP_BASEPATH);
 
+var scanning = false;
 var deviceFound = false;
 
-    noble.on('stateChange', function (state) {
-        if (state === 'poweredOn') {
-            noble.startScanning();
-            setTimeout(function () {
-                if (!deviceFound) {
-                    noble.stopScanning();
-                }
-            }, dfuConfig.DFU_MAIN_PROCESS_SCAN_TIMEOUT);
-        } else {
-            noble.stopScanning();
-        }
-    });
-
-    noble.on('discover', function (peripheral) {
-        if (peripheral.advertisement.localName === config.BOOTLOADER_MODE_DEVICE_NAME) {
-            deviceFound = true;
-            logger.info("Peripheral found advertising in bootloader mode: ", peripheral.address);
-            noble.stopScanning();
-            startDfuProcess(peripheral, firmwareZipName);
-        }
-    });
-
-noble.on('stopScan', function () {
-    if (!deviceFound) {
-        logger.verbose(TAG + "scan timeout, device not found");
-        logger.info(TAG + "DFU task failed");
-        taskFailed();
+noble.on('stateChange', function (state) {
+    logger.verbose(TAG + "noble state: " + state);
+    if (state === 'poweredOn') {
+        startScan();
     }
 });
 
-function taskFailed() {
-    utils.nobleRemoveAllListeners(noble);
-    utils.restartBluetoothService();
-    eventEmitter.emit(eventNames.DFU_TASK_FAILED);
-}
-
-function startDfuProcess(peripheral, firmwareZipName) {
-    var pData = {};
-    pData[constants.FIRMWARE_ZIP_NAME] = firmwareZipName;
-    pData[constants.PERIPHERAL] = peripheral;
-
-    //clean per DFU cache
-    nrfGlobals.perDfuCache.flushAll();
-
-    connectToPeripheral(pData)
-        .then(findDfuService)
-        .then(findControlPointAndPacketCharacteristic)
-        .then(enableNotificationOnControlPointCharacteristic)
-        .then(removeTmpDirectory)
-        .then(prepareDfuFiles)
-        .then(selectCommand)
-        .catch(function (error) {
-            logger.error("firmware update halted");
-            taskFailed();
-            // throw error;
-        })
-}
-
-function connectToPeripheral(pData) {
-    var peripheral = pData[constants.PERIPHERAL];
-    return new Promise(function (resolve, reject) {
-        peripheral.on("disconnect", function (error) {
-            const taskSuccessful = nrfGlobals.perDfuCache.get(constants.FIRMWARE_BIN_FILE_SENT_SUCCESSFULLY);
-            if (taskSuccessful) {
-                eventEmitter.emit(eventNames.DFU_TASK_COMPLETED);
-            } else {
-                eventEmitter.emit(eventNames.DFU_TASK_FAILED);
-            }
-            utils.nobleRemoveAllListeners(noble);
-            utils.restartBluetoothService();
-            logger.error("disconnecting peripheral");
-            logger.info("peripheral disconnected: ", peripheral.address);
-            // process.exit();
-        });
-
-        peripheral.connect(function (error) {
-            if (error) {
-                reject("Can't connect peripheral: ", peripheral.address);
-            }
-            logger.info("Connected to peripheral: " + peripheral.address);
-            resolve(pData);
-        });
-    })
-}
-
-function findDfuService(pData) {
-    var peripheral = pData[constants.PERIPHERAL];
-    logger.info("finding secure DFU service");
-    return new Promise(function (resolve, reject) {
-        peripheral.discoverServices([], function (error, services) {
-            if (error) {
-                reject("discovering services");
-            }
-
-            return Promise.map(services, function (service) {
-                logger.debug("found service with UUID: ", service.uuid);
-                if (service.uuid === constants.SECURE_DFU_SERVICE_SHORT_UUID) {
-                    logger.info("secure DFU service found");
-                    pData[constants.SECURE_DFU_SERVICE] = service;
-                }
-                return;
-            }).then(function () {
-                resolve(pData);
-            })
-        })
+function startScan() {
+    logger.verbose(TAG + "starting scan");
+    noble.once('scanStart', function () {
+        scanning = true;
+        logger.verbose(TAG + "scan started successfully");
     });
+    noble.startScanning();
+    setTimeout(function () {
+        stopScan();
+    }, dfuConfig.DFU_MAIN_PROCESS_SCAN_TIMEOUT);
 }
 
-function findControlPointAndPacketCharacteristic(pData) {
-    if (pData === undefined || pData[constants.SECURE_DFU_SERVICE] === undefined) {
-        Promise.reject("DFU service not available");
-    }
-    var service = pData[constants.SECURE_DFU_SERVICE];
-    return new Promise(function (resolve, reject) {
-        service.discoverCharacteristics([], function (error, characteristics) {
-            if (error) {
-                reject("discovering DFU characteristics");
-            }
-
-            return Promise.map(characteristics, function (characteristic) {
-                //logger.debug("found characteristic in secure DFU service with UUID: ", characteristic.uuid);
-                if (characteristic.uuid === constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC_UUID) {
-                    pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC] = characteristic;
-                    logger.info("found DFU control point characteristic");
-                } else if (characteristic.uuid == constants.SECURE_DFU_PACKET_CHARACTERISTIC_UUID) {
-                    pData[constants.SECURE_DFU_PACKET_CHARACTERISTIC] = characteristic;
-                    logger.info("found DFU packet characteristic");
-                }
-                return;
-            }).then(function () {
-                resolve(pData);
-            });
+function stopScan() {
+    logger.verbose(TAG + "stopping scan");
+    if (scanning) {
+        noble.once('scanStop', function () {
+            logger.verbose(TAG + "scan stopped successfullly");
+            scanning = false;
         });
-    })
+        noble.stopScanning();
+    }
+
+    //if no device is found and scan stopped, then terminate
+    if (!deviceFound) {
+        terminate();
+    }
 }
 
-function enableNotificationOnControlPointCharacteristic(pData) {
-    var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
-    var TAG = "control point characteristic";
-    return notificationHelper.enableNotifications(controlPointCharacteristic, true, TAG)
-        .then(function () {
-            controlPointCharacteristic.on('data', function (response, isNotification) {
-                if (isNotification) {
-                    notificationHandler.controlPointNotificationHandler(pData, response, isNotification);
+function terminate() {
+    const taskSuccessful = nrfGlobals.dfuCache.get(constants.FIRMWARE_BIN_FILE_SENT_SUCCESSFULLY);
+    if (taskSuccessful) {
+        eventEmitter.emit(eventNames.DFU_TASK_COMPLETED);
+    } else {
+        eventEmitter.emit(eventNames.DFU_TASK_FAILED);
+    }
+    process.exit(0);
+}
+
+noble.on('discover', function (peripheral) {
+    if (peripheral.advertisement.localName === config.BOOTLOADER_MODE_DEVICE_NAME) {
+        logger.info("Peripheral found advertising in bootloader mode: ", peripheral.address);
+        deviceFound = true;
+        stopScan();
+
+        //clean per DFU cache
+        nrfGlobals.dfuCache.flushAll();
+
+        peripheral.on("disconnect", function (error) {
+            if (error) {
+                logger.error("disconnecting peripheral");
+                logger.error(error);
+            }
+            logger.info("peripheral disconnected: ", peripheral.address);
+            terminate();
+        });
+
+        var mDfuCharacteristics;
+        bleUtils.connectToPeripheral(peripheral)
+            .then(bleUtils.discoverServices)
+            .then(dfuBleUtils.discoverBootloaderDfuService)
+            .then(bleUtils.discoverCharacteristics)
+            .then(dfuBleUtils.discoverControlPointAndPacketCharacteristics)
+            .then(function (dfuCharacteristics) {
+                if (dfuCharacteristics === undefined) {
+                    logger.verbose(TAG + "DFU characteristics are undefined");
+                    throw new Error();
                 }
-            });
-            return pData;
-        })
+                mDfuCharacteristics = dfuCharacteristics;
+                return dfuCharacteristics[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
+            })
+            .then(bleUtils.enableNotifications)
+            .then(addContorlPointNotificationListener)
+            .then(removeTmpDirectory)
+            .then(prepareDfuFiles)
+            .then(function (firmwareFilesPaths) {
+                dfuCache.set(constants.FIRMWARE_DAT_FILE_PATH, firmwareFilesPaths[constants.FIRMWARE_DAT_FILE_PATH]);
+                dfuCache.set(constants.FIRMWARE_BIN_FILE_PATH, firmwareFilesPaths[constants.FIRMWARE_BIN_FILE_PATH]);
+                return mDfuCharacteristics[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
+            })
+            .then(dfuBleUtils.sendInitPacketSelectCommand)
+            .catch(function (error) {
+                logger.error(TAG + "DFU failed");
+                logger.error(error);
+                terminate();
+            })
+    }
+});
+
+function addContorlPointNotificationListener(controlPointCharacteristic) {
+    if (controlPointCharacteristic === undefined) {
+        logger.error(TAG + "control point characteristic is undefined");
+        throw new Error();
+    }
+
+    controlPointCharacteristic.on('data', function (response, isNotification) {
+        if (isNotification) {
+            notificationHandler.controlPointNotificationHandler(pData, response, isNotification);
+        }
+    });
+    return controlPointCharacteristic;
 }
 
-function removeTmpDirectory(pData) {
-    logger.debug("removing tmp directory: " + FIRMWARES_TMP_BASEPATH);
-    return dfuUtils.removeDirectory(FIRMWARES_TMP_BASEPATH)
+function removeTmpDirectory() {
+    logger.debug(TAG + "removing tmp directory: " + dfuConfig.FIRMWARES_TMP_BASEPATH);
+    return dfuUtils.removeDirectory(dfuConfig.FIRMWARES_TMP_BASEPATH)
         .then(function () {
-            logger.debug("tmp directory removed successfully");
-            return pData;
+            logger.verbose(TAG + "tmp directory removed successfully");
         })
 }
 
-function prepareDfuFiles(pData) {
-    var firmwareZipName = pData[constants.FIRMWARE_ZIP_NAME];
-    var zipFilePath = path.join(FIRMWARES_ZIPPED_BASEPATH, firmwareZipName);
-    logger.debug("firmware zip file path: ", zipFilePath);
+function prepareDfuFiles() {
+    var zipFilePath = path.join(dfuConfig.FIRMWARES_ZIPPED_BASEPATH, mFirmwareZipName);
+    logger.debug(TAG + "firmware zip file path: ", zipFilePath);
     const zip = new AdmZip(zipFilePath);
     const zipEntries = zip.getEntries();
 
-    logger.info("extracting firmware files");
-    //TODO: set extract path correctly
-    zip.extractAllTo(FIRMWARES_TMP_BASEPATH, true);
-    logger.debug("extracted firmwares files to: " + FIRMWARES_TMP_BASEPATH);
+    logger.verbose(TAG + "extracting firmware files");
+    zip.extractAllTo(dfuConfig.FIRMWARES_TMP_BASEPATH, true);
+    logger.debug(TAG + "extracted firmwares files to: " + dfuConfig.FIRMWARES_TMP_BASEPATH);
 
+    var datFilePath, binFilePath, manifestFilePath;
     return Promise.map(zipEntries, (function (zipEntry) {
             var entryName = zipEntry.entryName;
             if (path.extname(entryName) === ".dat") {
-                pData[constants.FIRMWARE_DAT_FILE] = path.join(FIRMWARES_TMP_BASEPATH, entryName);
-                logger.debug("firmware dat file: ", entryName);
+                datFilePath = path.join(dfuConfig.FIRMWARES_TMP_BASEPATH, entryName);
+                logger.debug(TAG + "firmware DAT file path: ", datFilePath);
             } else if (path.extname(zipEntry.entryName) === ".bin") {
-                pData[constants.FIRMWARE_BIN_FILE] = path.join(FIRMWARES_TMP_BASEPATH, entryName);
-                logger.debug("firmware bin file: ", entryName);
+                binFilePath = path.join(dfuConfig.FIRMWARES_TMP_BASEPATH, entryName);
+                logger.debug(TAG + "firmware bin file path: ", binFilePath);
             } else if (path.extname(zipEntry.entryName) === ".json") {
-                pData[constants.FIRMWARE_MANIFEST_FILE] = path.join(FIRMWARES_TMP_BASEPATH, entryName);
-                logger.debug("firmware manifest file: ", entryName);
+                manifestFilePath = path.join(dfuConfig.FIRMWARES_TMP_BASEPATH, entryName);
+                logger.debug(TAG + "firmware manifest file path: ", manifestFilePath);
             }
         })
     ).then(function () {
-        return pData;
+        if(datFilePath === undefined || binFilePath === undefined || manifestFilePath === undefined){
+            logging.error(TAG + "extracting DFU files");
+            throw new Error();
+        }
+        var firmwareFilesPaths = {};
+        firmwareFilesPaths[constants.FIRMWARE_DAT_FILE_PATH] = datFilePath;
+        firmwareFilesPaths[constants.FIRMWARE_BIN_FILE_PATH] = binFilePath;
+        firmwareFilesPaths[constants.FIRMWARE_MANIFEST_FILE_PATH] = manifestFilePath;
+        logger.verbose(TAG + "DFU files prepared");
+        return firmwareFilesPaths;
     })
-}
-
-function selectCommand(pData) {
-    var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
-    var command = new Buffer([constants.CONTROL_OPCODES.SELECT, constants.CONTROL_PARAMETERS.COMMAND_OBJECT]);
-    logger.debug("writing select command to control characteristic");
-    return dfuUtils.writeDataToCharacteristic(controlPointCharacteristic, command, false)
-        .then(function () {
-            logger.info("select command sent: ", command);
-            return pData;
-        })
 }
 
 function setPrn(pData) {
@@ -240,5 +196,3 @@ function setPrn(pData) {
         });
 }
 
-module.exports.initializeAndStart = initializeAndStart;
-module.exports.taskFailed = taskFailed;
