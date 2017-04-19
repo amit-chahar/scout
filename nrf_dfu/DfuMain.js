@@ -99,6 +99,7 @@ function startPendingDfuTask(dfuTask) {
             logger.verbose(TAG + "dfu task removed from pending tasks list: " + dfuTask[firebaseDbKeys.BT_DEVICE_ADDRESS]);
             dfuTask[firebaseDbKeys.DFU_PROGRESS] = 0;
             logger.verbose(TAG + "initializing progress of current task to 0");
+            logger.debug(TAG + "current dfu task", dfuTask);
             return currentDfuTaskRef.set(dfuTask)
         })
         .then(function () {
@@ -109,7 +110,7 @@ function startPendingDfuTask(dfuTask) {
             setTimeout(function () {
                 logger.verbose(TAG + "retrying to update current task");
                 startPendingDfuTask(dfuTask);
-            })
+            }, nrfDfuConfig.CONNECTION_RETRY_INTERVAL);
         })
 }
 
