@@ -98,7 +98,7 @@ function removeDirectory(path){
 }
 
 function downloadFile(url, options){
-    new Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
         download(url, options, function(error){
             if (error){
                 reject(error);
