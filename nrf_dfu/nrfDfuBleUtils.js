@@ -5,6 +5,7 @@ const TAG = "NRF DFU Utils: ";
 const logger = require('../Logger');
 const dfuConstants = require('./DfuConstants');
 const bleUtils = require('./bleUtils');
+const Promise = require('bluebird');
 
 function discoverBootloaderDfuService(services) {
     logger.verbose(TAG + "discovering bootloader DFU service");
