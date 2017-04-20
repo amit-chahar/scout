@@ -285,7 +285,7 @@ function sendFirmwareObject(dfuCharacteristics) {
             var seed = dfuCache.get(dfuConstants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC);
             const expectedCrc = CRC32.buf(dataToSend, seed);
             dfuCache.set(dfuConstants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC, expectedCrc);
-            logger.info("data packet sent: last offset: %s: new offset: %s", offset, newOffset);
+            logger.info("data packet sent: total size: %s, last offset: %s, new offset: %s", result.length,  offset, newOffset);
             return dfuBleUtils.streamData(packetCharacteristic, dataToSend);
         })
         .then(function () {
