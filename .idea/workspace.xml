@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1368c387-3bcf-4c5a-a756-c38ad3c5b926" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/dfuNotificationHandler.js" afterPath="$PROJECT_DIR$/nrf_dfu/dfuNotificationHandler.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -24,17 +23,17 @@
       <file leaf-file-name="dfuNotificationHandler.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuNotificationHandler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="488">
+            <state relative-caret-position="5676">
               <caret line="314" column="68" lean-forward="false" selection-start-line="314" selection-start-column="68" selection-end-line="314" selection-end-column="68" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
+                <element signature="n#!!block;n#setPrn#0" expanded="false" />
                 <element signature="n#!!block;n#initializeDefaultsForDatFileTransfer#0" expanded="false" />
                 <element signature="n#!!block;n#createCommandObject#0" expanded="false" />
                 <element signature="n#!!block;n#createDataObject#0" expanded="false" />
                 <element signature="n#!!block;n#checkCommandObjectCrc#0" expanded="false" />
                 <element signature="e#10527#10633#0" expanded="false" />
                 <element signature="e#10673#10727#0" expanded="false" />
-                <marker date="1492687002900" expanded="false" signature="659:1273" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -496,14 +495,7 @@
       <workItem from="1491743150986" duration="47252000" />
       <workItem from="1491913539896" duration="62529000" />
       <workItem from="1492339275129" duration="74593000" />
-      <workItem from="1492539454413" duration="57822000" />
-    </task>
-    <task id="LOCAL-00152" summary="dfu service connected to firebase">
-      <created>1492499391226</created>
-      <option name="number" value="00152" />
-      <option name="presentableId" value="LOCAL-00152" />
-      <option name="project" value="LOCAL" />
-      <updated>1492499391226</updated>
+      <workItem from="1492539454413" duration="57927000" />
     </task>
     <task id="LOCAL-00153" summary="dfu service connected to firebase">
       <created>1492526603009</created>
@@ -841,11 +833,18 @@
       <option name="project" value="LOCAL" />
       <updated>1492686799293</updated>
     </task>
-    <option name="localTasksCounter" value="201" />
+    <task id="LOCAL-00201" summary="integrating DFU starter and main processes">
+      <created>1492687015141</created>
+      <option name="number" value="00201" />
+      <option name="presentableId" value="LOCAL-00201" />
+      <option name="project" value="LOCAL" />
+      <updated>1492687015141</updated>
+    </task>
+    <option name="localTasksCounter" value="202" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="248820000" />
+    <option name="totallyTimeSpent" value="248925000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -1425,17 +1424,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuNotificationHandler.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="488">
+        <state relative-caret-position="5676">
           <caret line="314" column="68" lean-forward="false" selection-start-line="314" selection-start-column="68" selection-end-line="314" selection-end-column="68" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
+            <element signature="n#!!block;n#setPrn#0" expanded="false" />
             <element signature="n#!!block;n#initializeDefaultsForDatFileTransfer#0" expanded="false" />
             <element signature="n#!!block;n#createCommandObject#0" expanded="false" />
             <element signature="n#!!block;n#createDataObject#0" expanded="false" />
             <element signature="n#!!block;n#checkCommandObjectCrc#0" expanded="false" />
             <element signature="e#10527#10633#0" expanded="false" />
             <element signature="e#10673#10727#0" expanded="false" />
-            <marker date="1492687002900" expanded="false" signature="659:1273" ph="{...}" />
           </folding>
         </state>
       </provider>
