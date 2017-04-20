@@ -11,10 +11,12 @@ module.exports = {
     "FIRMWARE_MANIFEST_FILE_PATH": "firmwareManifestFilePath",
     "FIRMWARE_DAT_FILE_SIZE": "firmwareDatFileSize",
     "FIRMWARE_BIN_FILE_SIZE": "firmwareBinFileSize",
+    "FIRMWARE_EXPECTED_CRC": "ExpectedCrc",
     "FIRMWARE_DAT_FILE_EXPECTED_CRC": "datFileExpectedCrc",
     "FIRMWARE_BIN_FILE_EXPECTED_CRC": "binFileExpectedCrc",
     "FIRMWARE_DAT_FILE_OFFSET": "datFileOffset",
     "FIRMWARE_BIN_FILE_OFFSET": "binFileOffset",
+    "FIRMWARE_CHUNK_EXPECTED_CRC": "ChunkExpectedCrc",
     "FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC": "binFileChunkExpectedCrc",
     "FIRMWARE_DAT_FILE_CHUNK_EXPECTED_CRC": "datFileChunkExpectedCrc",
     "FIRMWARE_BIN_FILE_CREATE_OBJECT_MAX_SIZE": "binFileCreateObjectMaxSize",
@@ -31,6 +33,17 @@ module.exports = {
     "SECURE_DFU_PACKET_CHARACTERISTIC": "secureDfuPacketCharacteristic",
     "SECURE_DFU_PACKET_CHARACTERISTIC_UUID": "8ec90002f3154f609fb8838830daea50",
     "BLE_PACKET_SIZE": 20,
+
+    //Parsed response fields
+    "RESPONSE_CODE": "responseCode",
+    "REQUEST_OP_CODE": "requestOpCode",
+    "RESULT_CODE": "resultCode",
+    "RESPONSE_SPECIFIC_DATA": "responseSpecificData",
+
+    //Response specific fields
+    "MAXIMUM_SIZE": "maximumSize",
+    "OFFSET": "offset",
+    "CRC_32": "crc32",
 
     "CONTROL_OPCODES": {
         "CREATE": 0x01,

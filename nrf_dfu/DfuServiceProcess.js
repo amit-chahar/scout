@@ -9,18 +9,17 @@ const TAG = "DFU Service: ";
 const bleUtils = require('./bleUtils');
 const dfuBleUtils = require('./nrfDfuBleUtils');
 var noble = require('noble');
-var config = require("../Config");
 var logger = require("../Logger");
 var constants = require('./DfuConstants');
-var notificationHandler = require('./BleNotificationHandler');
+var dfuNotificationHandler = require('./dfuNotificationHandler');
 var dfuUtils = require('./dfuUtils');
 var path = require('path');
 var AdmZip = require('adm-zip');
 var Promise = require('bluebird');
-var util = require('util');
-var nrfGlobals = require('./dfuCache');
 const dfuConfig = require('./nrfDfuConfig');
 const dfuCache = require('./dfuCache');
+const dfuServiceMessage = require('./dfuServiceMessage');
+const dfuProcessUtils = require('./dfuProcessUtils');
 
 const mFirmwareZipName = process.argv[2];
 
@@ -66,23 +65,17 @@ function stopScan() {
 }
 
 function terminate() {
-    const taskSuccessful = nrfGlobals.dfuCache.get(constants.FIRMWARE_BIN_FILE_SENT_SUCCESSFULLY);
-    if (taskSuccessful) {
-        eventEmitter.emit(eventNames.DFU_TASK_COMPLETED);
-    } else {
-        eventEmitter.emit(eventNames.DFU_TASK_FAILED);
-    }
-    process.exit(0);
+    dfuProcessUtils.terminate();
 }
 
 noble.on('discover', function (peripheral) {
-    if (peripheral.advertisement.localName === config.BOOTLOADER_MODE_DEVICE_NAME) {
-        logger.info("Peripheral found advertising in bootloader mode: ", peripheral.address);
+    if (peripheral.advertisement.localName === dfuConfig.BOOTLOADER_MODE_DEVICE_NAME) {
+        logger.info(TAG + "Peripheral found advertising in bootloader mode: ", peripheral.address);
         deviceFound = true;
         stopScan();
 
         //clean per DFU cache
-        nrfGlobals.dfuCache.flushAll();
+        dfuCache.flushAll();
 
         peripheral.on("disconnect", function (error) {
             if (error) {
@@ -108,7 +101,9 @@ noble.on('discover', function (peripheral) {
                 return dfuCharacteristics[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
             })
             .then(bleUtils.enableNotifications)
-            .then(addContorlPointNotificationListener)
+            .then(function () {
+                return addControlPointNotificationListener(mDfuCharacteristics);
+            })
             .then(removeTmpDirectory)
             .then(prepareDfuFiles)
             .then(function (firmwareFilesPaths) {
@@ -116,7 +111,10 @@ noble.on('discover', function (peripheral) {
                 dfuCache.set(constants.FIRMWARE_BIN_FILE_PATH, firmwareFilesPaths[constants.FIRMWARE_BIN_FILE_PATH]);
                 return mDfuCharacteristics[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
             })
-            .then(dfuBleUtils.sendInitPacketSelectCommand)
+            .then(dfuNotificationHandler.setPrn)
+            .then(function (characteristic) {
+                return dfuBleUtils.sendSelectCommand(characteristic, constants.CONTROL_PARAMETERS.COMMAND_OBJECT);
+            })
             .catch(function (error) {
                 logger.error(TAG + "DFU failed");
                 logger.error(error);
@@ -125,18 +123,20 @@ noble.on('discover', function (peripheral) {
     }
 });
 
-function addContorlPointNotificationListener(controlPointCharacteristic) {
-    if (controlPointCharacteristic === undefined) {
+function addControlPointNotificationListener(dfuCharacteristics) {
+    logger.verbose(TAG + "adding control point characteristic notification listener");
+    if (dfuCharacteristics === undefined) {
         logger.error(TAG + "control point characteristic is undefined");
         throw new Error();
     }
 
+    const controlPointCharacteristic = dfuCharacteristics[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
     controlPointCharacteristic.on('data', function (response, isNotification) {
         if (isNotification) {
-            notificationHandler.controlPointNotificationHandler(pData, response, isNotification);
+            dfuNotificationHandler.initPacketNotificationHandler(dfuCharacteristics, response, isNotification);
         }
     });
-    return controlPointCharacteristic;
+    return dfuCharacteristics;
 }
 
 function removeTmpDirectory() {
@@ -185,14 +185,4 @@ function prepareDfuFiles() {
     })
 }
 
-function setPrn(pData) {
-    var controlPointCharacteristic = pData[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
-    var buf = Buffer.alloc(3);
-    buf.writeUInt8(constants.CONTROL_OPCODES.SET_PRN, 0);
-    buf.writeUInt16BE(0x0000, 1); //PRN = 0
-    dfuUtils.writeDataToCharacteristic(controlPointCharacteristic, buf, false)
-        .catch(function (error) {
-            throw error;
-        });
-}
-
+module.exports.terminate = terminate;

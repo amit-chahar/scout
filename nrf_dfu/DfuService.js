@@ -193,7 +193,7 @@ function enableNotificationOnControlPointCharacteristic(pData) {
         .then(function () {
             controlPointCharacteristic.on('data', function (response, isNotification) {
                 if (isNotification) {
-                    notificationHandler.controlPointNotificationHandler(pData, response, isNotification);
+                    notificationHandler.initPacketNotificationHandler(pData, response, isNotification);
                 }
             });
             return pData;

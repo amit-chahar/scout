@@ -56,22 +56,82 @@ function discoverControlPointAndPacketCharacteristics(characteristics) {
     });
 }
 
-function sendInitPacketSelectCommand(controlPointCharacteristic) {
-    logger.verbose(TAG + "sending init packet select command");
-    if(controlPointCharacteristic === undefined){
+function sendSelectCommand(controlPointCharacteristic, objectType) {
+    logger.verbose(TAG + "sending select command");
+    if (controlPointCharacteristic === undefined) {
         logger.error(TAG + "control point characteristic is undefined");
         throw new Error();
     }
 
-    var command = new Buffer([dfuConstants.CONTROL_OPCODES.SELECT, dfuConstants.CONTROL_PARAMETERS.COMMAND_OBJECT]);
+    var command = Buffer.from([dfuConstants.CONTROL_OPCODES.SELECT, objectType]);
     logger.debug("writing select command to control characteristic: ", command);
     return bleUtils.writeCharacteristic(controlPointCharacteristic, command, false)
         .then(function () {
-            logger.verbose("init packet select command sent");
+            logger.verbose("select command sent");
             return controlPointCharacteristic;
         })
+        .catch(function (error) {
+            logger.error(TAG + "select command not sent");
+            throw error;
+        })
+}
+
+function streamData(characteristic, buffer) {
+    return new Promise(function (resolve, reject) {
+        if (buffer.length <= 0) {
+            resolve();
+        }
+        else {
+            bleUtils.writeCharacteristic(characteristic, buffer.slice(0, dfuConstants.BLE_PACKET_SIZE), false)
+                .then(function () {
+                    return streamData(characteristic, buffer.slice(dfuConstants.BLE_PACKET_SIZE))
+                })
+                .then(function () {
+                    logger.verbose(TAG + "data sent successfully");
+                    resolve();
+                })
+                .catch(function (error) {
+                    reject(error);
+                });
+        }
+    });
+}
+
+function sendCalculateChecksumCommand(controlPointCharacteristic) {
+    var buf = Buffer.from([dfuConstants.CONTROL_OPCODES.CALCULATE_CHECKSUM]);
+    logger.debug("sending calculate checksum command: ", buf);
+    if (controlPointCharacteristic === undefined) {
+        throw new Error(TAG + "control point characteristic is undefined");
+    }
+    return bleUtils.writeCharacteristic(controlPointCharacteristic, buf, false)
+        .then(function () {
+            logger.verbose(TAG + "calculate checksum command sent successfully");
+        })
+        .catch(function (error) {
+            logger.error(TAG + "calculate checksum command not sent");
+            throw error;
+        })
+}
+
+function sendExecuteCommand(controlPointCharacteristic) {
+    var buf = Buffer.from([dfuConstants.CONTROL_OPCODES.EXECUTE]);
+    logger.debug("sending execute data object command: ", buf);
+    if (controlPointCharacteristic === undefined) {
+        throw new Error(TAG + "control point characteristic is undefined");
+    }
+    bleUtils.writeCharacteristic(controlPointCharacteristic, buf, false)
+        .then(function () {
+            logger.verbose(TAG + "execute command sent successfully");
+        })
+        .catch(function (error) {
+            logger.error(TAG + "execute command not sent");
+            throw error;
+        });
 }
 
 module.exports.discoverBootloaderDfuService = discoverBootloaderDfuService;
 module.exports.discoverControlPointAndPacketCharacteristics = discoverControlPointAndPacketCharacteristics;
-module.exports.sendInitPacketSelectCommand = sendInitPacketSelectCommand;
+module.exports.sendSelectCommand = sendSelectCommand;
+module.exports.streamData = streamData;
+module.exports.sendCalculateChecksumCommand = sendCalculateChecksumCommand;
+module.exports.sendExecuteCommand = sendExecuteCommand;

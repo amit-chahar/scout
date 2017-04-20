@@ -262,4 +262,4 @@ function continueSending(pData) {
     }
 }
 
-module.exports.controlPointNotificationHandler = initPacketNotificationHandler;
+module.exports.initPacketNotificationHandler = initPacketNotificationHandler;
