@@ -82,7 +82,7 @@ function sendCommandObject(controlPointCharacteristic, packetCharacteristic){
     var datFilePath = dfuCache.get(dfuConstants.FIRMWARE_DAT_FILE_PATH);
     helpers.parseBinaryFile(datFilePath)
         .then(function (result) {
-                const expectedCrc = CRC32(result);
+                const expectedCrc = CRC32.buf(result);
                 dfuCache.set(dfuConstants.FIRMWARE_DAT_FILE_EXPECTED_CRC, expectedCrc);
                 logger.debug("expected crc of init file: ", CRC32(result));
                 return dfuBleUtils.streamData(packetCharacteristic, result);
@@ -279,7 +279,7 @@ function sendFirmwareObject(dfuCharacteristics) {
 
 function checkDataObjectCrc(parsedResponse) {
     const expectedCrc = dfuCache.get(dfuConstants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC);
-    const actualCrc = parsedResponse['data']['crc32'];
+    const actualCrc = parsedResponse[dfuConstants.RESPONSE_SPECIFIC_DATA][dfuConstants.CRC_32];
     logger.debug("expected CRC: %s, actual CRC: %s", expectedCrc, actualCrc);
     return parsedResponse;
 }

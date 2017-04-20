@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1368c387-3bcf-4c5a-a756-c38ad3c5b926" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/nrf_dfu/dfuProcessUtils.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/nrf_dfu/dfuServiceMessage.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Config.js" afterPath="$PROJECT_DIR$/Config.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js" afterPath="$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/DfuConstants.js" afterPath="$PROJECT_DIR$/nrf_dfu/DfuConstants.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/DfuService.js" afterPath="$PROJECT_DIR$/nrf_dfu/DfuService.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/DfuServiceProcess.js" afterPath="$PROJECT_DIR$/nrf_dfu/DfuServiceProcess.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/dfuNotificationHandler.js" afterPath="$PROJECT_DIR$/nrf_dfu/dfuNotificationHandler.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/dfuUtils.js" afterPath="$PROJECT_DIR$/nrf_dfu/dfuUtils.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/nrfDfuBleUtils.js" afterPath="$PROJECT_DIR$/nrf_dfu/nrfDfuBleUtils.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nrf_dfu/nrfDfuConfig.js" afterPath="$PROJECT_DIR$/nrf_dfu/nrfDfuConfig.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -31,39 +21,36 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="DfuService.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuService.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="66">
-              <caret line="5" column="26" lean-forward="false" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
-              <folding>
-                <element signature="e#0#48#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dfuNotificationHandler.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="dfuNotificationHandler.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuNotificationHandler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1320">
-              <caret line="209" column="18" lean-forward="false" selection-start-line="209" selection-start-column="18" selection-end-line="209" selection-end-column="18" />
+            <state relative-caret-position="440">
+              <caret line="84" column="45" lean-forward="false" selection-start-line="84" selection-start-column="45" selection-end-line="84" selection-end-column="45" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
                 <element signature="n#!!block;n#initializeDefaultsForDatFileTransfer#0" expanded="false" />
                 <element signature="n#!!block;n#createCommandObject#0" expanded="false" />
                 <element signature="n#!!block;n#createDataObject#0" expanded="false" />
-                <element signature="n#!!block;n#createObject#0" expanded="false" />
-                <element signature="n#!!block;n#sendCommandObject#0" expanded="false" />
                 <element signature="n#!!block;n#checkCommandObjectCrc#0" expanded="false" />
                 <element signature="n#!!block;n#initPacketNotificationHandler#0" expanded="false" />
                 <element signature="n#!!block;n#setupToChangeListener#0" expanded="false" />
-                <element signature="e#9504#9610#0" expanded="false" />
-                <element signature="e#9650#9704#0" expanded="false" />
+                <element signature="e#9478#9584#0" expanded="false" />
+                <element signature="e#9624#9678#0" expanded="false" />
                 <element signature="n#!!block;n#initializeDefaultsForBinFileTransfer#0" expanded="false" />
                 <element signature="n#!!block;n#sendCreateCommand#0" expanded="false" />
-                <element signature="n#!!block;n#checkDataObjectCrc#0" expanded="false" />
-                <marker date="1492670910243" expanded="false" signature="564:1178" ph="{...}" />
+                <marker date="1492673247749" expanded="false" signature="564:1178" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dfuTest.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuTest.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-4">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#48#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -110,34 +97,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bleUtils.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/nrf_dfu/bleUtils.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#48#0" expanded="false" />
-                <element signature="n#!!block;n#connectToPeripheral#0" expanded="false" />
-                <element signature="n#!!block;n#discoverServices#0" expanded="false" />
-                <element signature="n#!!block;n#discoverCharacteristics#0" expanded="false" />
-                <element signature="n#!!block;n#discoverDescriptors#0" expanded="false" />
-                <element signature="n#!!block;n#discoverCCCD#0" expanded="false" />
-                <element signature="n#!!block;n#writeValueToDescriptor#0" expanded="false" />
-                <element signature="n#!!block;n#discoverAppDfuService#0" expanded="false" />
-                <element signature="n#!!block;n#discoverAppDfuCharacteristic#0" expanded="false" />
-                <element signature="n#!!block;n#enableNotificationsOnBleServer#0" expanded="false" />
-                <element signature="n#!!block;n#enableNotificationsOnBleClient#0" expanded="false" />
-                <element signature="n#!!block;n#enableNotifications#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="DfuMain.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuMain.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
-              <caret line="120" column="30" lean-forward="false" selection-start-line="120" selection-start-column="30" selection-end-line="120" selection-end-column="30" />
+            <state relative-caret-position="449">
+              <caret line="146" column="1" lean-forward="false" selection-start-line="146" selection-start-column="1" selection-end-line="146" selection-end-column="1" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
                 <element signature="n#!!block;n#currentDfuTaskFailed#0" expanded="false" />
@@ -147,27 +111,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DfuConstants.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuConstants.js">
+      <file leaf-file-name="dfuServiceProcess.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuServiceProcess.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="18" column="36" lean-forward="false" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
-              <folding>
-                <element signature="e#0#48#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DfuServiceProcess.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuServiceProcess.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="586">
-              <caret line="125" column="17" lean-forward="false" selection-start-line="125" selection-start-column="17" selection-end-line="125" selection-end-column="17" />
+            <state relative-caret-position="386">
+              <caret line="29" column="24" lean-forward="false" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
               <folding>
                 <element signature="e#49#97#0" expanded="false" />
                 <element signature="e#1020#1134#0" expanded="false" />
-                <element signature="n#!!block;n#startScan#0" expanded="false" />
                 <element signature="n#!!block;n#stopScan#0" expanded="false" />
                 <element signature="n#!!block;n#terminate#0" expanded="false" />
                 <element signature="e#1956#4326#0" expanded="false" />
@@ -185,14 +136,15 @@
       <file leaf-file-name="nrfDfuBleUtils.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/nrfDfuBleUtils.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="696">
-              <caret line="134" column="39" lean-forward="false" selection-start-line="134" selection-start-column="39" selection-end-line="134" selection-end-column="39" />
+            <state relative-caret-position="198">
+              <caret line="31" column="71" lean-forward="false" selection-start-line="31" selection-start-column="71" selection-end-line="31" selection-end-column="71" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
                 <element signature="n#!!block;n#discoverBootloaderDfuService#0" expanded="false" />
                 <element signature="n#!!block;n#discoverControlPointAndPacketCharacteristics#0" expanded="false" />
                 <element signature="n#!!block;n#sendSelectCommand#0" expanded="false" />
                 <element signature="n#!!block;n#streamData#0" expanded="false" />
+                <element signature="n#!!block;n#sendCalculateChecksumCommand#0" expanded="false" />
                 <element signature="n#!!block;n#sendExecuteCommand#0" expanded="false" />
               </folding>
             </state>
@@ -267,20 +219,21 @@
         <option value="$PROJECT_DIR$/scout.js" />
         <option value="$PROJECT_DIR$/Globals.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/DfuMain.js" />
-        <option value="$PROJECT_DIR$/nrf_dfu/dfuStarterProcess.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/NrfGlobals.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/dfuCache.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/BleNotificationHandler.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/DfuConstants.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/progressSteps.js" />
         <option value="$PROJECT_DIR$/Config.js" />
-        <option value="$PROJECT_DIR$/nrf_dfu/nrfDfuConfig.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/dfuServiceMessage.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/dfuUtils.js" />
-        <option value="$PROJECT_DIR$/nrf_dfu/nrfDfuBleUtils.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/dfuProcessUtils.js" />
-        <option value="$PROJECT_DIR$/nrf_dfu/dfuNotificationHandler.js" />
         <option value="$PROJECT_DIR$/nrf_dfu/DfuServiceProcess.js" />
+        <option value="$PROJECT_DIR$/nrf_dfu/dfuStarterProcess.js" />
+        <option value="$PROJECT_DIR$/nrf_dfu/nrfDfuConfig.js" />
+        <option value="$PROJECT_DIR$/nrf_dfu/dfuTest.js" />
+        <option value="$PROJECT_DIR$/nrf_dfu/nrfDfuBleUtils.js" />
+        <option value="$PROJECT_DIR$/nrf_dfu/dfuNotificationHandler.js" />
       </list>
     </option>
   </component>
@@ -547,63 +500,7 @@
       <workItem from="1491743150986" duration="47252000" />
       <workItem from="1491913539896" duration="62529000" />
       <workItem from="1492339275129" duration="74593000" />
-      <workItem from="1492539454413" duration="41899000" />
-    </task>
-    <task id="LOCAL-00119" summary="dfu service connected to firebase">
-      <created>1492418216357</created>
-      <option name="number" value="00119" />
-      <option name="presentableId" value="LOCAL-00119" />
-      <option name="project" value="LOCAL" />
-      <updated>1492418216357</updated>
-    </task>
-    <task id="LOCAL-00120" summary="dfu service connected to firebase">
-      <created>1492422767370</created>
-      <option name="number" value="00120" />
-      <option name="presentableId" value="LOCAL-00120" />
-      <option name="project" value="LOCAL" />
-      <updated>1492422767370</updated>
-    </task>
-    <task id="LOCAL-00121" summary="dfu service connected to firebase">
-      <created>1492423042744</created>
-      <option name="number" value="00121" />
-      <option name="presentableId" value="LOCAL-00121" />
-      <option name="project" value="LOCAL" />
-      <updated>1492423042744</updated>
-    </task>
-    <task id="LOCAL-00122" summary="dfu service connected to firebase">
-      <created>1492423628051</created>
-      <option name="number" value="00122" />
-      <option name="presentableId" value="LOCAL-00122" />
-      <option name="project" value="LOCAL" />
-      <updated>1492423628051</updated>
-    </task>
-    <task id="LOCAL-00123" summary="dfu service connected to firebase">
-      <created>1492423821783</created>
-      <option name="number" value="00123" />
-      <option name="presentableId" value="LOCAL-00123" />
-      <option name="project" value="LOCAL" />
-      <updated>1492423821783</updated>
-    </task>
-    <task id="LOCAL-00124" summary="dfu service connected to firebase">
-      <created>1492423939947</created>
-      <option name="number" value="00124" />
-      <option name="presentableId" value="LOCAL-00124" />
-      <option name="project" value="LOCAL" />
-      <updated>1492423939947</updated>
-    </task>
-    <task id="LOCAL-00125" summary="dfu service connected to firebase">
-      <created>1492424507125</created>
-      <option name="number" value="00125" />
-      <option name="presentableId" value="LOCAL-00125" />
-      <option name="project" value="LOCAL" />
-      <updated>1492424507125</updated>
-    </task>
-    <task id="LOCAL-00126" summary="dfu service connected to firebase">
-      <created>1492425631259</created>
-      <option name="number" value="00126" />
-      <option name="presentableId" value="LOCAL-00126" />
-      <option name="project" value="LOCAL" />
-      <updated>1492425631260</updated>
+      <workItem from="1492539454413" duration="44235000" />
     </task>
     <task id="LOCAL-00127" summary="dfu service connected to firebase">
       <created>1492425748629</created>
@@ -892,11 +789,67 @@
       <option name="project" value="LOCAL" />
       <updated>1492608745763</updated>
     </task>
-    <option name="localTasksCounter" value="168" />
+    <task id="LOCAL-00168" summary="dfu service connected to firebase">
+      <created>1492670923224</created>
+      <option name="number" value="00168" />
+      <option name="presentableId" value="LOCAL-00168" />
+      <option name="project" value="LOCAL" />
+      <updated>1492670923224</updated>
+    </task>
+    <task id="LOCAL-00169" summary="dfu service connected to firebase">
+      <created>1492672127212</created>
+      <option name="number" value="00169" />
+      <option name="presentableId" value="LOCAL-00169" />
+      <option name="project" value="LOCAL" />
+      <updated>1492672127212</updated>
+    </task>
+    <task id="LOCAL-00170" summary="dfu service connected to firebase">
+      <created>1492672239015</created>
+      <option name="number" value="00170" />
+      <option name="presentableId" value="LOCAL-00170" />
+      <option name="project" value="LOCAL" />
+      <updated>1492672239015</updated>
+    </task>
+    <task id="LOCAL-00171" summary="dfu service connected to firebase">
+      <created>1492672296462</created>
+      <option name="number" value="00171" />
+      <option name="presentableId" value="LOCAL-00171" />
+      <option name="project" value="LOCAL" />
+      <updated>1492672296462</updated>
+    </task>
+    <task id="LOCAL-00172" summary="dfu service connected to firebase">
+      <created>1492672391254</created>
+      <option name="number" value="00172" />
+      <option name="presentableId" value="LOCAL-00172" />
+      <option name="project" value="LOCAL" />
+      <updated>1492672391254</updated>
+    </task>
+    <task id="LOCAL-00173" summary="dfu service connected to firebase">
+      <created>1492672566767</created>
+      <option name="number" value="00173" />
+      <option name="presentableId" value="LOCAL-00173" />
+      <option name="project" value="LOCAL" />
+      <updated>1492672566767</updated>
+    </task>
+    <task id="LOCAL-00174" summary="dfu service connected to firebase">
+      <created>1492672673072</created>
+      <option name="number" value="00174" />
+      <option name="presentableId" value="LOCAL-00174" />
+      <option name="project" value="LOCAL" />
+      <updated>1492672673072</updated>
+    </task>
+    <task id="LOCAL-00175" summary="dfu service connected to firebase">
+      <created>1492672903593</created>
+      <option name="number" value="00175" />
+      <option name="presentableId" value="LOCAL-00175" />
+      <option name="project" value="LOCAL" />
+      <updated>1492672903594</updated>
+    </task>
+    <option name="localTasksCounter" value="176" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="232897000" />
+    <option name="totallyTimeSpent" value="235233000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -968,14 +921,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/nrf_dfu/DiscoverDevice.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuService.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
@@ -1218,34 +1163,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuStarter.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="2" column="26" lean-forward="false" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scannerProcess.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="30" column="24" lean-forward="true" selection-start-line="30" selection-start-column="24" selection-end-line="30" selection-end-column="24" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuStarterProcess.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="58" column="19" lean-forward="false" selection-start-line="58" selection-start-column="19" selection-end-line="58" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#48#0" expanded="false" />
-            <element signature="e#472#586#0" expanded="false" />
-            <element signature="n#!!block;n#startScan#0" expanded="false" />
-            <element signature="n#!!block;n#terminate#0" expanded="false" />
-            <element signature="n#!!block;n#startListeningForNotificationsOnCharacteristic#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1349,18 +1272,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuMain.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="120" column="30" lean-forward="false" selection-start-line="120" selection-start-column="30" selection-end-line="120" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#48#0" expanded="false" />
-            <element signature="n#!!block;n#currentDfuTaskFailed#0" expanded="false" />
-            <element signature="n#!!block;n#downloadFirmwareFileFromCloud#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/BleNotificationHelper.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="146">
@@ -1381,37 +1292,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nrf_dfu/nrfDfuConfig.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="8" column="4" lean-forward="false" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#48#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Config.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22">
           <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nrf_dfu/nrfDfuBleUtils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="696">
-          <caret line="134" column="39" lean-forward="false" selection-start-line="134" selection-start-column="39" selection-end-line="134" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#48#0" expanded="false" />
-            <element signature="n#!!block;n#discoverBootloaderDfuService#0" expanded="false" />
-            <element signature="n#!!block;n#discoverControlPointAndPacketCharacteristics#0" expanded="false" />
-            <element signature="n#!!block;n#sendSelectCommand#0" expanded="false" />
-            <element signature="n#!!block;n#streamData#0" expanded="false" />
-            <element signature="n#!!block;n#sendExecuteCommand#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1441,26 +1327,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuNotificationHandler.js">
+    <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuStarter.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1320">
-          <caret line="209" column="18" lean-forward="false" selection-start-line="209" selection-start-column="18" selection-end-line="209" selection-end-column="18" />
+        <state relative-caret-position="44">
+          <caret line="2" column="26" lean-forward="false" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuMain.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="146" column="1" lean-forward="false" selection-start-line="146" selection-start-column="1" selection-end-line="146" selection-end-column="1" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
-            <element signature="n#!!block;n#initializeDefaultsForDatFileTransfer#0" expanded="false" />
-            <element signature="n#!!block;n#createCommandObject#0" expanded="false" />
-            <element signature="n#!!block;n#createDataObject#0" expanded="false" />
-            <element signature="n#!!block;n#createObject#0" expanded="false" />
-            <element signature="n#!!block;n#sendCommandObject#0" expanded="false" />
-            <element signature="n#!!block;n#checkCommandObjectCrc#0" expanded="false" />
-            <element signature="n#!!block;n#initPacketNotificationHandler#0" expanded="false" />
-            <element signature="n#!!block;n#setupToChangeListener#0" expanded="false" />
-            <element signature="e#9504#9610#0" expanded="false" />
-            <element signature="e#9650#9704#0" expanded="false" />
-            <element signature="n#!!block;n#initializeDefaultsForBinFileTransfer#0" expanded="false" />
-            <element signature="n#!!block;n#sendCreateCommand#0" expanded="false" />
-            <element signature="n#!!block;n#checkDataObjectCrc#0" expanded="false" />
-            <marker date="1492670910243" expanded="false" signature="564:1178" ph="{...}" />
+            <element signature="n#!!block;n#currentDfuTaskFailed#0" expanded="false" />
+            <element signature="n#!!block;n#downloadFirmwareFileFromCloud#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuStarterProcess.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="12" column="48" lean-forward="true" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#48#0" expanded="false" />
+            <element signature="e#472#586#0" expanded="false" />
+            <element signature="n#!!block;n#startScan#0" expanded="false" />
+            <element signature="n#!!block;n#terminate#0" expanded="false" />
+            <element signature="n#!!block;n#startListeningForNotificationsOnCharacteristic#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1475,14 +1371,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nrf_dfu/DfuServiceProcess.js">
+    <entry file="file://$PROJECT_DIR$/nrf_dfu/nrfDfuConfig.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="586">
-          <caret line="125" column="17" lean-forward="false" selection-start-line="125" selection-start-column="17" selection-end-line="125" selection-end-column="17" />
+        <state relative-caret-position="176">
+          <caret line="10" column="38" lean-forward="false" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#48#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuServiceProcess.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="386">
+          <caret line="29" column="24" lean-forward="false" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
           <folding>
             <element signature="e#49#97#0" expanded="false" />
             <element signature="e#1020#1134#0" expanded="false" />
-            <element signature="n#!!block;n#startScan#0" expanded="false" />
             <element signature="n#!!block;n#stopScan#0" expanded="false" />
             <element signature="n#!!block;n#terminate#0" expanded="false" />
             <element signature="e#1956#4326#0" expanded="false" />
@@ -1492,6 +1397,53 @@
             <element signature="n#!!block;n#addControlPointNotificationListener#0" expanded="false" />
             <element signature="n#!!block;n#removeTmpDirectory#0" expanded="false" />
             <element signature="n#!!block;n#prepareDfuFiles#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuTest.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#48#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nrf_dfu/nrfDfuBleUtils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="31" column="71" lean-forward="false" selection-start-line="31" selection-start-column="71" selection-end-line="31" selection-end-column="71" />
+          <folding>
+            <element signature="e#0#48#0" expanded="false" />
+            <element signature="n#!!block;n#discoverBootloaderDfuService#0" expanded="false" />
+            <element signature="n#!!block;n#discoverControlPointAndPacketCharacteristics#0" expanded="false" />
+            <element signature="n#!!block;n#sendSelectCommand#0" expanded="false" />
+            <element signature="n#!!block;n#streamData#0" expanded="false" />
+            <element signature="n#!!block;n#sendCalculateChecksumCommand#0" expanded="false" />
+            <element signature="n#!!block;n#sendExecuteCommand#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuNotificationHandler.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="84" column="45" lean-forward="false" selection-start-line="84" selection-start-column="45" selection-end-line="84" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#48#0" expanded="false" />
+            <element signature="n#!!block;n#initializeDefaultsForDatFileTransfer#0" expanded="false" />
+            <element signature="n#!!block;n#createCommandObject#0" expanded="false" />
+            <element signature="n#!!block;n#createDataObject#0" expanded="false" />
+            <element signature="n#!!block;n#checkCommandObjectCrc#0" expanded="false" />
+            <element signature="n#!!block;n#initPacketNotificationHandler#0" expanded="false" />
+            <element signature="n#!!block;n#setupToChangeListener#0" expanded="false" />
+            <element signature="e#9478#9584#0" expanded="false" />
+            <element signature="e#9624#9678#0" expanded="false" />
+            <element signature="n#!!block;n#initializeDefaultsForBinFileTransfer#0" expanded="false" />
+            <element signature="n#!!block;n#sendCreateCommand#0" expanded="false" />
+            <marker date="1492673247749" expanded="false" signature="564:1178" ph="{...}" />
           </folding>
         </state>
       </provider>
