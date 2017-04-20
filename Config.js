@@ -7,7 +7,7 @@ module.exports = {
 
 
     "Build": {
-        "DEBUG": true
+        "DEBUG": false
     },
     "SCANNER_PROCESS_TIME_OUT": 20000,
     "TIMEOUT_AFTER_BLUETOOTH_SERVICE_RESTART": 1000
