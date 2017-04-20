@@ -128,23 +128,27 @@ function initFileNotificationHandler(dfuCharacteristics, response, isNotificatio
 
     switch (requestOpCode) {
         case dfuConstants.CONTROL_OPCODES.CREATE:
-            logger.verbose("\n" + TAG + "CREATE command object notification received");
+            console.log();
+            logger.verbose(TAG + "CREATE command object notification received");
             logger.debug(TAG + "Response received: " + parsedResponse);
             sendCommandObject(controlPointCharacteristic, packetCharacteristic);
             break;
         case dfuConstants.CONTROL_OPCODES.SET_PRN:
-            logger.verbose("\n" + TAG + "SET_PRN notification received");
+            console.log();
+            logger.verbose(TAG + "SET_PRN notification received");
             logger.debug(TAG + "Response received: " + parsedResponse);
             dfuBleUtils.sendSelectCommand(controlPointCharacteristic, dfuConstants.CONTROL_PARAMETERS.COMMAND_OBJECT);
             break;
         case dfuConstants.CONTROL_OPCODES.CALCULATE_CHECKSUM:
-            logger.verbose("\n" + TAG + "CALCULATE_CHECKSUM notification received");
+            console.log();
+            logger.verbose(TAG + "CALCULATE_CHECKSUM notification received");
             logger.debug(TAG + "Response received: " + parsedResponse);
             // TODO: Check if offset and crc is correct before executing.
             checkCommandObjectCrc(controlPointCharacteristic, parsedResponse);
             break;
         case dfuConstants.CONTROL_OPCODES.EXECUTE:
-            logger.verbose("\n" + TAG + "EXECUTE command object notification received");
+            console.log();
+            logger.verbose(TAG + "EXECUTE command object notification received");
             logger.debug(TAG + "Response received: " + parsedResponse);
             logger.info(TAG + "init file sent, starting sending firmware data file");
             logger.verbose("changing control point characteristic listeners");
@@ -152,7 +156,8 @@ function initFileNotificationHandler(dfuCharacteristics, response, isNotificatio
             controlPointCharacteristic.removeAllListeners("data");
             break;
         case dfuConstants.CONTROL_OPCODES.SELECT:
-            logger.verbose("\n" + 'SELECT command notification received');
+            console.log();
+            logger.verbose('SELECT command notification received');
             logger.debug(TAG + "Response received: " + parsedResponse);
             // TODO: Some logic to determine if a new object should be created or not.
             //TODO: retry logic
@@ -191,16 +196,19 @@ function firmwareDataTransferHandler(dfuCharacteristics, response, isNotificatio
 
     switch (requestOpCode) {
         case dfuConstants.CONTROL_OPCODES.CREATE:
-            logger.debug("\n" + TAG + 'CREATE response received');
+            console.log();
+            logger.debug(TAG + 'CREATE response received');
             logger.debug(TAG + "Parsed response: ", parsedResponse);
             sendFirmwareObject(dfuCharacteristics);
             break;
         case dfuConstants.CONTROL_OPCODES.SET_PRN:
-            logger.debug("\n" + TAG + "SET PRN response received");
+            console.log();
+            logger.debug(TAG + "SET PRN response received");
             logger.debug(TAG + "Parsed response: ", parsedResponse);
             break;
         case dfuConstants.CONTROL_OPCODES.CALCULATE_CHECKSUM:
-            logger.verbose("\n" + TAG + 'CALCULATE CHECKSUM response received');
+            console.log();
+            logger.verbose(TAG + 'CALCULATE CHECKSUM response received');
             logger.debug(TAG + "Parsed response: ", parsedResponse);
             // TODO: Check if offset and crc is correct before executing.
             checkDataObjectCrc(parsedResponse)
@@ -212,12 +220,14 @@ function firmwareDataTransferHandler(dfuCharacteristics, response, isNotificatio
                 })
             break;
         case dfuConstants.CONTROL_OPCODES.EXECUTE:
-            logger.verbose("\n" + TAG + 'EXECUTE response received');
+            console.log();
+            logger.verbose(TAG + 'EXECUTE response received');
             logger.debug(TAG + "Parsed response: ", parsedResponse);
             continueSending(dfuCharacteristics);
             break;
         case dfuConstants.CONTROL_OPCODES.SELECT:
-            logger.verbose("\n" + TAG + 'SELECT response received');
+            console.log();
+            logger.verbose(TAG + 'SELECT response received');
             logger.debug(TAG + "Parsed response: ", parsedResponse);
             initializeDefaultsForBinFileTransfer(parsedResponse);
             sendCreateCommand(dfuCharacteristics);
