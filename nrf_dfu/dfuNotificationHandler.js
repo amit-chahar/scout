@@ -89,6 +89,7 @@ function sendCommandObject(controlPointCharacteristic, packetCharacteristic){
             }
         )
         .then(function () {
+            logger.verbose(TAG + "data sent successfully");
             var buf = Buffer.from([dfuConstants.CONTROL_OPCODES.CALCULATE_CHECKSUM]);
             return bleUtils.writeCharacteristic(controlPointCharacteristic, buf, false);
         })

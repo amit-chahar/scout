@@ -88,7 +88,6 @@ function streamData(characteristic, buffer) {
                     return streamData(characteristic, buffer.slice(dfuConstants.BLE_PACKET_SIZE))
                 })
                 .then(function () {
-                    logger.verbose(TAG + "data sent successfully");
                     resolve();
                 })
                 .catch(function (error) {
