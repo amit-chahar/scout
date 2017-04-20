@@ -112,9 +112,6 @@ noble.on('discover', function (peripheral) {
                 return mDfuCharacteristics[constants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC];
             })
             .then(dfuNotificationHandler.setPrn)
-            .then(function (characteristic) {
-                return dfuBleUtils.sendSelectCommand(characteristic, constants.CONTROL_PARAMETERS.COMMAND_OBJECT);
-            })
             .catch(function (error) {
                 logger.error(TAG + "DFU failed");
                 logger.error(error);
