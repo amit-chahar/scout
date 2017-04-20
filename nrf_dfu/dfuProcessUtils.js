@@ -29,5 +29,11 @@ function sendProgress(progressPercent, progressMessage){
     process.send(message);
 }
 
+process.on('uncaughtException', function(error){
+    logger.error(error);
+    logger.error(TAG + "process exiting");
+    process.exit(0);
+})
+
 module.exports.terminate = terminate;
 module.exports.sendProgress = sendProgress;
