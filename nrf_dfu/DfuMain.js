@@ -211,7 +211,7 @@ function doDfu(dfuTask) {
                     });
                 break;
             case dfuServiceMessage.STATUS_RUNNING:
-                const progressPercent = message[dfuServiceMessage.PROGRESS];
+                const progressPercent = message[dfuServiceMessage.PERCENT];
                 const progressMessage = message[dfuServiceMessage.MESSAGE];
                 logger.info(TAG + "progress: %s, message: %s", progressPercent, progressMessage);
                 updateCurrentTaskProgress(progressPercent);
