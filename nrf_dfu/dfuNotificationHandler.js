@@ -278,10 +278,12 @@ function sendFirmwareObject(dfuCharacteristics) {
 }
 
 function checkDataObjectCrc(parsedResponse) {
-    const expectedCrc = dfuCache.get(dfuConstants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC);
-    const actualCrc = parsedResponse[dfuConstants.RESPONSE_SPECIFIC_DATA][dfuConstants.CRC_32];
-    logger.debug("expected CRC: %s, actual CRC: %s", expectedCrc, actualCrc);
-    return parsedResponse;
+    return new Promise(function(resolve, reject){
+        const expectedCrc = dfuCache.get(dfuConstants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC);
+        const actualCrc = parsedResponse[dfuConstants.RESPONSE_SPECIFIC_DATA][dfuConstants.CRC_32];
+        logger.debug("expected CRC: %s, actual CRC: %s", expectedCrc, actualCrc);
+        resolve(parsedResponse);
+    })
 }
 
 function continueSending(pData) {
