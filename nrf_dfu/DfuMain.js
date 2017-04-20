@@ -205,7 +205,10 @@ function doDfu(dfuTask) {
             case dfuServiceMessage.STATUS_COMPLETED:
                 logger.info(TAG + "update completed");
                 dfuDone = true;
-                currentTaskCompleted(dfuTask)
+                updateCurrentTaskProgress(100)
+                    .then(function () {
+                        return currentTaskCompleted(dfuTask);
+                    })
                     .then(function () {
                         return finishPendingDfuTasks();
                     });
