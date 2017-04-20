@@ -11,10 +11,9 @@ function terminate(){
     const taskSuccessful = dfuCache.get(dfuConstants.FIRMWARE_BIN_FILE_SENT_SUCCESSFULLY);
     var message = {};
     if (taskSuccessful) {
-        message[dfuProcessMessage.PROGRESS][dfuProcessMessage.PERCENT] = dfuProcessMessage.FIRMWARE_UPDATED_PERCENT;
-        message[dfuProcessMessage.PROGRESS][dfuProcessMessage.MESSAGE] = dfuProcessMessage.FIRMWARE_UPDATED_MESSAGE;
         message[dfuProcessMessage.STATUS] = dfuProcessMessage.STATUS_COMPLETED;
-
+        message[dfuProcessMessage.PERCENT] = dfuProcessMessage.FIRMWARE_UPDATED_PERCENT;
+        message[dfuProcessMessage.MESSAGE] = dfuProcessMessage.FIRMWARE_UPDATED_MESSAGE;
     } else {
         message[dfuProcessMessage.STATUS] = dfuProcessMessage.STATUS_FAILED;
     }
