@@ -22,6 +22,7 @@
     "crc": "^3.4.4",
     "crc-32": "^1.0.1",
     "download": "^5.0.3",
+    "file-download": "^0.1.2",
     "firebase": "^3.7.6",
     "noble": "^1.8.0",
     "node-cache": "^4.1.1",

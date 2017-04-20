@@ -9,15 +9,12 @@ const firebasePaths = require("../firebasePaths");
 const firebaseDbKeys = require("../firebaseDatabaseKeys");
 
 var logger = require("../Logger.js");
-var nrfGlobals = require('./dfuCache');
-const eventEmitter = nrfGlobals.eventEmitter;
-const eventNames = require("./eventNames");
-const download = require('download');
 const path = require('path');
 const nrfDfuConfig = require('./nrfDfuConfig');
 const Promise = require('bluebird');
 const fork = require('child_process').fork;
 const dfuServiceMessage = require('./dfuServiceMessage');
+const dfuUtils = require('./dfuUtils');
 
 var taskInProgress = false;
 
@@ -174,8 +171,14 @@ function currentDfuTaskFailed(dfuTask) {
 function downloadFirmwareFileFromCloud(dfuTask) {
     const downloadUrl = dfuTask[firebaseDbKeys.FIRMWARE_DOWNLOAD_URL];
     const firmwareFileName = dfuTask[firebaseDbKeys.FIRMWARE_FILE_NAME];
-    const downloadDestination = path.join(__dirname, "firmwares", "zipped", firmwareFileName);
-    download(downloadUrl, downloadDestination)
+    const downloadDestination = path.join(__dirname, "firmwares", "zipped");
+
+    var options = {
+        directory: downloadDestination,
+        filename: firmwareFileName
+    };
+
+    dfuUtils.downloadFile(downloadUrl, options)
         .then(function () {
             logger.info("firmware file %s downloaded" + firmwareFileName);
             doDfu(dfuTask);
@@ -227,7 +230,7 @@ function doDfu(dfuTask) {
     dfuMainProcess.on('close', function (code) {
         processRunning = false;
         logger.info(TAG + "closing main process");
-        if(!dfuDone){
+        if (!dfuDone) {
             currentDfuTaskFailed(dfuTask)
                 .then(function () {
                     return finishPendingDfuTasks();

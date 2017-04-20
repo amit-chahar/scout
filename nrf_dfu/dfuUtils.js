@@ -8,7 +8,7 @@ var logger = require('../Logger');
 var dfuConstants = require('./DfuConstants');
 var fs = require('fs');
 var rimraf = require('rimraf');
-
+const download = require('file-download');
 function delay(t) {
     return new Promise(function (resolve) {
         setTimeout(resolve, t)
@@ -97,9 +97,21 @@ function removeDirectory(path){
     });
 }
 
+function downloadFile(url, options){
+    new Promise(function (resolve, reject) {
+        download(url, options, function(error){
+            if (error){
+                reject(error);
+            }
+            resolve();
+        })
+    })
+}
+
 module.exports.delay = delay;
 module.exports.parseResponse = parseResponse;
 module.exports.controlOpCodeToString = controlOpCodeToString;
 module.exports.resultCodeToString = resultCodeToString;
 module.exports.parseBinaryFile = parseBinaryFile;
 module.exports.removeDirectory = removeDirectory;
+module.exports.downloadFile = downloadFile;
