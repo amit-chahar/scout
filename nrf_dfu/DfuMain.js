@@ -211,8 +211,10 @@ function doDfu(dfuTask) {
                     });
                 break;
             case dfuServiceMessage.STATUS_RUNNING:
-                logger.info(TAG + "progress: %s, message: %s", message[dfuServiceMessage.PROGRESS], message[dfuServiceMessage.MESSAGE]);
-                updateCurrentTaskProgress(dfuTask);
+                const progressPercent = message[dfuServiceMessage.PROGRESS];
+                const progressMessage = message[dfuServiceMessage.MESSAGE];
+                logger.info(TAG + "progress: %s, message: %s", progressPercent, progressMessage);
+                updateCurrentTaskProgress(progressPercent);
                 break;
             default:
                 logger.info(TAG + "invalid progress message received: ", message);
