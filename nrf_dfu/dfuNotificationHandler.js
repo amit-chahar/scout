@@ -84,7 +84,7 @@ function sendCommandObject(controlPointCharacteristic, packetCharacteristic){
         .then(function (result) {
                 const expectedCrc = CRC32.buf(result);
                 dfuCache.set(dfuConstants.FIRMWARE_DAT_FILE_EXPECTED_CRC, expectedCrc);
-                logger.debug("expected crc of init file: ", CRC32(result));
+                logger.debug("expected crc of init file: ", expectedCrc);
                 return dfuBleUtils.streamData(packetCharacteristic, result);
             }
         )
