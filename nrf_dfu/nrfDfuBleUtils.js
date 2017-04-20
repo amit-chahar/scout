@@ -41,7 +41,7 @@ function discoverControlPointAndPacketCharacteristics(characteristics) {
         if (characteristic.uuid === dfuConstants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC_UUID) {
             mControlPointCharacteristic = characteristic;
             logger.info("found DFU control point characteristic");
-        } else if (characteristic.uuid == constants.SECURE_DFU_PACKET_CHARACTERISTIC_UUID) {
+        } else if (characteristic.uuid == dfuConstants.SECURE_DFU_PACKET_CHARACTERISTIC_UUID) {
             mPacketCharacteristic = characteristic;
             logger.info("found DFU packet characteristic");
         }
