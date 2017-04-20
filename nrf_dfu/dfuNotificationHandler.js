@@ -151,7 +151,7 @@ function initFileNotificationHandler(dfuCharacteristics, response, isNotificatio
             console.log();
             logger.verbose(TAG + "EXECUTE command object notification received");
             logger.debug(TAG + "Response received: " + parsedResponse);
-            logger.info(TAG + "init file sent, starting sending firmware data file");
+            logger.info(TAG + "init file sent, start sending firmware data file");
             logger.verbose("changing control point characteristic listeners");
             setupToChangeListener(dfuCharacteristics);
             controlPointCharacteristic.removeAllListeners("data");
@@ -181,7 +181,7 @@ function setupToChangeListener(dfuCharacteristics) {
 
     controlPointCharacteristic.once('newListener', function (event, listener) {
         logger.debug("added control point characteristic listener");
-        logger.info(TAG + "starting sending firmware bin file");
+        logger.info(TAG + "start sending firmware bin file");
         logger.verbose(TAG + "sending select command for data object");
         dfuBleUtils.sendSelectCommand(controlPointCharacteristic, dfuConstants.CONTROL_PARAMETERS.DATA_OBJECT);
     });

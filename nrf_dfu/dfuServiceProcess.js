@@ -49,8 +49,8 @@ function startScan() {
 }
 
 function stopScan() {
-    logger.verbose(TAG + "stopping scan");
     if (scanning) {
+        logger.verbose(TAG + "stopping scan");
         noble.once('scanStop', function () {
             logger.verbose(TAG + "scan stopped successfullly");
             scanning = false;
