@@ -50,13 +50,13 @@ function initializeDefaultsForDatFileTransfer(parsedResponse) {
 }
 
 function createCommandObject(controlPointCharacteristic, size) {
-    const objectType = Buffer.from([dfuConstants.CONTROL_PARAMETERS.COMMAND_OBJECT]);
+    const objectType = dfuConstants.CONTROL_PARAMETERS.COMMAND_OBJECT;
     logger.debug(TAG, "create command object: ", objectType);
     createObject(controlPointCharacteristic, objectType, size);
 }
 
 function createDataObject(controlPointCharacteristic, size) {
-    const objectType = Buffer.from([dfuConstants.CONTROL_PARAMETERS.DATA_OBJECT]);
+    const objectType = dfuConstants.CONTROL_PARAMETERS.DATA_OBJECT;
     logger.debug(TAG, "create data object: ", objectType);
     createObject(controlPointCharacteristic, objectType, size);
 }
