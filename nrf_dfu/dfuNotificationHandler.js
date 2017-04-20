@@ -14,6 +14,7 @@ var crc = require('crc');
 var CRC32 = require('crc-32');
 var dfuCache = require("./dfuCache");
 const dfuProcessUtils = require('./dfuProcessUtils');
+const Promise = require('bluebird');
 
 function setPrn(controlPointCharacteristic) {
     var command = Buffer.alloc(3)
@@ -285,9 +286,10 @@ function sendFirmwareObject(dfuCharacteristics) {
             var seed = dfuCache.get(dfuConstants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC);
             const expectedCrc = CRC32.buf(dataToSend, seed);
             dfuCache.set(dfuConstants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC, expectedCrc);
-            logger.info("data packet sent: total size: %s, last offset: %s, new offset: %s", result.length,  offset, newOffset);
+            logger.info("sending data object: total size: %s, last offset: %s, new offset: %s", result.length,  offset, newOffset);
             return dfuBleUtils.streamData(packetCharacteristic, dataToSend);
         })
+        .delay(1000)
         .then(function () {
             return dfuBleUtils.sendCalculateChecksumCommand(dfuCharacteristics[dfuConstants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC]);
         })
