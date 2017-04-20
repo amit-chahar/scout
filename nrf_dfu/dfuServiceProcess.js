@@ -64,6 +64,10 @@ function stopScan() {
     }
 }
 
+function sendProgress(progress, message){
+    dfuProcessUtils.sendProgress(progress, message);
+}
+
 function terminate() {
     dfuProcessUtils.terminate();
 }
@@ -73,7 +77,7 @@ noble.on('discover', function (peripheral) {
         logger.info(TAG + "Peripheral found advertising in bootloader mode: ", peripheral.address);
         deviceFound = true;
         stopScan();
-
+        sendProgress(dfuServiceMessage.DEVICE_RESTARTED_IN_BOOTLOADER_MODE_PROGRESS_PERCENT, dfuServiceMessage.DEVICE_RESTARTED_IN_BOOTLOADER_MODE_PROGRESS_MESSAGE);
         //clean per DFU cache
         dfuCache.flushAll();
 
@@ -181,5 +185,3 @@ function prepareDfuFiles() {
         return firmwareFilesPaths;
     })
 }
-
-module.exports.terminate = terminate;

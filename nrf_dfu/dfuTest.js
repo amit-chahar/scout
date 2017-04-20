@@ -6,6 +6,7 @@ const logger = require('../Logger');
 const nrfDfuConfig = require('./nrfDfuConfig');
 const fork = require('child_process').fork;
 const path = require('path');
+const dfuServiceMessage = require('./dfuServiceMessage');
 
 restartDeviceInDfuMode();
 
@@ -50,6 +51,19 @@ function sendFirmware() {
 
     dfuMainProcess.on('message', function (message) {
         logger.info(TAG + "Main process message received: ", message);
+        switch (message[dfuServiceMessage.STATUS]){
+            case dfuServiceMessage.STATUS_COMPLETED:
+                logger.info(TAG + "update completed");
+                break;
+            case dfuServiceMessage.STATUS_FAILED:
+                logger.info(TAG + "update failed");
+                break;
+            case dfuServiceMessage.STATUS_RUNNING:
+                logger.info(TAG + "progress: %s, message: %s", message[dfuServiceMessage.PROGRESS], message[dfuServiceMessage.MESSAGE]);
+                break;
+            default:
+                logger.info(TAG + "invalid progress message received: ", message);
+        }
     });
 
     dfuMainProcess.on('close', function (code) {

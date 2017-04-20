@@ -21,8 +21,12 @@ function terminate(){
     process.exit(0);
 }
 
-function sendProgress(){
-
+function sendProgress(progressPercent, progressMessage){
+    var message = {};
+    message[dfuProcessMessage.STATUS] = dfuProcessMessage.STATUS_RUNNING;
+    message[dfuProcessMessage.PERCENT] = progressPercent;
+    message[dfuProcessMessage.MESSAGE] = progressMessage;
+    process.send(message);
 }
 
 module.exports.terminate = terminate;

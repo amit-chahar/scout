@@ -15,6 +15,7 @@ var CRC32 = require('crc-32');
 var dfuCache = require("./dfuCache");
 const dfuProcessUtils = require('./dfuProcessUtils');
 const Promise = require('bluebird');
+const dfuServiceMessage = require('./dfuServiceMessage');
 
 function setPrn(controlPointCharacteristic) {
     var command = Buffer.alloc(3)
@@ -152,6 +153,7 @@ function initFileNotificationHandler(dfuCharacteristics, response, isNotificatio
             logger.verbose(TAG + "EXECUTE command object notification received");
             logger.debug(TAG + "Response received: " + parsedResponse);
             logger.info(TAG + "init file sent, start sending firmware data file");
+            sendProgress(dfuServiceMessage.INIT_FILE_SENT_PROGRESS_PERCENT, dfuServiceMessage.INIT_FILE_SENT_PROGRESS_MESSAGE);
             logger.verbose("changing control point characteristic listeners");
             setupToChangeListener(dfuCharacteristics);
             controlPointCharacteristic.removeAllListeners("data");
@@ -293,6 +295,12 @@ function sendFirmwareObject(dfuCharacteristics) {
             return dfuBleUtils.streamData(packetCharacteristic, dataToSend);
         })
         .delay(1000)
+        .then(function(){
+            const totalSize = dfuCache.get(dfuConstants.FIRMWARE_BIN_FILE_SIZE);
+            const dataSentSize = dfuCache.get(dfuConstants. FIRMWARE_BIN_FILE_OFFSET);
+            const percentDataSent = ((dataSentSize * 70)/totalSize) + dfuServiceMessage.INIT_FILE_SENT_PROGRESS_PERCENT;
+            sendProgress(percentDataSent, dfuServiceMessage.SENDING_FIRMWARE);
+        })
         .then(function () {
             return dfuBleUtils.sendCalculateChecksumCommand(dfuCharacteristics[dfuConstants.SECURE_DFU_CONTROL_POINT_CHARACTERISTIC]);
         })
@@ -324,7 +332,7 @@ function continueSending(pData) {
 }
 
 function sendProgress(progress, message){
-
+    dfuProcessUtils.sendProgress(progress, message);
 }
 
 function terminate() {

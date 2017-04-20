@@ -18,7 +18,9 @@ module.exports = {
     "DEVICE_RESTARTED_IN_BOOTLOADER_MODE_PROGRESS_MESSAGE": "Initializing firmware transfer",
 
     "INIT_FILE_SENT_PROGRESS_PERCENT": 20,
-    "INIT_FILE_SENT_PROGRESS_MESSAGE": "Sending firmware",
+    "INIT_FILE_SENT_PROGRESS_MESSAGE": "Sending firmware to device",
+
+    "SENDING_FIRMWARE": "Sending firmware to device",
 
     "FIRMWARE_DATA_FILE_SENT_PROGRESS_PERCENT": 90,
     "FIRMWARE_DATA_FILE_SENT_PROGRESS_MESSAGE": "Firmware transfer completed",
