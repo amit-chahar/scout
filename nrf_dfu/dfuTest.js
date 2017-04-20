@@ -13,7 +13,7 @@ function restartDeviceInDfuMode(dfuTask) {
     var processRunning = true;
     var devicedRestartedInBootloaderMode = false;
     const dfuStarterProcessTimeout = nrfDfuConfig.DFU_STARTER_SCAN_TIMEOUT + 5000;
-    const modulePath = path.join(__dirname, "DfuStarterProcess.js");
+    const modulePath = path.join(__dirname, "dfuStarterProcess.js");
     const args = ["08:66:98:c5:9a:e0"];
     const dfuStarterProcess = fork(modulePath, args);
 
