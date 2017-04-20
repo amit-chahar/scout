@@ -310,7 +310,11 @@ function checkDataObjectCrc(parsedResponse) {
     return new Promise(function(resolve, reject){
         const expectedCrc = dfuCache.get(dfuConstants.FIRMWARE_BIN_FILE_CHUNK_EXPECTED_CRC);
         const actualCrc = parsedResponse[dfuConstants.RESPONSE_SPECIFIC_DATA][dfuConstants.CRC_32];
-        logger.debug("expected CRC: %s, actual CRC: %s", expectedCrc.toString(16), actualCrc.toString(16));
+        logger.debug("expected CRC: %s, actual CRC: %s", expectedCrc, actualCrc);
+        if(expectedCrc != actualCrc){
+            logger.info(TAG + "Expected CRC doesn't match actual CRC");
+            terminate();
+        }
         resolve(parsedResponse);
     })
 }
