@@ -196,7 +196,7 @@ function firmwareDataTransferHandler(dfuCharacteristics, response, isNotificatio
         case dfuConstants.CONTROL_OPCODES.CALCULATE_CHECKSUM:
             logger.verbose(TAG + 'CALCULATE CHECKSUM response received');
             // TODO: Check if offset and crc is correct before executing.
-            checkDataObjectCrc(controlPointCharacteristic, parsedResponse)
+            checkDataObjectCrc(parsedResponse)
                 .then(function () {
                     return dfuBleUtils.sendExecuteCommand(controlPointCharacteristic);
                 })
