@@ -174,7 +174,7 @@ function currentDfuTaskFailed(dfuTask) {
 function downloadFirmwareFileFromCloud(dfuTask) {
     const downloadUrl = dfuTask[firebaseDbKeys.FIRMWARE_DOWNLOAD_URL];
     const firmwareFileName = dfuTask[firebaseDbKeys.FIRMWARE_FILE_NAME];
-    const downloadDestination = path.join(__dirname, "firmwares", "zipped");
+    const downloadDestination = path.join(__dirname, "firmwares", "zipped", firmwareFileName);
     download(downloadUrl, downloadDestination)
         .then(function () {
             logger.info("firmware file %s downloaded" + firmwareFileName);
