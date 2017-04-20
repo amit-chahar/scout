@@ -8,8 +8,9 @@ const noble = require('noble');
 const dfuConfig = require('./nrfDfuConfig');
 const logger = require('../Logger');
 const systemUtils = require('../systemUtils');
-// const mPeripheralAddress = process.argv[2];
-const mPeripheralAddress = "08:66:98:c5:9a:e0";
+
+const mPeripheralAddress = process.argv[2];
+//const mPeripheralAddress = "08:66:98:c5:9a:e0";
 var scanning = false;
 var deviceFound = false;
 
