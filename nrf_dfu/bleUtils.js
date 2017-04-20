@@ -61,7 +61,6 @@ function discoverCharacteristics(service) {
 }
 
 function writeCharacteristic(characteristic, data, withoutResponse){
-    logger.verbose(TAG + "writing to characteristic");
     if(characteristic === undefined){
         logger.error(TAG + "characteristic is undefined");
         throw new Error();
@@ -72,7 +71,6 @@ function writeCharacteristic(characteristic, data, withoutResponse){
                 logger.error(TAG + "writing characteristic");
                 reject(error);
             }
-            logger.verbose(TAG + "characteristic written successfully");
             resolve(characteristic);
         })
     })
