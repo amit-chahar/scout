@@ -24,8 +24,8 @@
       <file leaf-file-name="dfuNotificationHandler.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuNotificationHandler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="16" column="36" lean-forward="false" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
+            <state relative-caret-position="564">
+              <caret line="286" column="64" lean-forward="true" selection-start-line="286" selection-start-column="64" selection-end-line="286" selection-end-column="64" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
                 <element signature="n#!!block;n#initializeDefaultsForDatFileTransfer#0" expanded="false" />
@@ -37,7 +37,7 @@
                 <element signature="e#10493#10547#0" expanded="false" />
                 <element signature="n#!!block;n#checkDataObjectCrc#0" expanded="false" />
                 <element signature="n#!!block;n#continueSending#0" expanded="false" />
-                <marker date="1492677746442" expanded="false" signature="601:1215" ph="{...}" />
+                <marker date="1492678298192" expanded="false" signature="601:1215" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -454,14 +454,7 @@
       <workItem from="1491743150986" duration="47252000" />
       <workItem from="1491913539896" duration="62529000" />
       <workItem from="1492339275129" duration="74593000" />
-      <workItem from="1492539454413" duration="48748000" />
-    </task>
-    <task id="LOCAL-00137" summary="dfu service connected to firebase">
-      <created>1492460446824</created>
-      <option name="number" value="00137" />
-      <option name="presentableId" value="LOCAL-00137" />
-      <option name="project" value="LOCAL" />
-      <updated>1492460446824</updated>
+      <workItem from="1492539454413" duration="49281000" />
     </task>
     <task id="LOCAL-00138" summary="dfu service connected to firebase">
       <created>1492460485663</created>
@@ -799,11 +792,18 @@
       <option name="project" value="LOCAL" />
       <updated>1492677039810</updated>
     </task>
-    <option name="localTasksCounter" value="186" />
+    <task id="LOCAL-00186" summary="integrating DFU starter and main processes">
+      <created>1492677769703</created>
+      <option name="number" value="00186" />
+      <option name="presentableId" value="LOCAL-00186" />
+      <option name="project" value="LOCAL" />
+      <updated>1492677769703</updated>
+    </task>
+    <option name="localTasksCounter" value="187" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="239746000" />
+    <option name="totallyTimeSpent" value="240279000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -1382,8 +1382,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nrf_dfu/dfuNotificationHandler.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="16" column="36" lean-forward="false" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
+        <state relative-caret-position="564">
+          <caret line="286" column="64" lean-forward="true" selection-start-line="286" selection-start-column="64" selection-end-line="286" selection-end-column="64" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
             <element signature="n#!!block;n#initializeDefaultsForDatFileTransfer#0" expanded="false" />
@@ -1395,7 +1395,7 @@
             <element signature="e#10493#10547#0" expanded="false" />
             <element signature="n#!!block;n#checkDataObjectCrc#0" expanded="false" />
             <element signature="n#!!block;n#continueSending#0" expanded="false" />
-            <marker date="1492677746442" expanded="false" signature="601:1215" ph="{...}" />
+            <marker date="1492678298192" expanded="false" signature="601:1215" ph="{...}" />
           </folding>
         </state>
       </provider>
