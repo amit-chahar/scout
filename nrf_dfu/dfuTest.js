@@ -2,6 +2,7 @@
  * Created by Amit-Chahar on 20-04-2017.
  */
 const TAG = "DFU test: ";
+const logger = require('../Logger');
 const nrfDfuConfig = require('./nrfDfuConfig');
 const fork = require('child_process').fork;
 const path = require('path');
